@@ -19,6 +19,9 @@ spring:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: "root"
     url: jdbc:sqlserver://localhost:1433;database=MyBlog;encrypt=false;trustServerCertificate=true;
+    hikari: # 配置连接池
+      maximum-pool-size: 10
+      idle-timeout: 30000
   jpa:
     hibernate:
       ddl-auto: update
