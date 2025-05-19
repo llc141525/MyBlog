@@ -1,0 +1,27 @@
+server:
+  port: 8080
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+spring:
+  security:
+    user:
+      name: sa
+      password: 14152519487@Cen
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: "root"
+    url: jdbc:sqlserver://localhost:1433;database=MyBlog;encrypt=false;trustServerCertificate=true;
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.SQLServerDialect
