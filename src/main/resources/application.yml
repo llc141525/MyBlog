@@ -9,6 +9,8 @@ springdoc:
     path: /swagger-ui.html
 
 spring:
+  cache:
+    type: redis
   security:
     user:
       name: sa
@@ -25,3 +27,9 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      connect-timeout: 3600000
+
