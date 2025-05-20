@@ -13,15 +13,16 @@ spring:
     type: redis
   security:
     user:
-      name: sa
-      password: 14152519487@Cen
+      name: root
+      password: root
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: "root"
+    username: "sa"
     url: jdbc:sqlserver://localhost:1433;database=MyBlog;encrypt=false;trustServerCertificate=true;
     hikari: # 配置连接池
       maximum-pool-size: 10
       idle-timeout: 30000
+    password: "14152519487@Cen"
   jpa:
     hibernate:
       ddl-auto: update
@@ -36,3 +37,6 @@ spring:
       port: 6379
       connect-timeout: 3600000
 
+jwt:
+  secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=
+  expiration: 3600
