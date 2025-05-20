@@ -1,6 +1,8 @@
 package org.example.myblog.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.myblog.security.JwtInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,8 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 public class WebMVCConfig implements WebMvcConfigurer {
-//    private final JwtInterceptor jwtInterceptor;
+    private final JwtInterceptor jwtInterceptor;
 
+    @Value("${pathMap.accessPath}")
+    private String accessPath;
+
+    @Value("${pathMap.uploadDir}")
+    private String uploadDir;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -34,6 +41,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
 //                        "/webjars/**");
 //    }
 //
+
+    /*添加路径映射*/
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        String absolutePath = Paths.get(uploadDir).toAbsolutePath().toString().replace("\\", "/");

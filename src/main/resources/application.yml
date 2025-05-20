@@ -40,3 +40,7 @@ spring:
 jwt:
   secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=
   expiration: 3600
+
+pathMap:
+  uploadDir: C:upload/image
+  accessPath: /img

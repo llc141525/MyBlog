@@ -1,10 +1,7 @@
 package org.example.myblog.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
@@ -16,39 +13,41 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString
-@RequiredArgsConstructor
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     // 标题
-    String title;
+    private String title;
 
     // 内容
-    String content;
+    private String content;
 
     // 封面的 url
-    String cover_url;
+    private String cover_url;
 
     // 文章是在 草稿 还是 发布
-    Boolean status;
+    private Boolean status;
 
     @CreationTimestamp
-    LocalDateTime createTime;
+    private LocalDateTime createTime;
 
     @UpdateTimestamp
-    LocalDateTime updateTime;
+    private LocalDateTime updateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    List<Comment> comments;
+    private List<Comment> comments;
 
     public void addComment(Comment comment) {
         comments.add(comment);

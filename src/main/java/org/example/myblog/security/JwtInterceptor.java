@@ -1,5 +1,7 @@
 package org.example.myblog.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -13,7 +15,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtInterceptor implements HandlerInterceptor {
-    //    private final JwtUtils jwtUtils;
+        private final JwtUtils jwtUtils;
     private final PathMatcher pathMatcher = new AntPathMatcher();
     private final List<String> EXCLUDE_PATH =
             new ArrayList<>(Arrays.asList(
@@ -30,6 +32,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 //        if (request.getMethod().equals("OPTIONS")) {
 //            return true;
 //        }
-//
+//          拦截响应, 提取出 cookie 把他放到 httpAttribute
 //    }
 }
