@@ -6,7 +6,7 @@ import org.springframework.http.ResponseCookie;
 
 public class CookieUtil {
     public static void setCookie(HttpServletResponse response, String token) {
-        ResponseCookie cookie = ResponseCookie.from("jwt_token", token)
+        ResponseCookie cookie = ResponseCookie.from("my_blog_token", token)
                 .httpOnly(true)                                 // 禁止 js 访问
                 .path("/")                                      // 全路径可访问
                 .maxAge(3600)                      // 设置 cookie 寿命为 3600 秒
@@ -16,7 +16,7 @@ public class CookieUtil {
     }
 
     public static void deleteCookie(HttpServletResponse response) {
-        ResponseCookie cookie = ResponseCookie.from("jwt_token", "")
+        ResponseCookie cookie = ResponseCookie.from("my_blog_token", "")
                 .maxAge(0)
                 .path("/")
                 .build();

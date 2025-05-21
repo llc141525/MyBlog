@@ -36,11 +36,16 @@ spring:
       host: localhost
       port: 6379
       connect-timeout: 3600000
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
 
 jwt:
   secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=
   expiration: 3600
 
 pathMap:
-  uploadDir: C:upload/image
-  accessPath: /img
+  uploadDir: C:/uploads/images
+  accessPath: /img/**
