@@ -3,10 +3,7 @@ package org.example.myblog.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
@@ -16,39 +13,42 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private LocalDateTime createTime;
 
-    String content;
-
-    LocalDateTime createTime;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     @ToString.Exclude // 防止重复引用
     @JoinColumn(name = "parent_comment_id", nullable = true)
-    Comment parentComment;
+    private Comment parentComment;
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentComment")
     @OrderBy("createTime asc")
     @JsonManagedReference
     @ToString.Exclude
-    List<Comment> childComment;
-
+    private List<Comment> childComment;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
+
 
     @ManyToOne
     @JoinColumn(name = "article_id")
-    Article article;
+    private Article article;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String content;
 
     // comment 的双向关系维护方法
     public void addChildComment(Comment comment) {
