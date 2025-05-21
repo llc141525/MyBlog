@@ -11,6 +11,8 @@ springdoc:
 spring:
   cache:
     type: redis
+    redis:
+      time-to-live: 300s
   security:
     user:
       name: root
@@ -18,7 +20,7 @@ spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: "sa"
-    url: jdbc:sqlserver://localhost:1433;database=MyBlog;encrypt=false;trustServerCertificate=true;
+    url: jdbc:sqlserver://localhost:1433;database=MyBlog;encrypt=false;trustServerCertificate=true;sendStringParametersAsUnicode=true;
     hikari: # 配置连接池
       maximum-pool-size: 10
       idle-timeout: 30000
@@ -33,14 +35,18 @@ spring:
         dialect: org.hibernate.dialect.SQLServerDialect
   data:
     redis:
-      host: localhost
+      host: 127.0.0.1
       port: 6379
       connect-timeout: 3600000
+      database: 0
   servlet:
     multipart:
       enabled: true
       max-file-size: 20MB
       max-request-size: 20MB
+  sql:
+    init:
+      encoding: utf-8
 
 jwt:
   secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=

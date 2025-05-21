@@ -23,9 +23,11 @@ public class Article {
     private Long id;
 
     // 标题
+    @Column(name = "title", columnDefinition = "NVARCHAR(MAX)")
     private String title;
 
     // 内容
+    @Column(name = "content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
 
     // 封面的 url
@@ -42,8 +44,8 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
