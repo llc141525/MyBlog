@@ -7,6 +7,8 @@ import java.io.Serializable;
 /**
  * DTO for {@link Users}
  */
-public record UserRequest(String username,
-                          String password) implements Serializable {
+public record UserRequest(
+        String username,
+        String password
+) implements Serializable {
 }

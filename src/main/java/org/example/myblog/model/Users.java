@@ -21,6 +21,11 @@ public class Users {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
     @ToString.Exclude
     private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +42,16 @@ public class Users {
     public void removeArticle(Article article) {
         articles.remove(article);
         article.setUsers(null);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setUsers(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setUsers(null);
     }
 
     @Override
