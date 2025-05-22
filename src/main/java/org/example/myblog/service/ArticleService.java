@@ -15,6 +15,8 @@ import org.example.myblog.repository.ArticleRepository;
 import org.example.myblog.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,9 +45,11 @@ public class ArticleService {
 
     // 按照 userId 缓存文章
     @Transactional(readOnly = true)
-    @Cacheable(value = "articleHome", key = "#userId", unless = "#result.isEmpty()")
-    public List<ArticleHomeResponse> getAllArticles(Long userId) {
-        return articleRepository.findArticlesByUserId(userId)
+    @Cacheable(value = "articleHome", key = "#page")
+    public List<ArticleHomeResponse> getAllArticles(Long userId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return articleRepository.findArticlesByUserId(userId, pageable)
                 .stream()
                 .map(articleMapper::articleToArticleHomeResponse)
                 .toList();

@@ -25,9 +25,11 @@ public class ArticleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/")
-    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestAttribute Long userId) {
-        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(userId);
+    @GetMapping("/{page}/{size}")
+    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestAttribute Long userId,
+                                                                 @PathVariable Integer page,
+                                                                 @PathVariable Integer size) {
+        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(userId, page, size);
         return ApiResponse.success(allArticles);
     }
 
