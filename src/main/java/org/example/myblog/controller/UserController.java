@@ -7,7 +7,7 @@ import org.example.myblog.dto.request.UserRequest;
 import org.example.myblog.dto.response.UserResponse;
 import org.example.myblog.exception.BusinessException;
 import org.example.myblog.exception.errors.UserError;
-import org.example.myblog.model.User;
+import org.example.myblog.model.Users;
 import org.example.myblog.repository.UserRepository;
 import org.example.myblog.security.JwtUtils;
 import org.example.myblog.service.UserService;
@@ -34,11 +34,11 @@ public class UserController {
         Long userId = userService.login(userRequest.username(), userRequest.password());
         if (userId != null) {
             CookieUtil.setCookie(response, jwtUtils.generateToken(userId));
-            User userById = userRepository.findUserById(userId);
+            Users usersById = userRepository.findUserById(userId);
             return ApiResponse.success(UserResponse.builder()
-                    .id(userById.getId())
-                    .username(userById.getUsername())
-                    .avatarUrl(userById.getAvatarUrl())
+                    .id(usersById.getId())
+                    .username(usersById.getUsername())
+                    .avatarUrl(usersById.getAvatarUrl())
                     .build());
         } else {
             throw new BusinessException(UserError.INVALID_USER);

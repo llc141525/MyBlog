@@ -20,7 +20,6 @@ import java.util.Objects;
 public class Comment {
     private LocalDateTime createTime;
 
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     @ToString.Exclude // 防止重复引用
@@ -37,7 +36,7 @@ public class Comment {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
 
     @ManyToOne
@@ -48,6 +47,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
 
     // comment 的双向关系维护方法
