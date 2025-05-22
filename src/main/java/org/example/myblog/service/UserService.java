@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,26 +74,22 @@ public class UserService {
 
     @Transactional
     public void update(UserRequest updateUserRequest, Long userId) {
-        userRepository.findById(userId).ifPresent(user -> {
-            if (updateUserRequest.username() != null) {
-                // 非法用户名
-                if (!updateUserRequest.username().matches("[0-9a-zA-Z_]{3,12}")) {
-                    throw new BusinessException(UserError.INVALID_USERNAME);
-                }
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
 
-                // 如果存在重复用户名
-                if (userRepository.existsByUsername(updateUserRequest.username())) {
-                    throw new BusinessException(UserError.DUPLICATE_USER);
-                }
+        // 修改密码
+        Optional.ofNullable(updateUserRequest.password())
+                .map(bCryptPasswordEncoder::encode)
+                .ifPresent(users::setPassword);
 
-                user.setUsername(updateUserRequest.username());
-            }
-            if (updateUserRequest.password() != null) {
-                user.setPassword(bCryptPasswordEncoder.encode(updateUserRequest.password()));
-            }
-            userRepository.save(user);
-        });
-
+        // 修改用户名
+        Optional.ofNullable(updateUserRequest.username())
+                .ifPresent(username -> {
+                    // 如果更新用户的字符是非法字符的话
+                    if (!username.matches("[0-9a-zA-Z_]{3,12}"))
+                        throw new BusinessException(UserError.INVALID_USERNAME);
+                    users.setUsername(username);
+                });
     }
 
     @Transactional

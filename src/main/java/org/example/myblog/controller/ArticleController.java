@@ -3,6 +3,8 @@ package org.example.myblog.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.myblog.dto.request.CreateArticleRequest;
+import org.example.myblog.dto.request.UpdateArticleRequest;
+import org.example.myblog.dto.response.ArticleDetailResponse;
 import org.example.myblog.dto.response.ArticleHomeResponse;
 import org.example.myblog.service.ArticleService;
 import org.example.myblog.utils.ApiResponse;
@@ -27,5 +29,23 @@ public class ArticleController {
     public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestAttribute Long userId) {
         List<ArticleHomeResponse> allArticles = articleService.getAllArticles(userId);
         return ApiResponse.success(allArticles);
+    }
+
+    @GetMapping("/{articleId}")
+    public ApiResponse<ArticleDetailResponse> getArticleDetail(@PathVariable Long articleId) {
+        ArticleDetailResponse articleById = articleService.getArticleById(articleId);
+        return ApiResponse.success(articleById);
+    }
+
+    @PatchMapping("/")
+    public ApiResponse<Void> updateArticle(UpdateArticleRequest request) {
+        articleService.updateArticle(request);
+        return ApiResponse.success(null);
+    }
+
+    @DeleteMapping("/{articleId}")
+    public ApiResponse<Void> deleteArticle(@PathVariable Long articleId) {
+        articleService.deleteArticle(articleId);
+        return ApiResponse.success(null);
     }
 }

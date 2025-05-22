@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 @Getter
-public enum ArticleError {
+public enum ArticleError implements ErrorCode {
+    ARTICLE_NOT_FOUND(2001, "未找到文章", HttpStatus.NOT_FOUND),
+
+
     ;
     private final Integer code;
     private final String message;

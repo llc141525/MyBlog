@@ -12,7 +12,8 @@ public enum UserError implements ErrorCode {
     INVALID_USERNAME(1003, "非法用户名", HttpStatus.CONFLICT),
     EMPTY_FILE(1004, "空文件异常", HttpStatus.BAD_REQUEST),
     NO_COOKIE(1005, "没有登陆", HttpStatus.UNAUTHORIZED),
-    INVALID_FILE_TYPE(1006, "非法文件类型", HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    INVALID_FILE_TYPE(1006, "非法文件类型", HttpStatus.UNSUPPORTED_MEDIA_TYPE),
+    USER_NOT_FOUND(1007, "用户不存在", HttpStatus.NOT_FOUND);
 
 
     private final Integer code;
