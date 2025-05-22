@@ -38,7 +38,7 @@ public class ArticleService {
     }
 
     // 按照 userId 缓存文章
-    @Cacheable(value = "article", key = "#userId", unless = "#result.isEmpty() || #result == null")
+    @Cacheable(value = "article", key = "#userId", unless = "#result.isEmpty()")
     public List<ArticleHomeResponse> getAllArticles(Long userId) {
 
         List<ArticleHomeResponse> responses = new ArrayList<>();
