@@ -140,6 +140,7 @@ public class UserService {
         return path;
     }
 
+    // 异步删除, 如果删除失败也不会影响主线程.
     @Transactional
     @Async
     public void deleteOldFiles(String path) throws IOException {

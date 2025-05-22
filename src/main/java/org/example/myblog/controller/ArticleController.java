@@ -1,6 +1,7 @@
 package org.example.myblog.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.myblog.dto.request.CreateArticleRequest;
 import org.example.myblog.dto.request.UpdateArticleRequest;
@@ -19,7 +20,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/create")
-    public ApiResponse<Void> create(@RequestBody CreateArticleRequest request,
+    public ApiResponse<Void> create(@Valid @RequestBody CreateArticleRequest request,
                                     @RequestAttribute Long userId) {
         articleService.createArticle(request, userId);
         return ApiResponse.success(null);
