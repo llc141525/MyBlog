@@ -11,8 +11,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record UpdateArticleRequest(
         @Schema(example = "1")
-        Long id,
-        
+        Long articleId,
+
         @Schema(example = "测试更新文章标题")
         String title,
 

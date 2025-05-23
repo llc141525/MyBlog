@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("select a from  Article a left join fetch a.comments  where a.id = ?1")
-    Optional<Article> findArticleByIdWithUserComments(Long id);
+    Optional<Article> findArticleById(Long id);
 
     @Query(value = "select a from Article a left join fetch a.comments left join fetch a.users",
             countQuery = "select count(a) from Article a")
