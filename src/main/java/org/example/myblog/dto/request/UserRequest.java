@@ -11,6 +11,7 @@ import java.io.Serializable;
 public record UserRequest(
         @Schema(example = "abc")
         String username,
+        
         @Schema(example = "123")
         String password
 ) implements Serializable {

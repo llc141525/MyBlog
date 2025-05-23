@@ -48,7 +48,7 @@ public class ArticleController {
 
     @Operation(summary = "更新文章")
     @PatchMapping("/")
-    public ApiResponse<Void> updateArticle(UpdateArticleRequest request) {
+    public ApiResponse<Void> updateArticle(@RequestBody UpdateArticleRequest request) {
         articleService.updateArticle(request);
         return ApiResponse.success(null);
     }

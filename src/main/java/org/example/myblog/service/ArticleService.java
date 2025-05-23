@@ -17,10 +17,12 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,7 @@ public class ArticleService {
     private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
     private final CommentService commentService;
+    private final RedisCacheManager cacheManager;
 
     // 按照 userId 缓存文章
     @Transactional(readOnly = true)
@@ -43,7 +46,7 @@ public class ArticleService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        return articleRepository.findArticlesByUserId(userId, pageable)
+        return articleRepository.findAllByPage(pageable)
                 .stream()
                 .map(articleMapper::articleToArticleHomeResponse)
                 .toList();
@@ -89,6 +92,8 @@ public class ArticleService {
         // 再数据库里面删除文章
         articleRepository.delete(article);
 
+        // 清除评论缓存
+        Objects.requireNonNull(cacheManager.getCache("comment")).evict(articleId);
     }
 
     @Cacheable(value = "article", key = "#articleId")

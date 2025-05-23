@@ -36,7 +36,7 @@ public class CommentService {
     private final RedisCacheManager cacheManager;
 
     @Transactional
-    @CacheEvict(value = {"commentResponse", "article"}, key = "#request.articleId()")
+    @CacheEvict(value = {"comment", "article"}, key = "#request.articleId()")
     public void createComment(CreateCommentRequest request, Long userId) {
         Comment comment = commentMapper.CreateCommentRequestToComment(request);
         // 如果这条新建评论请求的 parentCommentId 不为空, 那么这条评论就是一条用于评论的评论.
@@ -67,7 +67,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    @Cacheable(value = "commentResponse", key = "#articleId")
+    @Cacheable(value = "comment", key = "#articleId")
     @Transactional(readOnly = true)
     public List<CommentResponse> getAllCommentByArticle(Long articleId) {
         Article article = articleRepository.findArticleByIdWithUserComments(articleId)
@@ -128,7 +128,7 @@ public class CommentService {
         // 清除缓存
         Long articleId = comment.getArticle().getId();
 
-        Objects.requireNonNull(cacheManager.getCache("commentResponse")).evict(articleId);
+        Objects.requireNonNull(cacheManager.getCache("comment")).evict(articleId);
         Objects.requireNonNull(cacheManager.getCache("article")).evict(articleId);
     }
 
