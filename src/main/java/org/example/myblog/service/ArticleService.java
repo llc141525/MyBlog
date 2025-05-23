@@ -29,6 +29,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
+    private final CommentService commentService;
 
     @Transactional
     @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
@@ -51,7 +52,7 @@ public class ArticleService {
         // 页数是从 1 开始的
         page -= 1;
         // 页数必须为正整数.
-        if (page <= 0)
+        if (page < 0)
             throw new BusinessException(ArticleError.PAGE_NOT_FOUND);
 
         Pageable pageable = PageRequest.of(page, size);
@@ -88,9 +89,21 @@ public class ArticleService {
     @Transactional
     @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
     public void deleteArticle(Long articleId) {
-        if (articleRepository.existsById(articleId)) {
-            articleRepository.deleteById(articleId);
-        }
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
+        // 移除文章所有评论的双向关系
+
+        // 删除文章所属的评论
+        article.getComments().forEach(comment -> {
+            commentService.deleteComment(comment.getId());
+        });
+        // 移除和 user 的双向关系
+        article.getUsers().removeArticle(article);
+
+        // 再数据库里面删除文章
+        articleRepository.delete(article);
+
     }
+
 }
 

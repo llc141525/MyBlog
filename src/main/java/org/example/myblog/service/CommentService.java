@@ -33,7 +33,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    @CacheEvict(value = "commentResponse", key = "#request.articleId()")
+    @CacheEvict(value = {"commentResponse", "articleDetail"}, allEntries = true)
     public void createComment(CreateCommentRequest request, Long userId) {
         Comment comment = commentMapper.CreateCommentRequestToComment(request);
         // 如果这条新建评论请求的 parentCommentId 不为空, 那么这条评论就是一条用于评论的评论.
@@ -102,9 +102,8 @@ public class CommentService {
     }
 
     @Transactional
-    @CacheEvict(value = "commentResponse", allEntries = true)
+    @CacheEvict(value = {"commentResponse", "articleDetail"}, allEntries = true)
     public void deleteComment(Long commentId) {
-
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(CommentError.COMMENT_NOT_FOUND));
 
@@ -113,7 +112,7 @@ public class CommentService {
                 .ifPresent(parentComment -> {
                     parentComment.removeChildComment(comment);
                     // 移除和 article, user 的双向关系
-                    removeRelationship(comment);
+                    removeCommentRelationship(comment);
                 });
 
         // 如果这条评论有子评论, 那么移除和子评论的双向关系 --> 删除父评论的情况
@@ -121,22 +120,16 @@ public class CommentService {
                 .ifPresent(childComments -> {
                     childComments.forEach(childComment -> {
                         comment.removeChildComment(childComment);
-                        removeRelationship(childComment);
+                        removeCommentRelationship(childComment);
                     });
                 });
-
 
         commentRepository.deleteById(commentId);
     }
 
     @Transactional
-    protected void removeRelationship(Comment comment) {
+    protected void removeCommentRelationship(Comment comment) {
         // 解除和 article 的双向关系
-//        articleRepository.findById(comment.getArticle().getId()).ifPresentOrElse(
-//                article -> article.removeComment(comment),
-//                () -> {
-//                    throw new BusinessException(ArticleError.ARTICLE_NOT_FOUND);
-//                });
         Article article = comment.getArticle();
         if (article != null) {
             article.removeComment(comment);

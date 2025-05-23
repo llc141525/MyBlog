@@ -80,11 +80,17 @@ public class UserService {
         // 修改密码
         Optional.ofNullable(updateUserRequest.password())
                 .map(bCryptPasswordEncoder::encode)
-                .ifPresent(users::setPassword);
+                .ifPresent(password -> {
+                    if (!password.isBlank()) {
+                        users.setPassword(password);
+                    }
+                });
 
         // 修改用户名
         Optional.ofNullable(updateUserRequest.username())
                 .ifPresent(username -> {
+                    if (username.isBlank()) return;
+
                     // 如果更新用户的字符是非法字符的话
                     if (!username.matches("[0-9a-zA-Z_]{3,12}"))
                         throw new BusinessException(UserError.INVALID_USERNAME);
@@ -154,4 +160,6 @@ public class UserService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
 }
