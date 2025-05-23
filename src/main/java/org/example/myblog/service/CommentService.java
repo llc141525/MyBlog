@@ -10,6 +10,7 @@ import org.example.myblog.exception.errors.UserError;
 import org.example.myblog.mapper.CommentMapper;
 import org.example.myblog.model.Article;
 import org.example.myblog.model.Comment;
+import org.example.myblog.model.Users;
 import org.example.myblog.repository.ArticleRepository;
 import org.example.myblog.repository.CommentRepository;
 import org.example.myblog.repository.UserRepository;
@@ -101,29 +102,50 @@ public class CommentService {
     }
 
     @Transactional
+    @CacheEvict(value = "commentResponse", allEntries = true)
     public void deleteComment(Long commentId) {
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(CommentError.COMMENT_NOT_FOUND));
 
-        // 如果这条评论有父级评论, 那么接触双向关系
-        Optional.ofNullable(comment.getParentComment()).ifPresent(comment::removeChildComment);
-
-
-        // 解除和 article 的双向关系
-        articleRepository.findById(comment.getArticle().getId()).ifPresentOrElse(
-                article -> article.removeComment(comment),
-                () -> {
-                    throw new BusinessException(ArticleError.ARTICLE_NOT_FOUND);
+        // 如果这条评论有父级评论, 那么解除双向关系 --> 删除子评论的情况
+        Optional.ofNullable(comment.getParentComment())
+                .ifPresent(parentComment -> {
+                    parentComment.removeChildComment(comment);
+                    // 移除和 article, user 的双向关系
+                    removeRelationship(comment);
                 });
 
-        // 解除和 user 的双向关系
-        userRepository.findById(comment.getUsers().getId()).ifPresentOrElse(
-                users -> users.removeComment(comment),
-                () -> {
-                    throw new BusinessException(UserError.USER_NOT_FOUND);
+        // 如果这条评论有子评论, 那么移除和子评论的双向关系 --> 删除父评论的情况
+        Optional.ofNullable(comment.getChildComment())
+                .ifPresent(childComments -> {
+                    childComments.forEach(childComment -> {
+                        comment.removeChildComment(childComment);
+                        removeRelationship(childComment);
+                    });
                 });
+
 
         commentRepository.deleteById(commentId);
+    }
+
+    @Transactional
+    protected void removeRelationship(Comment comment) {
+        // 解除和 article 的双向关系
+//        articleRepository.findById(comment.getArticle().getId()).ifPresentOrElse(
+//                article -> article.removeComment(comment),
+//                () -> {
+//                    throw new BusinessException(ArticleError.ARTICLE_NOT_FOUND);
+//                });
+        Article article = comment.getArticle();
+        if (article != null) {
+            article.removeComment(comment);
+        }
+
+        // 解除和 user 的双向关系
+        Users users = comment.getUsers();
+        if (users != null) {
+            users.removeComment(comment);
+        }
     }
 }
