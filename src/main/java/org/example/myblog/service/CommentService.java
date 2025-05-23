@@ -36,7 +36,7 @@ public class CommentService {
     private final RedisCacheManager cacheManager;
 
     @Transactional
-    @CacheEvict(value = {"commentResponse", "articleDetail"}, key = "#request.articleId()")
+    @CacheEvict(value = {"commentResponse", "article"}, key = "#request.articleId()")
     public void createComment(CreateCommentRequest request, Long userId) {
         Comment comment = commentMapper.CreateCommentRequestToComment(request);
         // 如果这条新建评论请求的 parentCommentId 不为空, 那么这条评论就是一条用于评论的评论.
@@ -129,7 +129,7 @@ public class CommentService {
         Long articleId = comment.getArticle().getId();
 
         Objects.requireNonNull(cacheManager.getCache("commentResponse")).evict(articleId);
-        Objects.requireNonNull(cacheManager.getCache("commentResponse")).evict(articleId);
+        Objects.requireNonNull(cacheManager.getCache("article")).evict(articleId);
     }
 
     @Transactional

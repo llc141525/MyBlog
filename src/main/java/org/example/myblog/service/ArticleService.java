@@ -33,7 +33,6 @@ public class ArticleService {
 
     // 按照 userId 缓存文章
     @Transactional(readOnly = true)
-    @Cacheable(value = "articleHome", key = "{#userId, #page}")
     public List<ArticleHomeResponse> getAllArticles(Long userId, Integer page) {
         int size = 6;
         // 页数是从 1 开始的
@@ -51,7 +50,6 @@ public class ArticleService {
     }
 
     @Transactional
-    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
     public void createArticle(CreateArticleRequest request, Long userId) {
         userRepository.findById(userId).ifPresentOrElse(user -> {
             Article article = articleMapper.createArticleRequestToArticle(request);
@@ -64,7 +62,7 @@ public class ArticleService {
     }
 
     @Transactional
-    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
+    @CacheEvict(value = "article", key = "#request.id()")
     public void updateArticle(UpdateArticleRequest request) {
         Article article = articleRepository.findById(request.id())
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
@@ -77,7 +75,7 @@ public class ArticleService {
     }
 
     @Transactional
-    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
+    @CacheEvict(value = "article", key = "#articleId")
     public void deleteArticle(Long articleId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
@@ -93,7 +91,7 @@ public class ArticleService {
 
     }
 
-    @Cacheable(value = "articleDetail", key = "#articleId")
+    @Cacheable(value = "article", key = "#articleId")
     @Transactional(readOnly = true)
     public ArticleDetailResponse getArticleById(Long articleId) {
         return articleRepository
