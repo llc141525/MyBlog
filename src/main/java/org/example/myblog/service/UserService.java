@@ -8,7 +8,6 @@ import org.example.myblog.exception.BusinessException;
 import org.example.myblog.exception.errors.UserError;
 import org.example.myblog.model.Users;
 import org.example.myblog.repository.UserRepository;
-import org.example.myblog.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +30,6 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtUtils jwtUtils;
 
     @Value("${pathMap.uploadDir}")
     private String uploadDir;

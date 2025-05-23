@@ -31,22 +31,9 @@ public class ArticleService {
     private final ArticleMapper articleMapper;
     private final CommentService commentService;
 
-    @Transactional
-    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
-    public void createArticle(CreateArticleRequest request, Long userId) {
-        userRepository.findById(userId).ifPresentOrElse(user -> {
-            Article article = articleMapper.createArticleRequestToArticle(request);
-            // 维护双向关系
-            user.addArticle(article);
-            articleRepository.save(article);
-        }, () -> {
-            throw new BusinessException(UserError.USER_NOT_FOUND);
-        });
-    }
-
     // 按照 userId 缓存文章
     @Transactional(readOnly = true)
-    @Cacheable(value = "articleHome", key = "#page")
+    @Cacheable(value = "articleHome", key = "{#userId, #page}")
     public List<ArticleHomeResponse> getAllArticles(Long userId, Integer page) {
         int size = 6;
         // 页数是从 1 开始的
@@ -65,6 +52,19 @@ public class ArticleService {
 
     @Transactional
     @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
+    public void createArticle(CreateArticleRequest request, Long userId) {
+        userRepository.findById(userId).ifPresentOrElse(user -> {
+            Article article = articleMapper.createArticleRequestToArticle(request);
+            // 维护双向关系
+            user.addArticle(article);
+            articleRepository.save(article);
+        }, () -> {
+            throw new BusinessException(UserError.USER_NOT_FOUND);
+        });
+    }
+
+    @Transactional
+    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
     public void updateArticle(UpdateArticleRequest request) {
         Article article = articleRepository.findById(request.id())
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
@@ -76,6 +76,22 @@ public class ArticleService {
         Optional.ofNullable(request.status()).ifPresent(article::setStatus);
     }
 
+    @Transactional
+    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
+    public void deleteArticle(Long articleId) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
+        // 移除文章所有评论的双向关系
+
+        // 删除文章所属的评论
+        article.getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
+        // 移除和 user 的双向关系
+        article.getUsers().removeArticle(article);
+
+        // 再数据库里面删除文章
+        articleRepository.delete(article);
+
+    }
 
     @Cacheable(value = "articleDetail", key = "#articleId")
     @Transactional(readOnly = true)
@@ -86,24 +102,6 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
     }
 
-    @Transactional
-    @CacheEvict(value = {"articleHome", "articleDetail"}, allEntries = true)
-    public void deleteArticle(Long articleId) {
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
-        // 移除文章所有评论的双向关系
-
-        // 删除文章所属的评论
-        article.getComments().forEach(comment -> {
-            commentService.deleteComment(comment.getId());
-        });
-        // 移除和 user 的双向关系
-        article.getUsers().removeArticle(article);
-
-        // 再数据库里面删除文章
-        articleRepository.delete(article);
-
-    }
 
 }
 

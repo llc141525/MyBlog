@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.myblog.dto.request.CreateCommentRequest;
 import org.example.myblog.dto.response.CommentResponse;
-import org.example.myblog.service.ArticleService;
 import org.example.myblog.service.CommentService;
 import org.example.myblog.utils.ApiResponse;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 class CommentController {
     private final CommentService commentService;
-    private final ArticleService articleService;
 
     @Operation(summary = "新建一个评论")
     @PostMapping("/")

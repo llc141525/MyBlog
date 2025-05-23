@@ -16,11 +16,13 @@ import org.example.myblog.repository.CommentRepository;
 import org.example.myblog.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,9 +33,10 @@ public class CommentService {
     private final CommentMapper commentMapper;
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final RedisCacheManager cacheManager;
 
     @Transactional
-    @CacheEvict(value = {"commentResponse", "articleDetail"}, allEntries = true)
+    @CacheEvict(value = {"commentResponse", "articleDetail"}, key = "#request.articleId()")
     public void createComment(CreateCommentRequest request, Long userId) {
         Comment comment = commentMapper.CreateCommentRequestToComment(request);
         // 如果这条新建评论请求的 parentCommentId 不为空, 那么这条评论就是一条用于评论的评论.
@@ -48,20 +51,18 @@ public class CommentService {
         }
         // 维护和文章的双向关系
         articleRepository.findById(request.articleId()).ifPresentOrElse(
-                article -> {
-                    article.addComment(comment);
-                },
+                article -> article.addComment(comment),
                 () -> {
                     throw new BusinessException(ArticleError.ARTICLE_NOT_FOUND);
                 }
         );
 
         // 维护和用户的双向关系
-        userRepository.findById(userId).ifPresentOrElse(users -> {
-            users.addComment(comment);
-        }, () -> {
-            throw new BusinessException(UserError.USER_NOT_FOUND);
-        });
+        userRepository.findById(userId).ifPresentOrElse(
+                users -> users.addComment(comment),
+                () -> {
+                    throw new BusinessException(UserError.USER_NOT_FOUND);
+                });
 
         commentRepository.save(comment);
     }
@@ -102,7 +103,6 @@ public class CommentService {
     }
 
     @Transactional
-    @CacheEvict(value = {"commentResponse", "articleDetail"}, allEntries = true)
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(CommentError.COMMENT_NOT_FOUND));
@@ -117,14 +117,19 @@ public class CommentService {
 
         // 如果这条评论有子评论, 那么移除和子评论的双向关系 --> 删除父评论的情况
         Optional.ofNullable(comment.getChildComment())
-                .ifPresent(childComments -> {
-                    childComments.forEach(childComment -> {
-                        comment.removeChildComment(childComment);
-                        removeCommentRelationship(childComment);
-                    });
-                });
+                .ifPresent(childComments ->
+                        childComments.forEach(childComment -> {
+                            comment.removeChildComment(childComment);
+                            removeCommentRelationship(childComment);
+                        }));
 
         commentRepository.deleteById(commentId);
+
+        // 清除缓存
+        Long articleId = comment.getArticle().getId();
+
+        Objects.requireNonNull(cacheManager.getCache("commentResponse")).evict(articleId);
+        Objects.requireNonNull(cacheManager.getCache("commentResponse")).evict(articleId);
     }
 
     @Transactional

@@ -26,7 +26,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @ToString.Exclude // 防止重复引用
-    @JoinColumn(name = "parent_comment_id", nullable = true)
+    @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
 
