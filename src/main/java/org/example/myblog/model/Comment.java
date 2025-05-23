@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,22 +20,23 @@ import java.util.Objects;
 @Builder
 @Entity
 public class Comment {
+    @CreationTimestamp
     private LocalDateTime createTime;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @ToString.Exclude // 防止重复引用
-    @JoinColumn(name = "parent_comment_id", nullable = true)
+    @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentComment")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentComment", orphanRemoval = true)
     @OrderBy("createTime asc")
     @JsonManagedReference
     @ToString.Exclude
-    private List<Comment> childComment;
+    private List<Comment> childComment = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "user_id")
     private Users users;

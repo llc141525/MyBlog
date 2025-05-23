@@ -18,11 +18,11 @@ import java.util.Objects;
 @Builder
 //@Table(name = "[user]")
 public class Users {
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @ToString.Exclude
     private List<Article> articles = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
