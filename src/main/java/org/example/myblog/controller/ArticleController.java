@@ -26,15 +26,15 @@ public class ArticleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/{page}/{size}")
+    @GetMapping("home/{page}")
     public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestAttribute Long userId,
-                                                                 @PathVariable Integer page,
-                                                                 @PathVariable Integer size) {
-        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(userId, page, size);
+                                                                 @PathVariable Integer page
+    ) {
+        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(userId, page);
         return ApiResponse.success(allArticles);
     }
 
-    @GetMapping("/{articleId}")
+    @GetMapping("detail/{articleId}")
     public ApiResponse<ArticleDetailResponse> getArticleDetail(@PathVariable Long articleId) {
         ArticleDetailResponse articleById = articleService.getArticleById(articleId);
         return ApiResponse.success(articleById);

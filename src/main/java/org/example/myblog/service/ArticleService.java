@@ -46,7 +46,14 @@ public class ArticleService {
     // 按照 userId 缓存文章
     @Transactional(readOnly = true)
     @Cacheable(value = "articleHome", key = "#page")
-    public List<ArticleHomeResponse> getAllArticles(Long userId, Integer page, Integer size) {
+    public List<ArticleHomeResponse> getAllArticles(Long userId, Integer page) {
+        int size = 6;
+        // 页数是从 1 开始的
+        page -= 1;
+        // 页数必须为正整数.
+        if (page <= 0)
+            throw new BusinessException(ArticleError.PAGE_NOT_FOUND);
+
         Pageable pageable = PageRequest.of(page, size);
 
         return articleRepository.findArticlesByUserId(userId, pageable)

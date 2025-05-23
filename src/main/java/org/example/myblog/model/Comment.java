@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,20 +21,20 @@ import java.util.Objects;
 public class Comment {
     private LocalDateTime createTime;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @ToString.Exclude // 防止重复引用
     @JoinColumn(name = "parent_comment_id", nullable = true)
     private Comment parentComment;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentComment")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentComment")
     @OrderBy("createTime asc")
     @JsonManagedReference
     @ToString.Exclude
-    private List<Comment> childComment;
+    private List<Comment> childComment = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "user_id")
     private Users users;

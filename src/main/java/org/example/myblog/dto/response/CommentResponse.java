@@ -30,7 +30,9 @@ public record CommentResponse(
     public record CommentDto(
             LocalDateTime createTime,
             Long id,
-            String content
+            String content,
+            String username,
+            String avatar
     ) implements Serializable {
     }
 }

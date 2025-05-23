@@ -15,6 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             countQuery = "select count(a) from Article a")
     List<Article> findArticlesByUserId(Long userId, Pageable pageable);
 
-    @Query("select a from  Article a left join fetch a.comments left join fetch a.users where a.id = ?1")
+    @Query("select a from  Article a left join fetch a.comments  where a.id = ?1")
     Optional<Article> findArticleByIdWithUserComments(Long id);
 }

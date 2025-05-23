@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum CommentError implements ErrorCode {
     COMMENT_NOT_FOUND(3001, "不存在的评论", HttpStatus.NOT_FOUND),
+    
     ;
     private final Integer code;
     private final String message;

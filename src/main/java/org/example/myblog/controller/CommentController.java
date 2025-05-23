@@ -31,5 +31,10 @@ class CommentController {
         return ApiResponse.success(allCommentByArticle);
     }
 
+    @DeleteMapping("/{commentId}")
+    public ApiResponse<Void> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ApiResponse.success(null);
+    }
 
 }
