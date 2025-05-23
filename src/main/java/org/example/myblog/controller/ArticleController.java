@@ -32,10 +32,8 @@ public class ArticleController {
 
     @Operation(summary = "展示主页文章")
     @GetMapping("home/{page}")
-    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestAttribute Long userId,
-                                                                 @PathVariable Integer page
-    ) {
-        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(userId, page);
+    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@PathVariable Integer page) {
+        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
         return ApiResponse.success(allArticles);
     }
 

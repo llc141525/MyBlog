@@ -36,7 +36,7 @@ public class ArticleService {
 
     // 按照 userId 缓存文章
     @Transactional(readOnly = true)
-    public List<ArticleHomeResponse> getAllArticles(Long userId, Integer page) {
+    public List<ArticleHomeResponse> getAllArticles(Integer page) {
         int size = 6;
         // 页数是从 1 开始的
         page -= 1;

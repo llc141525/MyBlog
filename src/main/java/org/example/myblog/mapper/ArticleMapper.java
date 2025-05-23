@@ -32,10 +32,10 @@ public interface ArticleMapper {
     }
 
     default Long userToId(Users user) {
-        return user.getId();
+        return (user != null) ? user.getId() : null;
     }
 
     default String userToAvatarUrl(Users user) {
-        return user.getAvatarUrl();
+        return (user != null) ? user.getAvatarUrl() : null;
     }
 }
