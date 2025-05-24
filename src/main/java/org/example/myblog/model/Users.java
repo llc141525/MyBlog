@@ -15,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+//@Builder
 //@Table(name = "[user]")
 public class Users {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
@@ -32,6 +32,11 @@ public class Users {
     private String username;
     private String password;
     private String avatarUrl;
+
+    public Users(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
 
     public void addArticle(Article article) {

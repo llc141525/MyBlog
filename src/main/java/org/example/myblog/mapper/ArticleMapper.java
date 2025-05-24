@@ -19,6 +19,11 @@ public interface ArticleMapper {
     @Mapping(target = "usersId", source = "users")
     ArticleHomeResponse articleToArticleHomeResponse(Article article);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "users", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     Article createArticleRequestToArticle(CreateArticleRequest createArticleRequest);
 
     @Mapping(target = "commentIds", source = "comments")
