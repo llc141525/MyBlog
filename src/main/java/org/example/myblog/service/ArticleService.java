@@ -11,6 +11,7 @@ import org.example.myblog.exception.errors.ArticleError;
 import org.example.myblog.exception.errors.UserError;
 import org.example.myblog.mapper.ArticleMapper;
 import org.example.myblog.model.Article;
+import org.example.myblog.model.Users;
 import org.example.myblog.repository.ArticleRepository;
 import org.example.myblog.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -67,9 +68,14 @@ public class ArticleService {
 
     @Transactional
     @CacheEvict(value = "article", key = "#request.articleId()")
-    public void updateArticle(UpdateArticleRequest request) {
+    public void updateArticle(UpdateArticleRequest request, Long userId) {
         Article article = articleRepository.findById(request.articleId())
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
+        Users users = userRepository.findById(userId).orElseThrow(
+                () -> new BusinessException(UserError.USER_NOT_FOUND));
+        if (article.getUsers().equals(users)) {
+            throw new BusinessException(ArticleError.NOT_OWNER);
+        }
 
         // 增量更新, 判断是否为空. 如果为空, 就更新对应的值
         Optional.ofNullable(request.title()).ifPresent(article::setTitle);

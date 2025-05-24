@@ -84,6 +84,15 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    proxy: {
+      // 代理所有以 /api 开头的请求
+      '/api': {
+        target: 'http://localhost:8080', // 后端服务器地址
+        changeOrigin: true, // 允许跨域
+        rewrite: path => path.replace(/^\/api/, ''), // 可选：重写路径（去掉 /api 前缀）
+        // 其他配置（如 secure、ws 等）
+      },
+    },
   },
   css: {
     preprocessorOptions: {
