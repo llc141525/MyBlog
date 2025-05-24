@@ -49,10 +49,11 @@ public class UserService {
             throw new BusinessException(UserError.DUPLICATE_USER);
         }
 
-        Users newUsers = Users.builder()
-                .username(username)
-                .password(bCryptPasswordEncoder.encode(password))
-                .build();
+//        Users newUsers = Users.builder()
+//                .username(username)
+//                .password(bCryptPasswordEncoder.encode(password))
+//                .build();
+        Users newUsers = new Users(username, bCryptPasswordEncoder.encode(password));
         userRepository.save(newUsers);
     }
 

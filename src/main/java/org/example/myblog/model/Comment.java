@@ -17,7 +17,7 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 @Entity
 public class Comment {
     @CreationTimestamp
