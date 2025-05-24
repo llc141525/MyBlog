@@ -28,7 +28,7 @@ class CommentController {
     }
 
     @Operation(summary = "获取评论", description = "获取一篇文章的所有评论, 返回一个二级的评论树")
-    @GetMapping("/{articleId}")
+    @GetMapping("/get/{articleId}")
     public ApiResponse<List<CommentResponse>> getAllCommentByArticle(@PathVariable Long articleId) {
         List<CommentResponse> allCommentByArticle = commentService.getAllCommentByArticle(articleId);
         return ApiResponse.success(allCommentByArticle);

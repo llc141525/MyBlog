@@ -39,6 +39,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/user/log**",
                         "/user/register**",
+                        "/article/home/**",
+                        "/article/detail/**",
+                        "/comment/get/**",
                         "/static/**",
                         "/v3/api-docs/**",
                         "/img/**",
