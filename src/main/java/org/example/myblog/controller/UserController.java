@@ -63,7 +63,7 @@ public class UserController {
 
 
     @Operation(summary = "更新用户", description = "用于更新用户, 如果某个值不想更新, 那么不用传, 或者填入空值")
-    @PostMapping("/update")
+    @PatchMapping("/")
     public ApiResponse<Void> update(@RequestBody UserRequest userRequest, @RequestAttribute Long userId) {
         userService.update(userRequest, userId);
         return ApiResponse.success(null);

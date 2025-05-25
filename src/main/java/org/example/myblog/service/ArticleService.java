@@ -73,7 +73,7 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
         Users users = userRepository.findById(userId).orElseThrow(
                 () -> new BusinessException(UserError.USER_NOT_FOUND));
-        if (article.getUsers().equals(users)) {
+        if (!article.getUsers().equals(users)) {
             throw new BusinessException(ArticleError.NOT_OWNER);
         }
 

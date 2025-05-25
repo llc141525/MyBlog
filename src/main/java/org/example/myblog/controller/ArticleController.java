@@ -31,15 +31,15 @@ public class ArticleController {
     }
 
     @Operation(summary = "展示主页文章")
-    @GetMapping("home/{page}")
-    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@PathVariable Integer page) {
+    @GetMapping("home")
+    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestParam Integer page) {
         List<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
         return ApiResponse.success(allArticles);
     }
 
     @Operation(summary = "阅读文章")
-    @GetMapping("detail/{articleId}")
-    public ApiResponse<ArticleDetailResponse> getArticleDetail(@PathVariable Long articleId) {
+    @GetMapping("detail")
+    public ApiResponse<ArticleDetailResponse> getArticleDetail(@RequestParam Long articleId) {
         ArticleDetailResponse articleById = articleService.getArticleById(articleId);
         return ApiResponse.success(articleById);
     }
@@ -52,8 +52,8 @@ public class ArticleController {
     }
 
     @Operation(summary = "删除文章")
-    @DeleteMapping("/{articleId}")
-    public ApiResponse<Void> deleteArticle(@PathVariable Long articleId) {
+    @DeleteMapping("/")
+    public ApiResponse<Void> deleteArticle(@RequestParam Long articleId) {
         articleService.deleteArticle(articleId);
         return ApiResponse.success(null);
     }
