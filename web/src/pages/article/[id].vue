@@ -1,11 +1,11 @@
 <template>
-  <v-sheet>阅读文章界面</v-sheet>
+  <v-btn>text</v-btn>
+  <v-icon :icon="mdiAccount" />
+
 </template>
 
 <script lang="ts" setup>
-
+  import { mdiAccount } from '@mdi/js'
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
