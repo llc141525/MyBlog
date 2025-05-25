@@ -47,6 +47,7 @@ spring:
   sql:
     init:
       encoding: utf-8
+  
 
 jwt:
   secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=

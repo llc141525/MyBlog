@@ -68,5 +68,11 @@ public class UserController {
         userService.update(userRequest, userId);
         return ApiResponse.success(null);
     }
+
+    @GetMapping("/logout")
+    public ApiResponse<Void> logout(HttpServletResponse response) {
+        CookieUtil.deleteCookie(response);
+        return ApiResponse.success(null);
+    }
 }
 

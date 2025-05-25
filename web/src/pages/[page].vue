@@ -1,12 +1,13 @@
 <template>
-  <v-sheet> 主页</v-sheet>
+  <v-sheet> 主页 {{ page }}</v-sheet>
+  <article-card />
 </template>
 
 <script lang="ts" setup>
-  import http from '@/utils/axios.ts';
+  const route= useRoute()
 
-  http.get('/api/article/detail/4').then(res => console.log(res.data));
+  // 获取路由参数, page 是页数.
+  const page= (route.params as { page: string }).page
+  
 
 </script>
-
-
