@@ -19,6 +19,7 @@ public interface CommentMapper {
 
     @Mapping(target = "username", source = "users.username")
     @Mapping(target = "avatar", source = "users.avatarUrl")
+    @Mapping(target = ".", source = "users")
     CommentResponse.CommentDto commentToCommentDto(Comment comment);
 
 }

@@ -28,15 +28,15 @@ class CommentController {
     }
 
     @Operation(summary = "获取评论", description = "获取一篇文章的所有评论, 返回一个二级的评论树")
-    @GetMapping("/{articleId}")
-    public ApiResponse<List<CommentResponse>> getAllCommentByArticle(@PathVariable Long articleId) {
+    @GetMapping("/get")
+    public ApiResponse<List<CommentResponse>> getAllCommentByArticle(@RequestParam Long articleId) {
         List<CommentResponse> allCommentByArticle = commentService.getAllCommentByArticle(articleId);
         return ApiResponse.success(allCommentByArticle);
     }
 
     @Operation(summary = "删除评论", description = "删除一个评论, 可以删除父级评论, 如果删除父级评论, 那么会同时删除所有子级评论 ")
-    @DeleteMapping("/{commentId}")
-    public ApiResponse<Void> deleteComment(@PathVariable Long commentId) {
+    @DeleteMapping("/")
+    public ApiResponse<Void> deleteComment(@RequestParam Long commentId) {
         commentService.deleteComment(commentId);
         return ApiResponse.success(null);
     }

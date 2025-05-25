@@ -14,6 +14,26 @@ const router = createRouter({
   routes: setupLayouts(routes),
 })
 
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.path === '/') {
+    next('/1')
+  } else {
+    next()
+  }
+
+  // todo 控制没有登录跳转到登录界面
+
+  // if (to.meta.requiresAuth) {
+  //   if (localStorage.getItem('my_blog_token')) {
+  //     next()
+  //   } else {
+  //     next('/login')
+  //   }
+  // }
+})
+
+
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {
   if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
