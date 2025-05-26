@@ -22,6 +22,9 @@ public class JwtInterceptor implements HandlerInterceptor {
     private final PathMatcher pathMatcher = new AntPathMatcher();
     private final List<String> EXCLUDE_PATH =
             new ArrayList<>(Arrays.asList(
+                    "/article/home/**",
+                    "/article/detail/**",
+                    "/comment/get/**",
                     "/img/**",
                     "/user/log*",
                     "/user/register",

@@ -47,6 +47,7 @@ spring:
   sql:
     init:
       encoding: utf-8
+  
 
 jwt:
   secret: 8J6bZzqkRtA7X9LvMwYhN2PpQeFjHnKsDcV4BfGxTqWu3yJ5rCt0Oa1iEoUl+/M=
@@ -55,3 +56,8 @@ jwt:
 pathMap:
   uploadDir: C:/uploads/images
   accessPath: /img/**
+# 开启 MapStruct 调试模式
+#
+#  mapstruct.suppress.generator.timestamp=true
+#  mapstruct.suppress.generator.version.comment=true
+#  mapstruct.default.componentModel=spring

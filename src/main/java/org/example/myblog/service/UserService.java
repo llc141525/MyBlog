@@ -8,7 +8,6 @@ import org.example.myblog.exception.BusinessException;
 import org.example.myblog.exception.errors.UserError;
 import org.example.myblog.model.Users;
 import org.example.myblog.repository.UserRepository;
-import org.example.myblog.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,7 +30,6 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtUtils jwtUtils;
 
     @Value("${pathMap.uploadDir}")
     private String uploadDir;
@@ -50,10 +49,11 @@ public class UserService {
             throw new BusinessException(UserError.DUPLICATE_USER);
         }
 
-        Users newUsers = Users.builder()
-                .username(username)
-                .password(bCryptPasswordEncoder.encode(password))
-                .build();
+//        Users newUsers = Users.builder()
+//                .username(username)
+//                .password(bCryptPasswordEncoder.encode(password))
+//                .build();
+        Users newUsers = new Users(username, bCryptPasswordEncoder.encode(password));
         userRepository.save(newUsers);
     }
 
@@ -73,26 +73,28 @@ public class UserService {
 
     @Transactional
     public void update(UserRequest updateUserRequest, Long userId) {
-        userRepository.findById(userId).ifPresent(user -> {
-            if (updateUserRequest.username() != null) {
-                // 非法用户名
-                if (!updateUserRequest.username().matches("[0-9a-zA-Z_]{3,12}")) {
-                    throw new BusinessException(UserError.INVALID_USERNAME);
-                }
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
 
-                // 如果存在重复用户名
-                if (userRepository.existsByUsername(updateUserRequest.username())) {
-                    throw new BusinessException(UserError.DUPLICATE_USER);
-                }
+        // 修改密码
+        Optional.ofNullable(updateUserRequest.password())
+                .map(bCryptPasswordEncoder::encode)
+                .ifPresent(password -> {
+                    if (!password.isBlank()) {
+                        users.setPassword(password);
+                    }
+                });
 
-                user.setUsername(updateUserRequest.username());
-            }
-            if (updateUserRequest.password() != null) {
-                user.setPassword(bCryptPasswordEncoder.encode(updateUserRequest.password()));
-            }
-            userRepository.save(user);
-        });
+        // 修改用户名
+        Optional.ofNullable(updateUserRequest.username())
+                .ifPresent(username -> {
+                    if (username.isBlank()) return;
 
+                    // 如果更新用户的字符是非法字符的话
+                    if (!username.matches("[0-9a-zA-Z_]{3,12}"))
+                        throw new BusinessException(UserError.INVALID_USERNAME);
+                    users.setUsername(username);
+                });
     }
 
     @Transactional
@@ -143,6 +145,7 @@ public class UserService {
         return path;
     }
 
+    // 异步删除, 如果删除失败也不会影响主线程.
     @Transactional
     @Async
     public void deleteOldFiles(String path) throws IOException {
@@ -156,4 +159,6 @@ public class UserService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
 }

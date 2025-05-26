@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.myblog.security.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.nio.file.Paths;
 
@@ -39,6 +36,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/user/log**",
                         "/user/register**",
+                        "/article/home/**",
+                        "/article/detail/**",
+                        "/comment/get/**",
                         "/static/**",
                         "/v3/api-docs/**",
                         "/img/**",
@@ -47,6 +47,10 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         "/webjars/**");
     }
 
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseTrailingSlashMatch(true); // 强制启用尾部斜杠匹配
+    }
 
     /*添加路径映射*/
     @Override

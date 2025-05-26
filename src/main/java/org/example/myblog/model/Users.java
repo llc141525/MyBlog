@@ -15,18 +15,28 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+//@Builder
 //@Table(name = "[user]")
 public class Users {
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @ToString.Exclude
     private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
     private String avatarUrl;
+
+    public Users(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
 
     public void addArticle(Article article) {
@@ -37,6 +47,16 @@ public class Users {
     public void removeArticle(Article article) {
         articles.remove(article);
         article.setUsers(null);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setUsers(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setUsers(null);
     }
 
     @Override

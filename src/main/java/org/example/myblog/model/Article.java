@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 @ToString
 public class Article {
     @Id
@@ -47,9 +48,9 @@ public class Article {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public void addComment(Comment comment) {
         comments.add(comment);
