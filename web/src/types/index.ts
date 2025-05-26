@@ -67,7 +67,7 @@ export interface CreateArticleRequest {
 export interface CreateCommentRequest {
   content: string,
   articleId: number,
-  parentCommentId: number | null,
+  parentCommentId?: number | null,
 }
 
 export interface UpdateArticleRequest {
