@@ -14,6 +14,7 @@ public record ArticleHomeResponse(
         Boolean status,
         LocalDateTime createTime,
         LocalDateTime updateTime,
-        Long usersId
+        Long usersId,
+        Long commentLength
 ) implements Serializable {
 }

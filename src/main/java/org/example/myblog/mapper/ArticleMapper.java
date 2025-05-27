@@ -17,7 +17,13 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface ArticleMapper {
     @Mapping(target = "usersId", source = "users")
+    @Mapping(target = "commentLength", source = "comments")
     ArticleHomeResponse articleToArticleHomeResponse(Article article);
+
+
+    default Long articleToCommentLength(List<Comment> comments) {
+        return comments.stream().count();
+    }
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)

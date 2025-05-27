@@ -13,15 +13,16 @@
   <v-btn @click="getArticleHome"> 获取文章首页</v-btn>
   <v-btn @click="getArticleDetail"> 获取文章详情</v-btn>
   <br>
-  <v-sheet>
-    <v-text-field label="文章标题"  v-model="createArticleVar?.title"></v-text-field>
-    <v-text-field label="文章内容"  v-model="createArticleVar?.content"></v-text-field>
-    <v-text-field label="文章封面"  v-model="createArticleVar?.cover_url"></v-text-field>
-    <v-text-field label="文章状态"  v-model="createArticleVar?.status"></v-text-field>
-  <v-btn @click="createArticle"> 创建文章</v-btn>
-  </v-sheet>
+<!--  <v-sheet>-->
+<!--    <v-text-field label="文章标题"  v-model="createArticleVar?.title"></v-text-field>-->
+<!--    <v-text-field label="文章内容"  v-model="createArticleVar?.content"></v-text-field>-->
+<!--    <v-text-field label="文章封面"  v-model="createArticleVar?.cover_url"></v-text-field>-->
+<!--    <v-text-field label="文章状态"  v-model="createArticleVar?.status"></v-text-field>-->
+<!--    -->
+<!--  <v-btn @click="createArticle"> 创建文章</v-btn>-->
+<!--  </v-sheet>-->
   <v-btn @click="updateArticle"> 更新文章</v-btn>
-  <v-btn @click="deleteArticle"> 删除文章</v-btn>
+  <v-btn @click="deleteArticle"> 删除文章</v-btn> i8i8i
   <v-btn @click="getComment"> 获取评论</v-btn>
   <v-btn @click="createComment"> 创建评论</v-btn>
   <v-btn @click="deleComment"> 删除评论</v-btn>
