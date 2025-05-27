@@ -1,10 +1,8 @@
 <template>
   <v-sheet> 主页 {{ page }}</v-sheet>
-  <test/>
 </template>
 
 <script lang="ts" setup>
-  import Test from "@/components/Test.vue";
 
   const route= useRoute()
 
