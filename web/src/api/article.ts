@@ -3,13 +3,14 @@ import type {
   ArticleHomeResponse,
   BaseResponse,
   CreateArticleRequest,
+  Pageable,
   UpdateArticleRequest,
 } from '@/types'
 import request from '@/utils/http'
 
 export const articleApi = {
   getArticleHome (page: number) {
-    return request.get<ArticleHomeResponse>('/article/home', {
+    return request.get<Pageable<ArticleHomeResponse>>('/article/home', {
       params: { page },
     })
   },
