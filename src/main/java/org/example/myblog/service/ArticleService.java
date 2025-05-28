@@ -16,6 +16,7 @@ import org.example.myblog.repository.ArticleRepository;
 import org.example.myblog.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -35,36 +36,64 @@ public class ArticleService {
     private final CommentService commentService;
     private final RedisCacheManager cacheManager;
 
-    // 按照 userId 缓存文章
+    // Service层改造
     @Transactional(readOnly = true)
-    public List<ArticleHomeResponse> getAllArticles(Integer page) {
-        // 设置首页展示文章数量为 6
+    public PageResponse<ArticleHomeResponse> getAllArticles(Integer page) {
         int size = 6;
-        // 页数是从 1 开始的
-        page -= 1;
-        // 页数必须为正整数.
-        if (page < 0)
-            throw new BusinessException(ArticleError.PAGE_NOT_FOUND);
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Article> articlePage = articleRepository.findAll(pageable); // 改用 Spring Data 分页查询
 
-        Pageable pageable = PageRequest.of(page, size);
-
-        return articleRepository.findAllByPage(pageable)
+        List<ArticleHomeResponse> data = articlePage.getContent()
                 .stream()
                 .map(articleMapper::articleToArticleHomeResponse)
                 .toList();
+
+        return new PageResponse<>(
+                data,
+                page,
+                size,
+                articlePage.getTotalPages(),
+                articlePage.getTotalElements()
+        );
     }
 
     @Transactional
-    public void createArticle(CreateArticleRequest request, Long userId) {
-        userRepository.findById(userId).ifPresentOrElse(user -> {
-            Article article = articleMapper.createArticleRequestToArticle(request);
-            // 维护双向关系
-            user.addArticle(article);
-            articleRepository.save(article);
-        }, () -> {
-            throw new BusinessException(UserError.USER_NOT_FOUND);
-        });
+    public Long createArticle(CreateArticleRequest request, Long userId) {
+        Long responseId;
+//        userRepository.findById(userId).ifPresentOrElse(user -> {
+//            Article article = articleMapper.createArticleRequestToArticle(request);
+//            // 维护双向关系
+//            user.addArticle(article);
+//            Article save = articleRepository.save(article);
+//
+//        }, () -> {
+//            throw new BusinessException(UserError.USER_NOT_FOUND);
+//        });
+
+        Users users = userRepository.findById(userId).orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
+        Article article = articleMapper.createArticleRequestToArticle(request);
+        users.addArticle(article);
+        Article save = articleRepository.save(article);
+        return save.getId();
     }
+//    @Transactional(readOnly = true)
+//    public List<ArticleHomeResponse> getAllArticles(Integer page) {
+//        // 设置首页展示文章数量为 6
+//        int size = 6;
+//        // 页数是从 1 开始的
+//        page -= 1;
+//        // 页数必须为正整数.
+//        if (page < 0)
+//            throw new BusinessException(ArticleError.PAGE_NOT_FOUND);
+//
+//        Pageable pageable = PageRequest.of(page, size);
+//        long total = articleRepository.count() / size + 1;
+//
+//        return articleRepository.findAllByPage(pageable)
+//                .stream()
+//                .map(articleMapper::articleToArticleHomeResponse)
+//                .toList();
+//    }
 
     @Transactional
     @CacheEvict(value = "article", key = "#request.articleId()")
@@ -110,6 +139,16 @@ public class ArticleService {
                 .findById(articleId)
                 .map(articleMapper::articleToArticleDetailResponse)
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
+    }
+
+    // 新增分页包装类
+    public record PageResponse<T>(
+            List<T> data,
+            int currentPage,
+            int pageSize,
+            long totalPages,
+            long totalElements
+    ) {
     }
 
 

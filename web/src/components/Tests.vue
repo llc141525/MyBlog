@@ -6,7 +6,12 @@
     <v-sheet class="d-flex flex-wrap gap-4">
       <v-card class="pa-4 flex-grow-1" variant="outlined">
         <h3>文章数据</h3>
-        <pre>{{ { articleHome, articleDetail } }}</pre>
+        <v-card variant="outlined">
+          <pre>{{ {articleHome} }}</pre>
+        </v-card>
+        <v-card variant="outlined">
+          <pre>{{ {articleDetail} }}</pre>
+        </v-card>
       </v-card>
       <v-card class="pa-4 flex-grow-1" variant="outlined">
         <h3>评论数据</h3>
@@ -49,17 +54,23 @@
     <h2 class="mb-4">文章模块</h2>
     <v-sheet class="d-flex flex-wrap gap-4">
       <!-- 创建/更新 -->
-      <v-card class="pa-4 flex-grow-1" style="min-width: 300px" variant="outlined">
-        <h3 class="mb-2">{{ updateArticleVar.articleId ? '更新文章' : '新建文章' }}</h3>
+      <v-card class="pa-4 flex-grow-1" style="min-width: 150px" variant="outlined">
+        <h3 class="mb-2"> 新建文章</h3>
         <v-text-field v-model="createArticleVar.title" density="compact" label="标题" />
         <v-text-field v-model="createArticleVar.content" density="compact" label="内容" />
         <v-text-field v-model="createArticleVar.cover_url" density="compact" label="封面" />
         <div class="d-flex gap-2 mt-2">
           <v-btn color="primary" density="compact" @click="createArticle">提交创建</v-btn>
-          <v-btn color="warning" density="compact" @click="updateArticle">提交更新</v-btn>
         </div>
       </v-card>
-
+      <v-card class="pa-4 flex-grow-1" style="min-width: 150px" variant="outlined">
+        <h3 class="mb-2"> 更新文章</h3>
+        <v-text-field v-model="updateArticleVar.articleId" density="compact" label="文章ID" />
+        <v-text-field v-model="updateArticleVar.title" density="compact" label="标题" />
+        <v-text-field v-model="updateArticleVar.content" density="compact" label="内容" />
+        <v-text-field v-model="updateArticleVar.cover_url" density="compact" label="封面" />
+        <v-btn color="warning" density="compact" @click="updateArticle">提交更新</v-btn>
+      </v-card>
       <!-- 文章操作 -->
       <v-card class="pa-4" variant="outlined">
         <div class="d-flex gap-2 align-center">
@@ -68,7 +79,11 @@
         </div>
         <v-divider class="my-4" />
         <div class="d-flex gap-2">
+          <v-text-field v-model="page" density="compact" label="页数" style="width: 120px" />
           <v-btn density="compact" @click="getArticleHome">获取首页</v-btn>
+
+        </div>
+        <div class="d-flex gap-2">
           <v-text-field v-model="getArticleDetailId" density="compact" label="文章ID" style="width: 120px" />
           <v-btn density="compact" @click="getArticleDetail">获取详情</v-btn>
         </div>
@@ -81,7 +96,7 @@
     <h2 class="mb-4">评论模块</h2>
     <v-sheet class="d-flex flex-wrap gap-4">
       <v-card class="pa-4 flex-grow-1" variant="outlined">
-        <v-text-field v-model="articleIdForComment" density="compact" label="文章ID" />
+        <v-text-field v-model="createCommentVar.articleId" density="compact" label="文章ID" />
         <v-text-field v-model="createCommentVar.content" density="compact" label="评论内容" />
         <div class="d-flex gap-2 mt-2">
           <v-btn color="primary" density="compact" @click="createComment">创建评论</v-btn>
@@ -105,6 +120,7 @@
     CommentResponse,
     CreateArticleRequest,
     CreateCommentRequest,
+    Pageable,
     UpdateArticleRequest,
     UsersRequest,
     UsersResponse,
@@ -131,22 +147,23 @@
     await usersApi.logout();
   }
   const updateUser = async () => {
-    await usersApi.update({ username: 'testtestttt' })
+    await usersApi.update(updateUserVar.value)
   }
 
 
   // 测试文章所用的值
-  const articleHome = ref<ArticleHomeResponse>()
+  const articleHome = ref<Pageable<ArticleHomeResponse>>()
   const articleDetail = ref<ArticleDetailResponse>()
   const createArticleVar = ref<CreateArticleRequest>(defaultFactory.createDefaultArticle({}))
   const updateArticleVar = ref<UpdateArticleRequest>(defaultFactory.defaultUpdateArticle({}))
   const deleteArticleId = ref(0)
   const getArticleDetailId = ref(1)
+  const page = ref(1)
 
   // 文章有关接口
   const getArticleHome = async () => {
     // 这里的参数是页数
-    articleHome.value = await articleApi.getArticleHome(1)
+    articleHome.value = await articleApi.getArticleHome(page.value)
   }
   // 参数: 文章id
   const getArticleDetail = async () => {
@@ -169,10 +186,9 @@
   // 评论有关接口
 
   const createCommentVar = ref<CreateCommentRequest>(defaultFactory.createDefaultComment({}))
-  const articleIdForComment = ref(1)
   const deleteCommentId = ref(2)
   const getComment = async () => {
-    comment.value = await commentApi.getComment(articleIdForComment.value)
+    comment.value = await commentApi.getComment(createCommentVar.value.articleId)
   }
   const deleComment = async () => {
     await commentApi.deleteComment(deleteCommentId.value)
