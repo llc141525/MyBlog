@@ -3,6 +3,7 @@ package org.example.myblog.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.myblog.dto.request.CreateArticleRequest;
@@ -12,8 +13,6 @@ import org.example.myblog.dto.response.ArticleHomeResponse;
 import org.example.myblog.service.ArticleService;
 import org.example.myblog.utils.ApiResponse;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/article")
@@ -25,15 +24,18 @@ public class ArticleController {
     @Operation(summary = "新建文章")
     @PostMapping("/create")
     public ApiResponse<Void> create(@Valid @RequestBody CreateArticleRequest request,
-                                    @RequestAttribute Long userId) {
-        articleService.createArticle(request, userId);
-        return ApiResponse.success(null);
+                                    @RequestAttribute Long userId,
+                                    HttpServletResponse response) {
+        Long article = articleService.createArticle(request, userId);
+        response.setHeader("Location", "/article/detail?articleId=" + article);
+        return ApiResponse.created(null);
     }
 
     @Operation(summary = "展示主页文章")
     @GetMapping("home")
-    public ApiResponse<List<ArticleHomeResponse>> getAllArticles(@RequestParam Integer page) {
-        List<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
+    public ApiResponse<ArticleService.PageResponse<ArticleHomeResponse>>
+    getAllArticles(@RequestParam Integer page) {
+        ArticleService.PageResponse<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
         return ApiResponse.success(allArticles);
     }
 
