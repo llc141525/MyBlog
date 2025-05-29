@@ -17,6 +17,7 @@ public class ApiResponse<T> {
     }
 
 
+
     public static <T> ApiResponse<T> created(T data) {
         return new ApiResponse<>(201, "created", data);
     }
@@ -28,6 +29,7 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> withCode(Integer code, String message, T data) {
         return new ApiResponse<>(code, message, data);
     }
+
 
     public static <T> ApiResponse<T> error(Integer code, String message, T data) {
         return new ApiResponse<>(code, message, data);
