@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="600" elevation="10">
+  <v-card class="mx-auto" elevation="10" max-width="600">
     <!-- 标题栏 -->
     <v-toolbar color="primary" dark>
       <v-toolbar-title>服务条款</v-toolbar-title>
@@ -50,20 +50,20 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" @click="agreeTerms" href="/auth/Register">同意</v-btn>
+      <v-spacer />
+      <v-btn color="primary" href="/auth/Register" @click="agreeTerms">同意</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script>
-export default {
-  methods: {
-    agreeTerms() {
-      console.log("用户已同意服务条款");
-    }
-  }
-};
+<script lang="ts">
+  export default {
+    methods: {
+      agreeTerms () {
+        console.log('用户已同意服务条款');
+      },
+    },
+  };
 </script>
 
 <style scoped>

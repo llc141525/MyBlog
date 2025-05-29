@@ -11,20 +11,22 @@
     <v-card-text>
       <v-form ref="form" @submit.prevent="login">
         <v-text-field
-          v-model="username"
+          v-model="userVar.username"
           class="mb-4"
           clearable
+          :error="formHasError"
+          :error-messages="errorMessage"
           label="用户名"
           :prepend-inner-icon="mdiAccount"
           required
           :rules="usernameRules"
           variant="outlined"
         />
-
-
         <v-text-field
-          v-model="password"
+          v-model="userVar.password"
           :append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
+          :error="formHasError"
+          :error-messages="errorMessage"
           label="密码"
           :prepend-inner-icon="mdiLock"
           required
@@ -42,7 +44,7 @@
             label="记住我"
           />
           <router-link to="/auth/FogetPa">
-            <v-btn color="primary">忘记密码?</v-btn>
+            <v-btn color="primary" variant="text">忘记密码?</v-btn>
           </router-link>
         </div>
 
@@ -69,43 +71,45 @@
   </v-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
   import { mdiAccount, mdiEye, mdiEyeOff, mdiLock } from '@mdi/js';
-
-  const username = ref('')
-  const password = ref('')
   const rememberMe = ref(false)
   const showPassword = ref(false)
   const loading = ref(false)
-  const form = ref(null)
+
 
   const usernameRules = [
-    v => !!v || '用户名不能为空',
-    v => (v && v.length >= 3) || '用户名至少3个字符',
+    (v:string) => !!v || '用户名不能为空',
+    (v:string) => (v && v.length >= 3) || '用户名至少3个字符',
+    (v:string) => (v && v.length <= 12) || '用户名最多12个字符',
   ]
 
   const passwordRules = [
-    v => !!v || '密码不能为空',
-    v => (v && v.length >= 6) || '密码至少6个字符',
+    (v : string) => !!v || '密码不能为空',
+    (v: string) => (v && v.length >= 6) || '密码至少6个字符',
   ]
 
+  import type { UsersRequest, UsersResponse } from '@/types/index'
+  import { defaultFactory } from '@/types/factory'
+  import { usersApi } from '@/api/users'
+
+  const errorMessage = ref('')
+  const formHasError = ref(false)
+  const userVar = ref<UsersRequest>(defaultFactory.defaultUsers())
+  const user = ref<UsersResponse | null>(null)
+  const router = useRouter()
   const login = async () => {
-    const { valid } = await form.value.validate()
-
-    if (!valid) return
-
     loading.value = true
-
-    setTimeout(() => {
-      console.log('登录信息:', {
-        username: username.value,
-        password: password.value,
-        rememberMe: rememberMe.value,
-      })
+    try{
+      user.value = await usersApi.login(userVar.value)
+      router.push('/1')
+    }catch(e){
+      console.log(e)
+      errorMessage.value = (e as Error).message
+      formHasError.value = true
       loading.value = false
-      alert('登录成功！')
-    }, 1500)
+    }
   }
 </script>
 

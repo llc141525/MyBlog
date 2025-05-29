@@ -4,21 +4,32 @@
       <v-toolbar-title>用户注册</v-toolbar-title>
     </v-toolbar>
     <v-card-text>
+
+      <v-snackbar v-model="registerSuccess" color="success" timeout="2000">
+        注册成功！正在跳转登录...
+      </v-snackbar>
       <v-form ref="form" @submit.prevent="register">
         <v-text-field
-          v-model="username"
+          v-model="userVar.username"
+          :autofocus="true"
           class="mb-4"
           clearable
+          :error="formHasError"
+          :error-messages="errorMessage"
           label="用户名"
           :prepend-inner-icon="mdiAccount"
           required
           :rules="usernameRules"
+          :success="registerSuccess"
           variant="outlined"
         />
 
         <v-text-field
-          v-model="password"
+          v-model="userVar.password"
           :append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
+          class="mb-4"
+          :error="formHasError"
+          :error-messages="errorMessage"
           label="密码"
           :prepend-inner-icon="mdiLock"
           required
@@ -31,6 +42,9 @@
         <v-text-field
           v-model="confirmPassword"
           :append-inner-icon="showConfirmPassword ? mdiEyeOff : mdiEye"
+          class="mb-4"
+          :error="formHasError"
+          :error-messages="errorMessage"
           label="确认密码"
           :prepend-inner-icon="mdiLock"
           required
@@ -49,7 +63,7 @@
           />
 
           <router-link to="/auth/Login">
-            <v-btn color="primary">已有账号？登录</v-btn>
+            <v-btn color="primary" variant="text">已有账号？登录</v-btn>
           </router-link>
         </div>
 
@@ -78,46 +92,58 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
   import { mdiAccount, mdiEye, mdiEyeOff, mdiLock } from '@mdi/js';
-
-  const username = ref('')
-  const password = ref('')
   const confirmPassword = ref('')
   const rememberMe = ref(false)
   const showPassword = ref(false)
   const showConfirmPassword = ref(false)
   const loading = ref(false)
   const form = ref(null)
+  const errorMessage= ref('')
+  const formHasError = ref(false)
+  const registerSuccess = ref(false)
+  const router = useRouter()
 
   const usernameRules = [
-    v => !!v || '用户名不能为空',
-    v => (v && v.length >= 3) || '用户名至少3个字符',
+    (v:string) => !!v || '用户名不能为空',
+    (v:string) => (v && v.length >= 3) || '用户名至少3个字符',
   ]
 
   const passwordRules = [
-    v => !!v || '密码不能为空',
-    v => (v && v.length >= 6) || '密码至少6个字符',
+    (v:string) => !!v || '密码不能为空',
+    (v:string) => (v && v.length >= 6) || '密码至少6个字符',
   ]
 
   const confirmPasswordRules = [
-    v => !!v || '请确认密码',
-    v => v === password.value || '密码不匹配',
+    (v:string) => !!v || '请确认密码',
+    (v:string) => v === userVar.value.password || '密码不匹配',
   ]
 
+
+  import type {
+    UsersRequest,
+    UsersResponse,
+  } from '@/types';
+  import { usersApi } from '@/api/users';
+  import { defaultFactory } from '@/types/factory.ts'
+  const userVar = ref<UsersRequest>(defaultFactory.defaultUsers())
+  const user = ref<UsersResponse>()
   const register = async () => {
-    const { valid } = await form.value.validate()
-    if (!valid) return
-
     loading.value = true
-
-    setTimeout(() => {
-      console.log('注册信息:', {
-        username: username.value,
-        password: password.value,
-        rememberMe: rememberMe.value,
-      })
+    try{
+      user.value = await usersApi.register(userVar.value)
       loading.value = false
-      alert('注册成功！')
-    }, 1500)
+      errorMessage.value = ''
+      formHasError.value = false
+      userVar.value = defaultFactory.defaultUsers()
+      registerSuccess.value = true
+      router.push('/auth/Login')
+    }catch(e){
+      console.log(e)
+      errorMessage.value = (e as Error).message
+      formHasError.value = true
+      loading.value = false
+    }
+
   }
 </script>
 

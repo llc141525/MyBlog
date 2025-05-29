@@ -6,6 +6,13 @@ export interface BaseResponse<T> {// 定义统一响应格式
   message: string
 }
 
+export interface ErrorResponse{
+  status: number,
+  code : number,
+  message: string
+  data: unknown
+}
+
 export interface Pageable<T> {
   data: T[],
   totalPages: number,

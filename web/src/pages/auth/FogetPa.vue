@@ -8,9 +8,8 @@
       <v-toolbar-title>重设密码</v-toolbar-title>
     </v-toolbar>
     <v-card-text>
-      <v-form ref="resetForm" @submit.prevent="handleResetPassword">
+      <v-form ref="resetForm">
         <v-text-field
-          v-model="account"
           class="mb-4"
           clearable
           label="用户名"
@@ -22,7 +21,7 @@
 
         <v-text-field
           v-model="newPassword"
-          :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          :append-icon="showPassword ? mdiEyeOff : mdiEye"
           class="mb-4"
           clearable
           label="新密码"
@@ -38,7 +37,6 @@
         />
 
         <v-text-field
-          v-model="confirmPassword"
           :append-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
           class="mb-4"
           clearable
@@ -74,37 +72,15 @@
   </v-card>
 </template>
 
-<script>
-  export default {
-    name: 'ResetPasswordCard',
-    data () {
-      return {
-        account: '',
-        newPassword: '',
-        confirmPassword: '',
-        showPassword: false,
-        showConfirmPassword: false,
-        loading: false,
-        resetForm: null,
-      }
-    },
-    methods: {
-      async handleResetPassword () {
-        if (this.resetForm.validate()) {
-          this.loading = true;
-          try {
-            this.$router.push('/auth/login');
-            this.$toast.success('密码重设成功，请使用新密码登录');
-          } catch (error) {
-            console.error('重设密码失败:', error);
-            this.$toast.error('重设密码失败，请稍后重试');
-          } finally {
-            this.loading = false;
-          }
-        }
-      },
-    },
-  }
+<script lang="ts" setup>
+  import { mdiEye, mdiEyeOff } from '@mdi/js';
+  import { ref } from 'vue';
+  const showConfirmPassword = ref(false)
+
+  const newPassword = ref('')
+  const showPassword = ref(false)
+  const loading = ref(false)
+
 </script>
 
 <style scoped>
