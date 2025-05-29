@@ -1,14 +1,9 @@
 <template>
-  <v-app-bar>
-    <v-app-bar-nav-icon />
-    <v-toolbar-title>Title</v-toolbar-title>
+  <v-toolbar color="surface-light">
+
+    <v-toolbar-title class="font-weight-bold text-h5">{{ "我的个人博客" }}</v-toolbar-title>
     <v-spacer />
-  </v-app-bar>
+    <Avatar class="mr-8" />
 
+  </v-toolbar>
 </template>
-
-
-<script lang="ts">
-
-
-</script>

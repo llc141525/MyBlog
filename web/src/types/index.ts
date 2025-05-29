@@ -22,6 +22,7 @@ export interface ArticleHomeResponse {
   createTime: string,
   updateTime: string,
   usersId: number,
+  commentLength: number
 }
 
 export interface ArticleDetailResponse {
