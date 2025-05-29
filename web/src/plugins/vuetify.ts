@@ -16,7 +16,7 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg' // 注意这里, 默认�
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'dark',
+    defaultTheme: 'light',
   },
   blueprint: md3,
   icons: {

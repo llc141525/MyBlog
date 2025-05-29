@@ -1,16 +1,21 @@
-import type { BaseResponse, UsersRequest, UsersResponse } from '@/types'
+import type { BaseResponse, ErrorResponse, UsersRequest , UsersResponse } from '@/types'
 
 import request from '@/utils/http'
 
 export const usersApi = {
   // 登录请求
-  login (data: UsersRequest) {
-    return request.post<UsersResponse>('/user/login', data, {
+  async login (data: UsersRequest) {
+    return await request.post<UsersResponse>('/user/login', data, {
       headers: { 'Content-Type': 'application/json' },
     })
   },
-  register (data: UsersRequest) {
-    return request.post<UsersResponse>('/user/register', data)
+  async register (data: UsersRequest) {
+    try{
+      return await request.post<UsersResponse>('/user/register', data)
+    }catch(err ){
+      console.warn('注册失败' , err)
+      throw new Error((err as ErrorResponse).message)
+    }
   },
   logout () {
     return request.get<BaseResponse<null>>('/user/logout')

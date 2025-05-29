@@ -13,21 +13,24 @@ const http: AxiosInstance = axios.create({
 // 定义拦截器
 http.interceptors.response.use(
   <T>(response: AxiosResponse<BaseResponse<T>>) => {
-    if (response.data.code !== 200) {
+    if (response.data.code !== 200 && response.data.code !== 201) {
       return Promise.reject(response.data)// 返回  BaseResponse<T>
     }
     return response.data.data as T
   },
   // 错误处理
   (error: AxiosError<BaseResponse<unknown>>) => {
+    // console.log('[网络异常]', error)
     // 401 未登录就会重定向到登录界面
-    if (error.response?.status === 401) {
-      window.location.href = '/login'
-    }
+    // if (error.response?.status === 401) {
+    //   window.location.href = '/login'
+    // }
     // 如果错误, 返回异常信息
     return Promise.reject({
-      code: error.response?.status || -1,
-      message: error.message,
+      status: error.response?.status,
+      code: error.response?.data.code,
+      message: error.response?.data.message,
+      data: error.response?.data.data,
     })
   }
 )
