@@ -1,11 +1,9 @@
 <template>
-  <v-btn>text</v-btn>
-  <v-icon :icon="mdiAccount" />
+  <ArticleHome />
 
 </template>
 
-<script lang="ts" setup>
-  import { mdiAccount } from '@mdi/js'
-</script>
 
-<style scoped></style>
+<script lang="ts" setup>
+
+</script>

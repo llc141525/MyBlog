@@ -1,4 +1,11 @@
-import type { CreateArticleRequest, CreateCommentRequest, UpdateArticleRequest, UsersRequest } from '@/types/index.ts'
+import type {
+  ArticleDetailResponse,
+  ArticleHomeResponse,
+  CreateArticleRequest,
+  CreateCommentRequest,
+  UpdateArticleRequest,
+  UsersRequest,
+} from '@/types/index.ts'
 
 // 用于请求的默认数据
 export class defaultFactory {
@@ -30,15 +37,16 @@ export class defaultFactory {
 
   static defaultUpdateUser (defaults: Partial<UsersRequest>) {
     return {
-      username: 'admin',
-      password: 'admin',
+      username: '',
+      password: '',
       ...defaults,
     } satisfies UsersRequest
   }
+
   static defaultUsers () {
     return {
-      username: 'admin',
-      password: 'admin',
+      username: '',
+      password: '',
     } satisfies UsersRequest
   }
 
@@ -53,5 +61,35 @@ export class defaultFactory {
     } satisfies UpdateArticleRequest
   }
 
+  static defaultArticleHomeRes (defaults: Partial<ArticleHomeResponse>) {
+    return {
+      id: 1,
+      title: '默认标题',
+      cover_url: 'https://picsum.photos/200/300',
+      status: true,
+      createTime: '2021-01-01 00:00:00',
+      updateTime: '2021-01-01 00:00:00',
+      usersId: 1,
+      ...defaults,
+    } satisfies ArticleHomeResponse
+
+  }
+
+  static defaultArticleDetailRes (defaults: Partial<ArticleDetailResponse>) {
+    return {
+      ...defaults,
+      id: 1,
+      title: '默认标题',
+      content: '默认内容',
+      cover_url: 'https://picsum.photos/200/300',
+      status: true,
+      createTime: '2021-01-01 00:00:00',
+      updateTime: '2021-01-01 00:00:5.00E01',
+      usersId: 1,
+      usersAvatarUrl: 'https://picsum.photos/200/300',
+      commentIds: [1, 2, 3],
+
+    } satisfies ArticleDetailResponse
+  }
 
 }
