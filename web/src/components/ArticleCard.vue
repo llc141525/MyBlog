@@ -9,7 +9,7 @@
       cover
       gradient="to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)"
       height="250"
-      :src="`https://picsum.photos/500/300?random=${props.cnt}`"
+      :src="props.article.cover_url? props.article.cover_url : `https://picsum.photos/500/300?random=${props.cnt}`"
     >
       <v-chip
         class="ma-2"
@@ -71,6 +71,7 @@
   const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
   const hover = ref(false);
 
+  console.log(props.article.cover_url)
 
 </script>
 

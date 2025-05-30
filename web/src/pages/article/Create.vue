@@ -1,7 +1,12 @@
 <template>
-  <v-text-field v-model="title" />
   <MdEditor v-model="text" />
+  <v-text-field v-model="title" placeholder="文章标题" />
   <v-btn text="提交文章" @click="createArticle" />
+  <VSnackbar
+    v-model="snackBar"
+    text="文章创建成功"
+    timeout="2000"
+  />
 </template>
 
 <script setup lang="ts">
@@ -15,6 +20,8 @@
   import { defaultFactory } from '@/types';
   const title = ref('')
   const status = ref(false)
+
+  const snackBar = ref(false)
   const createArticleRequest = ref<CreateArticleRequest>(defaultFactory.defaultCreateArticle())
   const text = ref('');
   const createArticle = async () =>{
@@ -22,11 +29,13 @@
       createArticleRequest.value.content = text.value
       createArticleRequest.value.title = title.value
       createArticleRequest.value.status = status.value
-
-      const res = await articleApi.createArticle({
+      await articleApi.createArticle({
         ...createArticleRequest.value,
       })
-      console.log(res)
+      snackBar.value = true
+      createArticleRequest.value = defaultFactory.defaultCreateArticle()
+      text.value = ''
+      title.value = ''
     }catch(err){
       console.error(err)
     }

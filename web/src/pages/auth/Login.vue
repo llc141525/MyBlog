@@ -12,6 +12,7 @@
       <v-form ref="form" @submit.prevent="login">
         <v-text-field
           v-model="userVar.username"
+          autofocus
           class="mb-4"
           clearable
           :error="formHasError"
@@ -92,16 +93,19 @@
   import type { UsersRequest, UsersResponse } from '@/types/index'
   import { defaultFactory } from '@/types/factory'
   import { usersApi } from '@/api/users'
+  import { useAppStore } from '@/stores/app'
 
   const errorMessage = ref('')
   const formHasError = ref(false)
   const userVar = ref<UsersRequest>(defaultFactory.defaultUsers())
   const user = ref<UsersResponse | null>(null)
   const router = useRouter()
+  const store = useAppStore()
   const login = async () => {
     loading.value = true
     try{
       user.value = await usersApi.login(userVar.value)
+      store.login(user.value.id)
       router.push('/1')
     }catch(e){
       console.log(e)
