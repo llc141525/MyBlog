@@ -19,18 +19,18 @@
 
       {{ articleDetail }}
     </VCard>
+    <!-- <div v-html="content" /> -->
+
   </v-main>
 
 </template>
 
 
 <script lang="ts" setup>
-
   import { articleApi } from '@/api/article';
-
   import type { ArticleDetailResponse } from '@/types';
-
   import { defaultFactory } from '@/types/factory';
+
 
   const articleDetail = ref<ArticleDetailRes>(defaultFactory.defaultArticleDetailResponse())
   const article = async ()=>{

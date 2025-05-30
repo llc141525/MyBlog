@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    {{ articleHome }}
+    <!-- {{ articleHome }} -->
 
   </v-main>
 
