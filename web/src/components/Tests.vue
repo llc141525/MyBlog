@@ -154,7 +154,7 @@
   // 测试文章所用的值
   const articleHome = ref<Pageable<ArticleHomeResponse>>()
   const articleDetail = ref<ArticleDetailResponse>()
-  const createArticleVar = ref<CreateArticleRequest>(defaultFactory.createDefaultArticle({}))
+  const createArticleVar = ref<CreateArticleRequest>(defaultFactory.defaultCreateArticle({}))
   const updateArticleVar = ref<UpdateArticleRequest>(defaultFactory.defaultUpdateArticle({}))
   const deleteArticleId = ref(0)
   const getArticleDetailId = ref(1)
@@ -185,7 +185,7 @@
 
   // 评论有关接口
 
-  const createCommentVar = ref<CreateCommentRequest>(defaultFactory.createDefaultComment({}))
+  const createCommentVar = ref<CreateCommentRequest>(defaultFactory.defaultCreateComment({}))
   const deleteCommentId = ref(2)
   const getComment = async () => {
     comment.value = await commentApi.getComment(createCommentVar.value.articleId)

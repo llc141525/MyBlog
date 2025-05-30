@@ -31,7 +31,8 @@
   import type { ArticleDetailResponse } from '@/types';
 
   import { defaultFactory } from '@/types/factory';
-  const articleDetail = ref<ArticleDetailResponse>(defaultFactory.defaultArticleDetailRes({}))
+
+  const articleDetail = ref<ArticleDetailRes>(defaultFactory.defaultArticleDetailResponse())
   const article = async ()=>{
     try{
       const res = await articleApi.getArticleDetail(9) as ArticleDetailResponse

@@ -15,7 +15,7 @@
         class="ma-2"
         color="primaryContainer"
         label
-        :prepend-icon="mdiAccount"
+        prepend-icon="mdiAccount"
         size="small"
       >
         {{ props.article.usersId }}
@@ -33,7 +33,7 @@
 
     <v-card-actions class="px-4">
       <v-btn
-        :append-icon="mdiArrowRight"
+        append-icon="mdiArrowRight"
         color="primary"
         size="small"
         to="/article/1"
@@ -45,13 +45,13 @@
       <v-spacer />
 
       <div class="d-flex align-center text-medium-emphasis text-caption">
-        <v-icon class="me-1" :icon="mdiCalendar" size="small" />
+        <v-icon class="me-1" icon="mdiCalendar" size="small" />
         <span class="me-4">{{ props.article.createTime }}</span>
 
-        <v-icon class="me-1" :icon="mdiComment" size="small" />
+        <v-icon class="me-1" icon="mdiComment" size="small" />
         <span class="me-4">{{ props.article.commentLength }}</span>
 
-        <v-icon class="me-1" :icon="mdiEye" size="small" />
+        <v-icon class="me-1" icon="mdiEye" size="small" />
         <span>1.2k</span>
       </div>
     </v-card-actions>
@@ -60,11 +60,12 @@
 
 <script lang="ts" setup>
 
-  // import { mdiAccount, m diArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
-  // import type { ArticleHomeResponse } from '@/types';
-  // import { ref } from 'vue';
+
+  // import { mdiAccount, mdiArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
+
   const props = defineProps<{ cnt: number, article:ArticleHomeRes }>();
   const hover = ref(false);
+
 
 </script>
 

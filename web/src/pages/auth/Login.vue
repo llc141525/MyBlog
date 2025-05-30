@@ -17,18 +17,18 @@
           :error="formHasError"
           :error-messages="errorMessage"
           label="用户名"
-          :prepend-inner-icon="mdiAccount"
+          prepend-inner-icon="mdi-account"
           required
           :rules="usernameRules"
           variant="outlined"
         />
         <v-text-field
           v-model="userVar.password"
-          :append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :error="formHasError"
           :error-messages="errorMessage"
           label="密码"
-          :prepend-inner-icon="mdiLock"
+          prepend-inner-icon="mdi-lock"
           required
           :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
@@ -73,7 +73,6 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { mdiAccount, mdiEye, mdiEyeOff, mdiLock } from '@mdi/js';
   const rememberMe = ref(false)
   const showPassword = ref(false)
   const loading = ref(false)
