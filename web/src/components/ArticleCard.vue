@@ -8,7 +8,7 @@
     <v-img
       cover
       gradient="to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)"
-      height="200"
+      height="250"
       :src="`https://picsum.photos/500/300?random=${props.cnt}`"
     >
       <v-chip
@@ -20,9 +20,17 @@
       >
         {{ props.article.usersId }}
       </v-chip>
+      <template #placeholder>
+        <div class="d-flex align-center justify-center fill-height">
+          <v-progress-circular
+            color="grey-lighten-4"
+            indeterminate
+          />
+        </div>
+      </template>
     </v-img>
 
-    <v-card-item class="px-8 mt-5">
+    <v-card-item class="px-8 mt-3">
       <v-card-title class="text-h6 mb-4" style="word-break: break-word; white-space: pre-wrap">
         {{ props.article.title }}
       </v-card-title>
@@ -31,30 +39,27 @@
       </v-card-subtitle>
     </v-card-item>
 
-    <v-card-actions class="px-4">
-      <v-btn
-        append-icon="mdi-arrow-right"
-        color="primary"
-        size="small"
-        to="/article/1"
-        variant="text"
-      >
-        阅读更多
-      </v-btn>
+    <v-btn
+      append-icon="mdi-arrow-right"
+      class="my-2 mx-8"
+      color="primary"
+      :to="`/article/${props.id}`"
+      variant="flat"
+    >
+      阅读更多
+    </v-btn>
 
-      <v-spacer />
 
-      <div class="d-flex align-center text-medium-emphasis text-caption">
-        <v-icon class="me-1" icon="mdi-calendar" size="small" />
-        <span class="me-4">{{ props.article.createTime }}</span>
+    <div class="d-flex align-center text-medium-emphasis text-caption px-8 py-4">
+      <v-icon class="me-1" icon="mdi-calendar" size="small" />
+      <span class="me-4">{{ props.article.createTime }}</span>
 
-        <v-icon class="me-1" icon="mdi-comment" size="small" />
-        <span class="me-4">{{ props.article.commentLength }}</span>
+      <v-icon class="me-1" icon="mdi-comment" size="small" />
+      <span class="me-4">{{ props.article.commentLength }}</span>
 
-        <v-icon class="me-1" icon="mdi-eye" size="small" />
-        <span>1.2k</span>
-      </div>
-    </v-card-actions>
+      <v-icon class="me-1" icon="mdi-eye" size="small" />
+      <span>1.2k</span>
+    </div>
   </v-card>
 </template>
 
@@ -63,7 +68,7 @@
 
   // import { mdiAccount, mdiArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
 
-  const props = defineProps<{ cnt: number, article:ArticleHomeRes }>();
+  const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
   const hover = ref(false);
 
 
