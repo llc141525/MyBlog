@@ -26,7 +26,15 @@ export default defineConfig({
         {
           'pinia': ['defineStore', 'storeToRefs'],
         },
+        {
+          '@/types/businessType': [ // 指向实际类型文件
+            'ArticleHomeResponse',
+            'ArticleDetailResponse',
+            'UsersResponse',
+          ],
+        },
       ],
+
       dts: 'src/auto-imports.d.ts',
       eslintrc: {
         enabled: true,

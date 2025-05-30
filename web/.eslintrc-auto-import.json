@@ -77,6 +77,17 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true
+    "watchSyncEffect": true,
+    "ArticleDetailRes": true,
+    "ArticleDetailResponse": true,
+    "ArticleHomeResponse": true,
+    "[object Object]": true,
+    "ArticleDetailRespons": true,
+    "ArticleDetailResp": true,
+    "Artic": true,
+    "ArticleHome": true,
+    "ArticleHomeR": true,
+    "ArticleHomeRes": true,
+    "UsersResponse": true
   }
 }

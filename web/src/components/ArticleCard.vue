@@ -59,13 +59,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { mdiAccount, mdiArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
-  import type { ArticleHomeResponse } from '@/types';
-  import { ref } from 'vue';
 
-  const props = defineProps<{ cnt: number, article: ArticleHomeResponse }>();
+  // import { mdiAccount, m diArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
+  // import type { ArticleHomeResponse } from '@/types';
+  // import { ref } from 'vue';
+  const props = defineProps<{ cnt: number, article:ArticleHomeRes }>();
   const hover = ref(false);
-
 
 </script>
 

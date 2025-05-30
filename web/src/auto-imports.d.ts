@@ -6,7 +6,10 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const ArticleDetailResponse: typeof import('@/types/businessType')['ArticleDetailResponse']
+  const ArticleHomeResponse: typeof import('@/types/businessType')['ArticleHomeResponse']
   const EffectScope: typeof import('vue')['EffectScope']
+  const UsersResponse: typeof import('@/types/businessType')['UsersResponse']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
@@ -54,6 +57,7 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
   const triggerRef: typeof import('vue')['triggerRef']
+  const undefined: typeof import('@/types/businessType')['undefined']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
   const useCssModule: typeof import('vue')['useCssModule']
@@ -81,7 +85,10 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
+    readonly ArticleDetailResponse: UnwrapRef<typeof import('@/types/businessType')['ArticleDetailResponse']>
+    readonly ArticleHomeResponse: UnwrapRef<typeof import('@/types/businessType')['ArticleHomeResponse']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly UsersResponse: UnwrapRef<typeof import('@/types/businessType')['UsersResponse']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
