@@ -1,5 +1,5 @@
 <template>
-  <MdEditor v-model="text" />
+  <MdEditor v-model="text" :theme="store.isDarkMode ? 'dark' : 'light'" />
   <v-text-field v-model="title" placeholder="文章标题" />
   <v-btn text="提交文章" @click="createArticle" />
   <VSnackbar
@@ -18,9 +18,10 @@
   import { articleApi } from '@/api/article';
   import type { CreateArticleRequest } from '../../types/businessType';
   import { defaultFactory } from '@/types';
+  import { useAppStore } from '@/stores/app';
   const title = ref('')
   const status = ref(false)
-
+  const store = useAppStore()
   const snackBar = ref(false)
   const createArticleRequest = ref<CreateArticleRequest>(defaultFactory.defaultCreateArticle())
   const text = ref('');
