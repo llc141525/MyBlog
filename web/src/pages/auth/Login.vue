@@ -1,75 +1,79 @@
 <template>
-  <v-card
-    class="mx-auto"
-    elevation="10"
-    max-width="450"
-  >
-    <v-toolbar color="primary" dark>
-      <v-toolbar-title>用户登录</v-toolbar-title>
-    </v-toolbar>
+  <div>
 
-    <v-card-text>
-      <v-form ref="form" @submit.prevent="login">
-        <v-text-field
-          v-model="userVar.username"
-          autofocus
-          class="mb-4"
-          clearable
-          :error="formHasError"
-          :error-messages="errorMessage"
-          label="用户名"
-          prepend-inner-icon="mdi-account"
-          required
-          :rules="usernameRules"
-          variant="outlined"
-        />
-        <v-text-field
-          v-model="userVar.password"
-          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          :error="formHasError"
-          :error-messages="errorMessage"
-          label="密码"
-          prepend-inner-icon="mdi-lock"
-          required
-          :rules="passwordRules"
-          :type="showPassword ? 'text' : 'password'"
-          variant="outlined"
-          @click:append-inner="showPassword = !showPassword"
-        />
+    <v-card
+      class="mx-auto"
+      elevation="10"
+      max-width="450"
+    >
+      <v-toolbar color="primary" dark>
+        <v-toolbar-title>用户登录</v-toolbar-title>
+      </v-toolbar>
 
-        <div class="d-flex justify-space-between align-center mt-2">
-          <v-checkbox
-            v-model="rememberMe"
-            density="compact"
-            hide-details
-            label="记住我"
+      <v-card-text>
+        <v-form ref="form" @submit.prevent="login">
+          <v-text-field
+            v-model="userVar.username"
+            autofocus
+            class="mb-4"
+            clearable
+            :error="formHasError"
+            :error-messages="errorMessage"
+            label="用户名"
+            prepend-inner-icon="mdi-account"
+            required
+            :rules="usernameRules"
+            variant="outlined"
           />
-          <router-link to="/auth/FogetPa">
-            <v-btn color="primary" variant="text">忘记密码?</v-btn>
-          </router-link>
-        </div>
+          <v-text-field
+            v-model="userVar.password"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            :error="formHasError"
+            :error-messages="errorMessage"
+            label="密码"
+            prepend-inner-icon="mdi-lock"
+            required
+            :rules="passwordRules"
+            :type="showPassword ? 'text' : 'password'"
+            variant="outlined"
+            @click:append-inner="showPassword = !showPassword"
+          />
 
-        <v-btn
-          block
-          class="mt-6"
-          color="primary"
-          :loading="loading"
-          size="large"
-          type="submit"
-        >登录
-        </v-btn>
-      </v-form>
-    </v-card-text>
+          <div class="d-flex justify-space-between align-center mt-2">
+            <v-checkbox
+              v-model="rememberMe"
+              density="compact"
+              hide-details
+              label="记住我"
+            />
+            <router-link to="/auth/FogetPa">
+              <v-btn color="primary" variant="text">忘记密码?</v-btn>
+            </router-link>
+          </div>
 
-    <v-divider />
+          <v-btn
+            block
+            class="mt-6"
+            color="primary"
+            :loading="loading"
+            size="large"
+            type="submit"
+          >登录
+          </v-btn>
+        </v-form>
+      </v-card-text>
 
-    <v-card-actions class="justify-center py-3">
-      <span class="text-caption"><h3>没有账号?</h3></span>
-      <router-link to="/auth/Register">
-        <v-btn text>立刻注册</v-btn>
-      </router-link>
-    </v-card-actions>
-  </v-card>
+      <v-divider />
+
+      <v-card-actions class="justify-center py-3">
+        <span class="text-caption"><h3>没有账号?</h3></span>
+        <router-link to="/auth/Register">
+          <v-btn text>立刻注册</v-btn>
+        </router-link>
+      </v-card-actions>
+    </v-card>
+  </div>
+
 </template>
 
 <script setup lang="ts">

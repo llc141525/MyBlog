@@ -1,12 +1,16 @@
 <template>
-  <MdEditor v-model="text" :theme="store.isDarkMode ? 'dark' : 'light'" />
-  <v-text-field v-model="title" placeholder="文章标题" />
-  <v-btn text="提交文章" @click="createArticle" />
-  <VSnackbar
-    v-model="snackBar"
-    text="文章创建成功"
-    timeout="2000"
-  />
+  <div>
+
+    <MdEditor v-model="text" :theme="store.isDarkMode ? 'dark' : 'light'" />
+    <v-text-field v-model="title" placeholder="文章标题" />
+    <v-btn text="提交文章" @click="createArticle" />
+    <VSnackbar
+      v-model="snackBar"
+      text="文章创建成功"
+      timeout="2000"
+    />
+  </div>
+
 </template>
 
 <script setup lang="ts">

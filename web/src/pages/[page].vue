@@ -1,47 +1,50 @@
 <template>
+  <div>
 
-  <v-main>
-    <div class="content-container ">
-      <div class="articles-grid">
-        <v-row>
-          <v-col
-            v-for="(article, n) in articles"
-            :key="n"
-            class="mt-9"
-            cols="12"
-            lg="4"
-            md="6"
-          >
-            <ArticleCard :id="article.id" :article="article" :cnt="article.id" />
-          </v-col>
-        </v-row>
+    <v-main>
+      <div class="content-container ">
+
+        <div class="articles-grid">
+          <v-row>
+            <v-col
+              v-for="(article, n) in articles"
+              :key="n"
+              class="mt-9"
+              cols="12"
+              lg="4"
+              md="6"
+            >
+              <ArticleCard :id="article.id" :article="article" :cnt="article.id" />
+            </v-col>
+          </v-row>
+        </div>
+
+        <v-pagination
+          v-model="page"
+          circle
+          class="my-10"
+          color="primary"
+          :length="totalPage"
+          total-visible="5"
+        />
+      </div>
+    </v-main>
+
+
+    <v-footer class="text-center d-flex flex-column ga-2 py-4" color="primary">
+      <v-divider class="my-2" thickness="2" width="50" />
+
+      <div class="text-caption font-weight-regular opacity-60">
+        知识探索者博客致力于分享前沿技术、设计理念和生活感悟。我们相信知识的分享能够改变世界，让每个人都能在技术的浪潮中不断成长。
       </div>
 
-      <v-pagination
-        v-model="page"
-        circle
-        class="my-10"
-        color="primary"
-        :length="totalPage"
-        total-visible="5"
-      />
-    </div>
-  </v-main>
+      <v-divider />
 
-
-  <v-footer class="text-center d-flex flex-column ga-2 py-4" color="primary">
-    <v-divider class="my-2" thickness="2" width="50" />
-
-    <div class="text-caption font-weight-regular opacity-60">
-      知识探索者博客致力于分享前沿技术、设计理念和生活感悟。我们相信知识的分享能够改变世界，让每个人都能在技术的浪潮中不断成长。
-    </div>
-
-    <v-divider />
-
-    <div>
-      {{ new Date().getFullYear() }} — <strong>关于我们</strong>
-    </div>
-  </v-footer>
+      <div>
+        {{ new Date().getFullYear() }} — <strong>关于我们</strong>
+      </div>
+    </v-footer>
+  </div>
 
 </template>
 

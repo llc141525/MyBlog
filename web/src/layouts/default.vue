@@ -36,7 +36,9 @@
 
       <v-main>
         <v-container fluid>
-          <router-view />
+          <VSlideXTransition mode="out-in">
+            <router-view :key="route.path" />
+          </VSlideXTransition>
         </v-container>
       </v-main>
     </v-layout>
@@ -45,6 +47,8 @@
 
 <script lang="ts" setup>
   const router = useRouter();
+  const route = useRoute()
+  console.log(route.fullPath)
   const goHome = ()=>{
     router.push('/1')
   }
