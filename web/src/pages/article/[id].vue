@@ -17,16 +17,19 @@
           <v-row justify="center">
             <v-col cols="12" md="10">
               <v-card class="mt-4 pa-4 rounded-lg px-10">
-                <VCardTitle><VIcon icon="mdi-comment-text-outline" /> 评论</VCardTitle>
+                <VCardTitle class="mb-3">
+                  <VIcon icon="mdi-comment-text-outline" />
+                  评论
+                </VCardTitle>
 
                 <VTextarea
                   v-model="commentContent"
                   auto-grow
-                  placeholder="请输入评论"
+                  label="请输入评论"
                   rows="1"
                 >
-
                   <template #append>
+                    <VBtn variant="text" @click="cnacel"> 取消</VBtn>
                     <v-btn @click="createComment">提交</v-btn>
                   </template>
                 </VTextarea>
@@ -40,6 +43,7 @@
                     v-for="comment in comments"
                     :key="comment.id"
                     :comment="comment"
+                    @replied="()=>getComment()"
                   />
                 </div>
               </v-card>
@@ -77,6 +81,18 @@
     }
   }
 
+
+  // const refresh = ref(false)
+  // watch(refresh, ()=>{
+  //   console.log('refresh', refresh.value)
+  //   if(refresh.value == true){
+  //     getComment()
+  //     refresh.value = false
+  //   }
+  // })
+  const cnacel = ()=>{
+    commentContent.value = ''
+  }
   const createComment = async ()=>{
     try{
       loading.value = true

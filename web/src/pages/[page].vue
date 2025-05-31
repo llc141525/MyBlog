@@ -74,10 +74,7 @@
     articles.value = articleHome.value.data
     totalPage.value = articleHome.value.totalPages
     console.log(articleHome.value.totalPages)
-    // console.log('articleHome:')
-    // console.log(articleHome.value.data)
-    // console.log('articles:')
-    // console.log(articles.value)
+
   }
   onMounted(async () => {
     await getArticleHome()
@@ -95,8 +92,6 @@
   }, { immediate: true })
 </script>
 <style scoped>
-
-
 .pagination-container {
   display: flex;
   justify-content: center;
