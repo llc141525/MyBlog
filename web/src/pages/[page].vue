@@ -26,9 +26,6 @@
         total-visible="5"
       />
     </div>
-
-    <!-- {{ articleHome }} -->
-
   </v-main>
 
 

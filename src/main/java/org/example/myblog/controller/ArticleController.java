@@ -10,6 +10,7 @@ import org.example.myblog.dto.request.CreateArticleRequest;
 import org.example.myblog.dto.request.UpdateArticleRequest;
 import org.example.myblog.dto.response.ArticleDetailResponse;
 import org.example.myblog.dto.response.ArticleHomeResponse;
+import org.example.myblog.dto.response.PageResponse;
 import org.example.myblog.service.ArticleService;
 import org.example.myblog.utils.ApiResponse;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,9 @@ public class ArticleController {
 
     @Operation(summary = "展示主页文章")
     @GetMapping("home")
-    public ApiResponse<ArticleService.PageResponse<ArticleHomeResponse>>
+    public ApiResponse<PageResponse<ArticleHomeResponse>>
     getAllArticles(@RequestParam Integer page) {
-        ArticleService.PageResponse<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
+        PageResponse<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
         return ApiResponse.success(allArticles);
     }
 

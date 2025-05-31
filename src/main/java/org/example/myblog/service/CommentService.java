@@ -98,6 +98,7 @@ public class CommentService {
                     .usersId(comment.getUsers().getId())
                     .usersUsername(comment.getUsers().getUsername())
                     .childComment(childComment)
+                    .username(comment.getUsers().getUsername())
                     .build());
         });
         return responses;

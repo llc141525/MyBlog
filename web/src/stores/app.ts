@@ -6,15 +6,21 @@ export const useAppStore = defineStore('app',{
     isDarkMode: false,
     isLogin: false,
     useId: 0,
+    username: '',
+    avatarUrl: '',
   }),
   actions:{
-    login (id:number){
+    login (id:number, username:string, avatarUrl:string){
       this.isLogin = true
       this.useId = id
+      this.username = username
+      this.avatarUrl = avatarUrl
     },
     logout (){
       this.isLogin = false
       this.useId = 0
+      this.username = ''
+      this.avatarUrl = ''
     },
     troggleDarkMode (){
       this.isDarkMode = !this.isDarkMode
@@ -23,6 +29,6 @@ export const useAppStore = defineStore('app',{
   persist:{
     key: 'app-store', // 存储键名
     storage: localStorage, // 使用 localStorage
-    paths: ['isLogin', 'useId', 'isDarkMode'], // 只持久化登录状态和用户ID
+    paths: ['isLogin', 'useId', 'isDarkMode', 'username', 'avatarUrl'], // 只持久化登录状态和用户ID
   } as PersistenceOptions, // 使用类型定义
 })

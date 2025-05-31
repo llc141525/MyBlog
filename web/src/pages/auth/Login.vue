@@ -105,7 +105,7 @@
     loading.value = true
     try{
       user.value = await usersApi.login(userVar.value)
-      store.login(user.value.id)
+      store.login(user.value.id, user.value.username, user.value.avatarUrl)
       router.push('/1')
     }catch(e){
       console.log(e)

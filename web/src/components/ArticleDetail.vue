@@ -1,65 +1,50 @@
 <template>
-  <v-app id="app">
-    <v-layout>
-      <v-navigation-drawer
-        class="pa-0"
-        permanent
-        style="position: fixed ; top:60px"
-        width="280"
-      >
-        <v-list-item class="py-4" subtitle="Vuetify" title="文章目录" />
-        <v-divider />
-        <MdCatalog class="pt-2" :editor-id="id" :scroll-element="scrollElement" />
-      </v-navigation-drawer>
-      <v-main>
-        <v-container class="pt-0" fluid>
-          <v-row class="d-flex">
-            <v-breadcrumbs class="px-4 pt-4 " :items="['Home', articleDetail.title]" style="left: 260px; position: relative;">
-              <template #prepend>
-                <v-icon icon="mdi-home" size="small" />
-              </template>
-            </v-breadcrumbs>
-          </v-row>
-          <v-row justify="center">
-            <v-col cols="12" md="10">
-              <v-card class="mt-4 pa-4 rounded-lg px-10">
-                <v-card-title
-                  class="text-h3  font-weight-bold "
-                  style="text-align: center; font-weight: bold;"
-                >
-                  {{ articleDetail.title }}
-                </v-card-title>
-                <VDivider class="my-4" />
-                <MdPreview
-                  code-theme="github"
-                  :editor-id="id"
-                  :model-value="articleDetail.content"
-                  :theme="store.isDarkMode ? 'dark' : 'light'"
-                />
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-main>
-    </v-layout>
-  </v-app>
+  <v-container class="pt-0" fluid>
+    <v-row class="d-flex">
+      <v-breadcrumbs class="px-4 pt-4 " :items="['Home', articleDetail.title]" style="left: 260px; position: relative;">
+        <template #prepend>
+          <v-icon icon="mdi-home" size="small" />
+        </template>
+      </v-breadcrumbs>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="10">
+        <v-card class="mt-4 pa-4 rounded-lg px-10">
+          <v-card-title
+            class="text-h3  font-weight-bold "
+            style="text-align: center; font-weight: bold;"
+          >
+            {{ articleDetail.title }}
+          </v-card-title>
+          <VDivider class="my-4" />
+          <MdPreview
+            code-theme="github"
+            :editor-id="id"
+            :model-value="articleDetail.content"
+            :theme="store.isDarkMode ? 'dark' : 'light'"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+
 </template>
 
 <script lang="ts" setup>
+  import{ MdPreview } from 'md-editor-v3';
+  import 'md-editor-v3/lib/preview.css';
+  import { onMounted, ref, watch } from 'vue';
+  const id = 'preview-only';
+
+
+  import { useRoute } from 'vue-router';
   import { articleApi } from '@/api/article';
   import { useAppStore } from '@/stores/app';
   import type { ArticleDetailResponse } from '@/types';
   import { defaultFactory } from '@/types/factory';
-  import { MdCatalog, MdPreview } from 'md-editor-v3';
-  import 'md-editor-v3/lib/preview.css';
-  import { onMounted, ref, watch } from 'vue';
-  import { useRoute } from 'vue-router';
-  const store = useAppStore()
-  const id = 'preview-only';
   const route = useRoute();
-  const scrollElement = document.documentElement;
+  const store = useAppStore()
   const articleDetail = ref(defaultFactory.defaultArticleDetailResponse());
-
   // 统一获取文章方法
   const fetchArticle = async (id: number) => {
     try {

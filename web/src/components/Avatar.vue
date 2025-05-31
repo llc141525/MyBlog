@@ -83,6 +83,9 @@
   import { useAppStore } from '@/stores/app';
   const menu = ref(false);
   const store = useAppStore()
+  const fav = ref(false);
+  const message = ref(true);
+  const hints = ref(false);
 
   const logout = async ()=>{
     try {

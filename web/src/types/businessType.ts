@@ -29,7 +29,8 @@ export interface ArticleHomeResponse {
   createTime: string,
   updateTime: string,
   usersId: number,
-  commentLength: number
+  commentLength: number,
+  summarize: string,
 }
 
 export interface ArticleDetailResponse {
@@ -59,7 +60,7 @@ export interface CommentResponse {
   usersId: number,
   username: string,
   usersAvatarUrl: string,
-  ChildComment: ChildComment[],
+  childComment: ChildComment[],
 }
 
 interface ChildComment {
