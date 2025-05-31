@@ -15,12 +15,24 @@
           variant="outlined"
         />
 
-        <VSpacer />
-        <VBtn prepend-icon="mdi-pencil" text="新建文章" @click="goWrite" />
-        <VBtn icon="mdi-theme-light-dark" @click="toggleTheme" />
-        <VBtn icon="mdi-cog-outline" />
+        <VSpacer class="ml-10" />
+        <VBtn
+          :disabled="!store.isLogin"
+          prepend-icon="mdi-pencil"
+          text="新建文章"
+          @click="goWrite"
+        />
+        <VBtn
+          class="mr-2"
+          icon="mdi-theme-light-dark"
+          @click="toggleTheme"
+        />
+        <VBtn class="mr-2" icon="mdi-cog-outline" @click="goSettings" />
         <VDivider class="mx-2" vertical />
-        <Avatar v-if="store.isLogin" />
+        <Avatar
+          v-if="store.isLogin"
+          class="ma-3"
+        />
         <VBtn
           v-else
           text="登录/注册"
@@ -31,7 +43,9 @@
 
       <v-main>
         <v-container fluid>
-          <router-view />
+          <VSlideXTransition mode="out-in">
+            <router-view :key="route.path" />
+          </VSlideXTransition>
         </v-container>
       </v-main>
     </v-layout>
@@ -40,11 +54,16 @@
 
 <script lang="ts" setup>
   const router = useRouter();
+  const route = useRoute()
+  // console.log(route.fullPath)
   const goHome = ()=>{
     router.push('/1')
   }
   const goWrite = ()=>{
     router.push('/article/Create')
+  }
+  const goSettings = ()=>{
+    router.push('/settings')
   }
   import { useAppStore } from '@/stores/app';
   import { useTheme } from 'vuetify'

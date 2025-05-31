@@ -10,8 +10,10 @@ import org.example.myblog.dto.request.CreateArticleRequest;
 import org.example.myblog.dto.request.UpdateArticleRequest;
 import org.example.myblog.dto.response.ArticleDetailResponse;
 import org.example.myblog.dto.response.ArticleHomeResponse;
+import org.example.myblog.dto.response.PageResponse;
 import org.example.myblog.service.ArticleService;
 import org.example.myblog.utils.ApiResponse;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +24,8 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @Operation(summary = "新建文章")
-    @PostMapping("/create")
-    public ApiResponse<Void> create(@Valid @RequestBody CreateArticleRequest request,
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Void> create(@Valid CreateArticleRequest request,
                                     @RequestAttribute Long userId,
                                     HttpServletResponse response) {
         Long article = articleService.createArticle(request, userId);
@@ -33,9 +35,9 @@ public class ArticleController {
 
     @Operation(summary = "展示主页文章")
     @GetMapping("home")
-    public ApiResponse<ArticleService.PageResponse<ArticleHomeResponse>>
+    public ApiResponse<PageResponse<ArticleHomeResponse>>
     getAllArticles(@RequestParam Integer page) {
-        ArticleService.PageResponse<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
+        PageResponse<ArticleHomeResponse> allArticles = articleService.getAllArticles(page);
         return ApiResponse.success(allArticles);
     }
 
@@ -59,4 +61,5 @@ public class ArticleController {
         articleService.deleteArticle(articleId);
         return ApiResponse.success(null);
     }
+
 }

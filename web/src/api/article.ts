@@ -20,7 +20,11 @@ export const articleApi = {
     })
   },
   createArticle (data: CreateArticleRequest) {
-    return request.post<ArticleDetailResponse>('/article/create', data)
+    return request.post<ArticleDetailResponse>('/article/create', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
   },
 
   updateArticle (data: UpdateArticleRequest) {

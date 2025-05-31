@@ -6,6 +6,7 @@ import org.example.myblog.dto.request.CreateArticleRequest;
 import org.example.myblog.dto.request.UpdateArticleRequest;
 import org.example.myblog.dto.response.ArticleDetailResponse;
 import org.example.myblog.dto.response.ArticleHomeResponse;
+import org.example.myblog.dto.response.PageResponse;
 import org.example.myblog.exception.BusinessException;
 import org.example.myblog.exception.errors.ArticleError;
 import org.example.myblog.exception.errors.UserError;
@@ -13,6 +14,7 @@ import org.example.myblog.mapper.ArticleMapper;
 import org.example.myblog.model.Article;
 import org.example.myblog.model.Users;
 import org.example.myblog.repository.ArticleRepository;
+import org.example.myblog.repository.CommentRepository;
 import org.example.myblog.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +25,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +38,8 @@ public class ArticleService {
     private final ArticleMapper articleMapper;
     private final CommentService commentService;
     private final RedisCacheManager cacheManager;
+    private final CommentRepository commentRepository;
+    private final UserService userService;
 
     // Service层改造
     @Transactional(readOnly = true)
@@ -59,41 +64,20 @@ public class ArticleService {
 
     @Transactional
     public Long createArticle(CreateArticleRequest request, Long userId) {
-        Long responseId;
-//        userRepository.findById(userId).ifPresentOrElse(user -> {
-//            Article article = articleMapper.createArticleRequestToArticle(request);
-//            // 维护双向关系
-//            user.addArticle(article);
-//            Article save = articleRepository.save(article);
-//
-//        }, () -> {
-//            throw new BusinessException(UserError.USER_NOT_FOUND);
-//        });
-
-        Users users = userRepository.findById(userId).orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
         Article article = articleMapper.createArticleRequestToArticle(request);
+        try {
+            String path = userService.downloadFile(request.cover());
+            article.setCover_url(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         users.addArticle(article);
         Article save = articleRepository.save(article);
         return save.getId();
     }
-//    @Transactional(readOnly = true)
-//    public List<ArticleHomeResponse> getAllArticles(Integer page) {
-//        // 设置首页展示文章数量为 6
-//        int size = 6;
-//        // 页数是从 1 开始的
-//        page -= 1;
-//        // 页数必须为正整数.
-//        if (page < 0)
-//            throw new BusinessException(ArticleError.PAGE_NOT_FOUND);
-//
-//        Pageable pageable = PageRequest.of(page, size);
-//        long total = articleRepository.count() / size + 1;
-//
-//        return articleRepository.findAllByPage(pageable)
-//                .stream()
-//                .map(articleMapper::articleToArticleHomeResponse)
-//                .toList();
-//    }
+
 
     @Transactional
     @CacheEvict(value = "article", key = "#request.articleId()")
@@ -120,7 +104,7 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
 
         // 删除文章所属的评论
-        article.getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
+        article.getComments().clear();
 
         // 移除和 user 的双向关系
         article.getUsers().removeArticle(article);
@@ -139,16 +123,6 @@ public class ArticleService {
                 .findById(articleId)
                 .map(articleMapper::articleToArticleDetailResponse)
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
-    }
-
-    // 新增分页包装类
-    public record PageResponse<T>(
-            List<T> data,
-            int currentPage,
-            int pageSize,
-            long totalPages,
-            long totalElements
-    ) {
     }
 
 

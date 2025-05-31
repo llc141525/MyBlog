@@ -20,7 +20,8 @@ public record CommentResponse(
         String usersUsername,
         String usersAvatarUrl,
         Long id,
-        String content
+        String content,
+        String username
 ) implements Serializable {
     /**
      * DTO for {@link org.example.myblog.model.Comment}

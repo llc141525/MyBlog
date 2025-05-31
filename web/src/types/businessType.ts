@@ -29,7 +29,9 @@ export interface ArticleHomeResponse {
   createTime: string,
   updateTime: string,
   usersId: number,
-  commentLength: number
+  commentLength: number,
+  summarize: string,
+  authorName: string
 }
 
 export interface ArticleDetailResponse {
@@ -59,7 +61,7 @@ export interface CommentResponse {
   usersId: number,
   username: string,
   usersAvatarUrl: string,
-  ChildComment: ChildComment[],
+  childComment: ChildComment[],
 }
 
 interface ChildComment {
@@ -67,7 +69,7 @@ interface ChildComment {
   content: string,
   createTime: string,
   username: string,
-  usersAvatarUrl: string,
+  avatar: string,
 }
 
 
@@ -78,6 +80,7 @@ export interface CreateArticleRequest {
   content: string,
   cover_url: string,
   status: boolean,
+  cover: File | null
 }
 
 export interface CreateCommentRequest {

@@ -64,7 +64,7 @@ export class defaultFactory {
   }
 
   // 默认响应
-  static defaultArticleHomeResponse () {
+  static defaultArticleHomeResponse ():ArticleHomeResponse {
     return {
       id: 1,
       title: '默认标题',
@@ -74,8 +74,8 @@ export class defaultFactory {
       updateTime: '2021-01-01 00:00:00',
       usersId: 1,
       commentLength:0,
-    } satisfies ArticleHomeResponse
-
+      summarize: '默认内容',
+    }
   }
 
   static defaultArticleDetailResponse () :ArticleDetailResponse{

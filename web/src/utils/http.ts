@@ -20,12 +20,10 @@ http.interceptors.response.use(
   },
   // 错误处理
   (error: AxiosError<BaseResponse<unknown>>) => {
-    // console.log('[网络异常]', error)
-    // 401 未登录就会重定向到登录界面
-    // if (error.response?.status === 401) {
-    //   window.location.href = '/login'
-    // }
-    // 如果错误, 返回异常信息
+    if(error.response?.status == 401){
+      window.location.href = '/auth/login'
+    }
+
     return Promise.reject({
       status: error.response?.status,
       code: error.response?.data.code,
