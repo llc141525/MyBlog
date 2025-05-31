@@ -23,5 +23,6 @@ public record CreateCommentRequest(
         @Schema(example = "测试评论")
         @NotBlank(message = "评论不能是空白的")
         String content
+
 ) implements Serializable {
 }

@@ -2,6 +2,7 @@
   <v-card
     class="rounded-lg"
     :elevation="hover ? 8 : 2"
+    height="500"
     @mouseleave="hover = false"
     @mouseover="hover = true"
   >
@@ -18,7 +19,7 @@
         prepend-icon="mdi-account"
         size="small"
       >
-        {{ props.article.usersId }}
+        {{ props.article.authorName }}
       </v-chip>
       <template #placeholder>
         <div class="d-flex align-center justify-center fill-height">
@@ -30,29 +31,43 @@
       </template>
     </v-img>
 
-    <v-card-item class="px-8 mt-3">
+    <v-card-item class="px-5 mt-3">
       <v-card-title class="text-h6 mb-4" style="word-break: break-word; white-space: pre-wrap">
         {{ props.article.title }}
       </v-card-title>
-      <v-card-subtitle class="text-medium-emphasis text-body-1" style="word-break: break-word; white-space: pre-wrap">
-        Vue 3.0带来了许多令人兴奋的新特性，包括Composition API、性能优化和改进的TypeScript支持...
+      <v-card-subtitle
+        class="text-medium-emphasis text-body-1"
+        style="word-break: break-word; white-space: pre-wrap ; height: 75px;"
+      >
+        {{ article.summarize }}
       </v-card-subtitle>
     </v-card-item>
+    <div>
 
-    <v-btn
-      append-icon="mdi-arrow-right"
-      class="my-2 mx-8"
-      color="primary"
-      :to="`/article/${props.id}`"
-      variant="flat"
-    >
-      阅读更多
-    </v-btn>
+      <v-btn
+        append-icon="mdi-arrow-right"
+        class="my-2 mx-6"
+        color="secondary"
+        :to="`/article/${props.id}`"
+        variant="flat"
+      >
+        阅读更多
+      </v-btn>
+
+      <v-btn
+        v-if="store.useId === props.article.usersId"
+        append-icon="mdi-delete"
+        color="error"
+        @click="deletArticle"
+      >
+        删除
+      </v-btn>
+    </div>
 
 
-    <div class="d-flex align-center text-medium-emphasis text-caption px-8 py-4">
+    <div class="d-flex align-center justify-start text-medium-emphasis text-caption px-6 py-4">
       <v-icon class="me-1" icon="mdi-calendar" size="small" />
-      <span class="me-4">{{ props.article.createTime }}</span>
+      <span class="me-4">{{ props.article.createTime.substring(0, 10) }}</span>
 
       <v-icon class="me-1" icon="mdi-comment" size="small" />
       <span class="me-4">{{ props.article.commentLength }}</span>
@@ -64,15 +79,24 @@
 </template>
 
 <script lang="ts" setup>
-
-
-  // import { mdiAccount, mdiArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
+  import { useAppStore } from '@/stores/app';
+  import { articleApi } from '@/api/article'
+  const emit = defineEmits(['delete-article'])
 
   const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
+  // console.log(props.article)
   const hover = ref(false);
+  const store = useAppStore()
+  // console.log(props.article.cover_url)
 
-  console.log(props.article.cover_url)
-
+  const deletArticle = async ()=>{
+    try{
+      await articleApi.deleteArticle(props.id)
+      emit('delete-article')
+    }catch (e){
+      console.log(e)
+    }
+  }
 </script>
 
 <style scoped>

@@ -1,12 +1,27 @@
 <template>
-  <MdEditor v-model="text" :theme="store.isDarkMode ? 'dark' : 'light'" />
-  <v-text-field v-model="title" placeholder="文章标题" />
-  <v-btn text="提交文章" @click="createArticle" />
-  <VSnackbar
-    v-model="snackBar"
-    text="文章创建成功"
-    timeout="2000"
-  />
+  <div>
+
+    <MdEditor
+      id="md-editor"
+      v-model="text"
+      :theme="store.isDarkMode ? 'dark' : 'light'"
+    />
+    <v-text-field v-model="title" placeholder="文章标题" />
+    <VFileInput
+      v-model="cover"
+      accept="image/*"
+      label="上传封面"
+      :show-size="true"
+    />
+    <v-btn text="提交文章" @click="createArticle" />
+
+    <VSnackbar
+      v-model="snackBar"
+      text="文章创建成功"
+      timeout="2000"
+    />
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -25,11 +40,14 @@
   const snackBar = ref(false)
   const createArticleRequest = ref<CreateArticleRequest>(defaultFactory.defaultCreateArticle())
   const text = ref('');
+  const cover = ref<File | null>(null);
+
   const createArticle = async () =>{
     try{
       createArticleRequest.value.content = text.value
       createArticleRequest.value.title = title.value
       createArticleRequest.value.status = status.value
+      createArticleRequest.value.cover = cover.value
       await articleApi.createArticle({
         ...createArticleRequest.value,
       })
@@ -44,3 +62,10 @@
 
 
 </script>
+
+<style scoped>
+:deep(.md-editor-preview) {
+  font-size: 18px !important; /* 使用px单位更精确 */
+  line-height: 1.8 !important;
+}
+</style>

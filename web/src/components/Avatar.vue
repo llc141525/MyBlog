@@ -10,7 +10,7 @@
         <v-avatar>
           <v-img
             alt="作者"
-            src="https://cdn.vuetifyjs.com/images/john.jpg"
+            :src="store.avatarUrl || 'https://picsum.photos/500/300?random=1'"
             v-bind="props"
           />
         </v-avatar>
@@ -19,9 +19,9 @@
       <v-card min-width="300">
         <v-list>
           <v-list-item
-            prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
+            :prepend-avatar="store.avatarUrl || 'https://picsum.photos/500/300?random=1'"
             subtitle="邮箱"
-            title="作者"
+            :title="store.username"
           >
             <template #append>
               <v-btn
@@ -83,6 +83,10 @@
   import { useAppStore } from '@/stores/app';
   const menu = ref(false);
   const store = useAppStore()
+  const fav = ref(false);
+  const message = ref(true);
+  const hints = ref(false);
+  const router = useRouter()
 
   const logout = async ()=>{
     try {
@@ -90,6 +94,7 @@
       menu.value = false;
       store.userId = 0
       store.isLogin = false
+      router.push('/auth/login')
     }catch(err){
       console.warn(err)
     }

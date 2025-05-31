@@ -65,7 +65,6 @@ public class CommentService {
                 () -> {
                     throw new BusinessException(UserError.USER_NOT_FOUND);
                 });
-
         commentRepository.save(comment);
     }
 
@@ -98,6 +97,8 @@ public class CommentService {
                     .usersId(comment.getUsers().getId())
                     .usersUsername(comment.getUsers().getUsername())
                     .childComment(childComment)
+                    .username(comment.getUsers().getUsername())
+                    .usersAvatarUrl(comment.getUsers().getAvatarUrl())
                     .build());
         });
         return responses;
@@ -119,10 +120,12 @@ public class CommentService {
         // 如果这条评论有子评论, 那么移除和子评论的双向关系 --> 删除父评论的情况
         Optional.ofNullable(comment.getChildComment())
                 .ifPresent(childComments ->
-                        childComments.forEach(childComment -> {
-                            comment.removeChildComment(childComment);
-                            removeCommentRelationship(childComment);
-                        }));
+                {
+                    new ArrayList<>(childComments).forEach(childComment -> {
+                        comment.removeChildComment(childComment);
+                        removeCommentRelationship(childComment);
+                    });
+                });
 
         commentRepository.deleteById(commentId);
 

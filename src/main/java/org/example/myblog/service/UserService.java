@@ -99,6 +99,24 @@ public class UserService {
 
     @Transactional
     public String upload(MultipartFile avatar, Long userId) throws IOException {
+        String path = downloadFile(avatar);
+        userRepository.findById(userId).ifPresent(user -> {
+            // 如果原本头像不为空, 那么替换头像的时候需要把原本的头像删除
+            String oldAvatarUrl = user.getAvatarUrl();
+            if (StringUtils.hasText(oldAvatarUrl)) {
+                try {
+                    deleteOldFiles(oldAvatarUrl);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            user.setAvatarUrl(path);
+            userRepository.save(user);
+        });
+        return path;
+    }
+
+    public String downloadFile(MultipartFile avatar) throws IOException {
         // 如果文件是空文件, 就抛出异常
         if (avatar == null || avatar.isEmpty()) {
             throw new BusinessException(UserError.EMPTY_FILE);
@@ -128,21 +146,7 @@ public class UserService {
         Path filePath = uploadPath.resolve(randomFileName);
         avatar.transferTo(filePath);
 
-        String path = "http://localhost:8080" + accessPath.replace("**", "") + randomFileName;
-        userRepository.findById(userId).ifPresent(user -> {
-            // 如果原本头像不为空, 那么替换头像的时候需要把原本的头像删除
-            String oldAvatarUrl = user.getAvatarUrl();
-            if (StringUtils.hasText(oldAvatarUrl)) {
-                try {
-                    deleteOldFiles(oldAvatarUrl);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            user.setAvatarUrl(path);
-            userRepository.save(user);
-        });
-        return path;
+        return "http://localhost:8080" + accessPath.replace("**", "") + randomFileName;
     }
 
     // 异步删除, 如果删除失败也不会影响主线程.
