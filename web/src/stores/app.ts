@@ -28,6 +28,9 @@ export const useAppStore = defineStore('app',{
     changeAvatar (avatarUrl:string){
       this.avatarUrl = avatarUrl
     },
+    changeUsername( username:string){
+      this.username = username
+    }
   },
   persist:{
     key: 'app-store', // 存储键名

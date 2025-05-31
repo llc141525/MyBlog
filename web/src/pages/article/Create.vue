@@ -40,7 +40,7 @@
   const snackBar = ref(false)
   const createArticleRequest = ref<CreateArticleRequest>(defaultFactory.defaultCreateArticle())
   const text = ref('');
-  const cover = ref(File);
+  const cover = ref<File | null>(null);
 
   const createArticle = async () =>{
     try{

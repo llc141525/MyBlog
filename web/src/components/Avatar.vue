@@ -21,7 +21,7 @@
           <v-list-item
             :prepend-avatar="store.avatarUrl || 'https://picsum.photos/500/300?random=1'"
             subtitle="邮箱"
-            title="作者"
+            :title="store.username"
           >
             <template #append>
               <v-btn
