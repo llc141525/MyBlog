@@ -30,7 +30,7 @@ public class Comment {
     private Comment parentComment;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentComment", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentComment", orphanRemoval = true, cascade = CascadeType.REMOVE)
     @OrderBy("createTime asc")
     @JsonManagedReference
     @ToString.Exclude

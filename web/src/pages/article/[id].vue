@@ -1,7 +1,5 @@
 <template>
-
   <div>
-
     <v-app id="app">
       <v-layout>
         <v-navigation-drawer
@@ -33,7 +31,7 @@
                   >
                     <template #append>
                       <VBtn variant="text" @click="cnacel"> 取消</VBtn>
-                      <v-btn @click="createComment">提交</v-btn>
+                      <v-btn :disabled="!commentContent.trim()" @click="createComment">提交</v-btn>
                     </template>
                   </VTextarea>
                   <div v-if="loading" class="text-center py-4">
@@ -85,29 +83,19 @@
       console.log(err)
     }
   }
-
-
-  // const refresh = ref(false)
-  // watch(refresh, ()=>{
-  //   console.log('refresh', refresh.value)
-  //   if(refresh.value == true){
-  //     getComment()
-  //     refresh.value = false
-  //   }
-  // })
   const cnacel = ()=>{
     commentContent.value = ''
   }
   const createComment = async ()=>{
     try{
       loading.value = true
-      commentContent.value = ''
       const id = (route.params as { id: number }).id
       const res = await commentApi.createComment({
         content: commentContent.value,
         articleId: id,
       })
       console.log(res)
+      commentContent.value = ''
       getComment()
       loading.value = false
     }catch(err){

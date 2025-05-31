@@ -125,10 +125,6 @@ public class CommentService {
                         comment.removeChildComment(childComment);
                         removeCommentRelationship(childComment);
                     });
-//                    childComments.forEach(childComment -> {
-//                        comment.removeChildComment(childComment);
-//                        removeCommentRelationship(childComment);
-//                    });
                 });
 
         commentRepository.deleteById(commentId);

@@ -15,6 +15,7 @@ import org.example.myblog.model.Article;
 import org.example.myblog.model.Comment;
 import org.example.myblog.model.Users;
 import org.example.myblog.repository.ArticleRepository;
+import org.example.myblog.repository.CommentRepository;
 import org.example.myblog.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -37,6 +38,7 @@ public class ArticleService {
     private final ArticleMapper articleMapper;
     private final CommentService commentService;
     private final RedisCacheManager cacheManager;
+    private final CommentRepository commentRepository;
 
     // Service层改造
     @Transactional(readOnly = true)
@@ -98,7 +100,9 @@ public class ArticleService {
                 stream().
                 map(Comment::getId).
                 toList();
-        commentIds.forEach(commentService::deleteComment);
+        //            commentService.deleteComment(commentId);
+        commentIds.forEach(commentRepository::deleteById);
+
 //        article.getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
 
         // 移除和 user 的双向关系

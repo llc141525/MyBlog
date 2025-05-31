@@ -135,7 +135,9 @@
   const toReply = ref(false);
   const commentContent = ref('');
   const showChild = ref(false);
-
+  watch(commentContent, ()=>{
+    console.log('评论内容是' , commentContent.value)
+  })
   // 时间格式化函数
   const formatTime = (time: string | Date) => {
     const date = new Date(time);

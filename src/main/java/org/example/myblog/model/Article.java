@@ -53,7 +53,10 @@ public class Article {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
