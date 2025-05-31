@@ -21,7 +21,7 @@
 
         <v-text-field
           v-model="newPassword"
-          :append-icon="showPassword ? mdiEyeOff : mdiEye"
+          append-icon="showPassword ? mdiEyeOff : mdiEye"
           class="mb-4"
           clearable
           label="新密码"
@@ -73,7 +73,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { mdiEye, mdiEyeOff } from '@mdi/js';
   import { ref } from 'vue';
   const showConfirmPassword = ref(false)
 

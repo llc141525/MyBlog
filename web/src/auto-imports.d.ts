@@ -6,7 +6,18 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const ArticleDetailResponse: typeof import('@/types/businessType')['ArticleDetailResponse']
+  const ArticleHomeResponse: typeof import('@/types/businessType')['ArticleHomeResponse']
+  const BaseResponse: typeof import('@/types/businessType')['BaseResponse']
+  const CommentResponse: typeof import('@/types/businessType')['CommentResponse']
+  const CreateArticleRequest: typeof import('@/types/businessType')['CreateArticleRequest']
+  const CreateCommentRequest: typeof import('@/types/businessType')['CreateCommentRequest']
   const EffectScope: typeof import('vue')['EffectScope']
+  const ErrorResponse: typeof import('@/types/businessType')['ErrorResponse']
+  const Pageable: typeof import('@/types/businessType')['Pageable']
+  const UpdateArticleRequest: typeof import('@/types/businessType')['UpdateArticleRequest']
+  const UsersRequest: typeof import('@/types/businessType')['UsersRequest']
+  const UsersResponse: typeof import('@/types/businessType')['UsersResponse']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
@@ -81,7 +92,18 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
+    readonly ArticleDetailResponse: UnwrapRef<typeof import('@/types/businessType')['ArticleDetailResponse']>
+    readonly ArticleHomeResponse: UnwrapRef<typeof import('@/types/businessType')['ArticleHomeResponse']>
+    readonly BaseResponse: UnwrapRef<typeof import('@/types/businessType')['BaseResponse']>
+    readonly CommentResponse: UnwrapRef<typeof import('@/types/businessType')['CommentResponse']>
+    readonly CreateArticleRequest: UnwrapRef<typeof import('@/types/businessType')['CreateArticleRequest']>
+    readonly CreateCommentRequest: UnwrapRef<typeof import('@/types/businessType')['CreateCommentRequest']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ErrorResponse: UnwrapRef<typeof import('@/types/businessType')['ErrorResponse']>
+    readonly Pageable: UnwrapRef<typeof import('@/types/businessType')['Pageable']>
+    readonly UpdateArticleRequest: UnwrapRef<typeof import('@/types/businessType')['UpdateArticleRequest']>
+    readonly UsersRequest: UnwrapRef<typeof import('@/types/businessType')['UsersRequest']>
+    readonly UsersResponse: UnwrapRef<typeof import('@/types/businessType')['UsersResponse']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
