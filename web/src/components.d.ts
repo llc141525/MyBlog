@@ -12,7 +12,7 @@ declare module 'vue' {
     ArticleDetail: typeof import('./components/ArticleDetail.vue')['default']
     ArticleHome: typeof import('./components/ArticleHome.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
-    MarkdownView: typeof import('./components/MarkdownView.vue')['default']
+    Comment: typeof import('./components/Comment.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tests: typeof import('./components/Tests.vue')['default']
