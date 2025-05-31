@@ -1,48 +1,18 @@
 import type {
   ArticleDetailResponse,
   ArticleHomeResponse,
+  BaseResponse,
   CreateArticleRequest,
   CreateCommentRequest,
-  UpdateArticleRequest,
-  UsersRequest,
+  ErrorResponse,
+  Pageable,
+  UpdateArticleRequest,UsersRequest,
+
 } from '@/types/index.ts'
 
 // 用于请求的默认数据
 export class defaultFactory {
-  static createDefaultArticle (defaults: Partial<CreateArticleRequest>) {
-    return {
-      title: '默认标题',
-      content: '默认内容',
-      cover_url: 'https://picsum.photos/200/300',
-      status: true,
-      ...defaults,
-    } satisfies CreateArticleRequest
-  }
-
-  static createDefaultComment (defaults: Partial<CreateCommentRequest>) {
-    return {
-      content: '默认内容',
-      articleId: 1,
-      ...defaults,
-    } satisfies CreateCommentRequest
-  }
-
-  static createDefaultUsers (defaults: Partial<UsersRequest>) {
-    return {
-      username: 'admin',
-      password: 'admin',
-      ...defaults,
-    } satisfies UsersRequest
-  }
-
-  static defaultUpdateUser (defaults: Partial<UsersRequest>) {
-    return {
-      username: '',
-      password: '',
-      ...defaults,
-    } satisfies UsersRequest
-  }
-
+  // 用于创建的请求的工厂函数
   static defaultUsers () {
     return {
       username: '',
@@ -50,18 +20,51 @@ export class defaultFactory {
     } satisfies UsersRequest
   }
 
-  static defaultUpdateArticle (defaults: Partial<UpdateArticleRequest>) {
+  static defaultCreateArticle ():CreateArticleRequest {
+    return {
+      title: '默认标题',
+      content: '默认内容',
+      cover_url: 'https://picsum.photos/200/300',
+      status: true,
+    }
+  }
+
+  static defaultCreateComment ():CreateCommentRequest {
+    return {
+      content: '默认内容',
+      articleId: 1,
+    }
+  }
+
+  static defaultCreateUsers ():UsersRequest {
+    return {
+      username: 'admin',
+      password: 'admin',
+
+    }
+  }
+
+  // 用于更新的请求的工厂函数
+  static defaultUpdateUser ():UsersRequest {
+    return {
+      username: '',
+      password: '',
+
+    }
+  }
+
+  static defaultUpdateArticle () : UpdateArticleRequest{
     return {
       articleId: 1,
       title: '默认标题',
       content: '默认内容',
       cover_url: 'https://picsum.photos/200/300',
       status: true,
-      ...defaults,
-    } satisfies UpdateArticleRequest
+    }
   }
 
-  static defaultArticleHomeRes (defaults: Partial<ArticleHomeResponse>) {
+  // 默认响应
+  static defaultArticleHomeResponse () {
     return {
       id: 1,
       title: '默认标题',
@@ -70,14 +73,14 @@ export class defaultFactory {
       createTime: '2021-01-01 00:00:00',
       updateTime: '2021-01-01 00:00:00',
       usersId: 1,
-      ...defaults,
+      commentLength:0,
     } satisfies ArticleHomeResponse
 
   }
 
-  static defaultArticleDetailRes (defaults: Partial<ArticleDetailResponse>) {
+  static defaultArticleDetailResponse () :ArticleDetailResponse{
     return {
-      ...defaults,
+
       id: 1,
       title: '默认标题',
       content: '默认内容',
@@ -89,7 +92,36 @@ export class defaultFactory {
       usersAvatarUrl: 'https://picsum.photos/200/300',
       commentIds: [1, 2, 3],
 
-    } satisfies ArticleDetailResponse
+    }
   }
 
+
+  static defaultBaseResponse (){
+    return{
+      code: 0,
+      data: null,
+      message: '',
+    }satisfies BaseResponse<unknown>
+  }
+
+  static defaultErrorResponse ():ErrorResponse {
+    return {
+      status: 0,
+      code: 0,
+      message: '',
+      data: null,
+    }
+  }
+
+  static defaultPageableResponse<T> ()
+    :Pageable<T>
+  {
+    return {
+      data: [] as T[],
+      totalPages: 1,
+      currentPage: 1,
+      totalElements: 0,
+      pageSize: 0,
+    }
+  }
 }

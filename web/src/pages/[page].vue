@@ -12,22 +12,22 @@
             lg="4"
             md="6"
           >
-            <ArticleCard :article="article" :cnt="n" />
+            <ArticleCard :id="article.id" :article="article" :cnt="article.id" />
           </v-col>
         </v-row>
       </div>
 
-      <div class="pagination-container">
-        <v-pagination
-          v-model="page"
-          circle
-          color="primary"
-          :length="10"
-        />
-      </div>
+      <v-pagination
+        v-model="page"
+        circle
+        class="my-10"
+        color="primary"
+        :length="totalPage"
+        total-visible="5"
+      />
     </div>
 
-    {{ articleHome }}
+    <!-- {{ articleHome }} -->
 
   </v-main>
 
@@ -62,6 +62,8 @@
     totalElements: 0,
     pageSize: 10,
   })
+
+  const totalPage = ref(0)
   const articles = ref<ArticleHomeResponse[]>([])
   // 获取路由参数, page 是页数.
   const page = ref(Number((route.params as { page: string }).page) || 1)
@@ -73,10 +75,12 @@
       ...res,
     }
     articles.value = articleHome.value.data
-    console.log('articleHome:')
-    console.log(articleHome.value.data)
-    console.log('articles:')
-    console.log(articles.value)
+    totalPage.value = articleHome.value.totalPages
+    console.log(articleHome.value.totalPages)
+    // console.log('articleHome:')
+    // console.log(articleHome.value.data)
+    // console.log('articles:')
+    // console.log(articles.value)
   }
   onMounted(async () => {
     await getArticleHome()

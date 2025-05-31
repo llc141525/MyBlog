@@ -12,23 +12,24 @@
       <v-form ref="form" @submit.prevent="login">
         <v-text-field
           v-model="userVar.username"
+          autofocus
           class="mb-4"
           clearable
           :error="formHasError"
           :error-messages="errorMessage"
           label="用户名"
-          :prepend-inner-icon="mdiAccount"
+          prepend-inner-icon="mdi-account"
           required
           :rules="usernameRules"
           variant="outlined"
         />
         <v-text-field
           v-model="userVar.password"
-          :append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :error="formHasError"
           :error-messages="errorMessage"
           label="密码"
-          :prepend-inner-icon="mdiLock"
+          prepend-inner-icon="mdi-lock"
           required
           :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
@@ -73,7 +74,6 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { mdiAccount, mdiEye, mdiEyeOff, mdiLock } from '@mdi/js';
   const rememberMe = ref(false)
   const showPassword = ref(false)
   const loading = ref(false)
@@ -93,16 +93,19 @@
   import type { UsersRequest, UsersResponse } from '@/types/index'
   import { defaultFactory } from '@/types/factory'
   import { usersApi } from '@/api/users'
+  import { useAppStore } from '@/stores/app'
 
   const errorMessage = ref('')
   const formHasError = ref(false)
   const userVar = ref<UsersRequest>(defaultFactory.defaultUsers())
   const user = ref<UsersResponse | null>(null)
   const router = useRouter()
+  const store = useAppStore()
   const login = async () => {
     loading.value = true
     try{
       user.value = await usersApi.login(userVar.value)
+      store.login(user.value.id)
       router.push('/1')
     }catch(e){
       console.log(e)

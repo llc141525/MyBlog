@@ -17,7 +17,7 @@
           :error="formHasError"
           :error-messages="errorMessage"
           label="用户名"
-          :prepend-inner-icon="mdiAccount"
+          prepend-inner-icon="mdi-account"
           required
           :rules="usernameRules"
           :success="registerSuccess"
@@ -26,12 +26,12 @@
 
         <v-text-field
           v-model="userVar.password"
-          :append-inner-icon="showPassword ? mdiEyeOff : mdiEye"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           class="mb-4"
           :error="formHasError"
           :error-messages="errorMessage"
           label="密码"
-          :prepend-inner-icon="mdiLock"
+          prepend-inner-icon="mdi-lock"
           required
           :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
@@ -41,12 +41,12 @@
 
         <v-text-field
           v-model="confirmPassword"
-          :append-inner-icon="showConfirmPassword ? mdiEyeOff : mdiEye"
+          :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
           class="mb-4"
           :error="formHasError"
           :error-messages="errorMessage"
           label="确认密码"
-          :prepend-inner-icon="mdiLock"
+          prepend-inner-icon="mdi-lock"
           required
           :rules="confirmPasswordRules"
           :type="showConfirmPassword ? 'text' : 'password'"
@@ -91,7 +91,6 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { mdiAccount, mdiEye, mdiEyeOff, mdiLock } from '@mdi/js';
   const confirmPassword = ref('')
   const rememberMe = ref(false)
   const showPassword = ref(false)
@@ -118,14 +117,11 @@
     (v:string) => v === userVar.value.password || '密码不匹配',
   ]
 
-
-  import type {
-    UsersRequest,
-    UsersResponse,
-  } from '@/types';
   import { usersApi } from '@/api/users';
   import { defaultFactory } from '@/types/factory.ts'
-  const userVar = ref<UsersRequest>(defaultFactory.defaultUsers())
+  import type { UsersRequest, UsersResponse } from '@/types'
+
+  const userVar = ref<UsersRequest>(defaultFactory.defaultCreateUsers())
   const user = ref<UsersResponse>()
   const register = async () => {
     loading.value = true
@@ -134,7 +130,7 @@
       loading.value = false
       errorMessage.value = ''
       formHasError.value = false
-      userVar.value = defaultFactory.defaultUsers()
+      // userVar.value = defaultFactory.defaultUsers()
       registerSuccess.value = true
       router.push('/auth/Login')
     }catch(e){

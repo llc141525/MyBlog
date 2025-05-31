@@ -68,7 +68,7 @@
           <v-btn
             color="primary"
             variant="text"
-            @click="menu = false"
+            @click="logout"
           >
             登出
           </v-btn>
@@ -78,13 +78,20 @@
   </div>
 </template>
 
-<script>
-  export default {
-    data: () => ({
-      fav: true,
-      menu: false,
-      message: false,
-      hints: true,
-    }),
+<script setup lang="ts">
+  import { usersApi } from '@/api/users';
+  import { useAppStore } from '@/stores/app';
+  const menu = ref(false);
+  const store = useAppStore()
+
+  const logout = async ()=>{
+    try {
+      await usersApi.logout();
+      menu.value = false;
+      store.userId = 0
+      store.isLogin = false
+    }catch(err){
+      console.warn(err)
+    }
   }
 </script>
