@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <MdEditor v-model="text" :theme="store.isDarkMode ? 'dark' : 'light'" />
+    <MdEditor
+      id="md-editor"
+      v-model="text"
+      :theme="store.isDarkMode ? 'dark' : 'light'"
+    />
     <v-text-field v-model="title" placeholder="文章标题" />
     <v-btn text="提交文章" @click="createArticle" />
     <VSnackbar
@@ -45,6 +49,11 @@
       console.error(err)
     }
   }
-
-
 </script>
+
+<style scoped>
+:deep(.md-editor-preview) {
+  font-size: 18px !important; /* 使用px单位更精确 */
+  line-height: 1.8 !important;
+}
+</style>

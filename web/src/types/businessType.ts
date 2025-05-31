@@ -31,6 +31,7 @@ export interface ArticleHomeResponse {
   usersId: number,
   commentLength: number,
   summarize: string,
+  authorName: string
 }
 
 export interface ArticleDetailResponse {

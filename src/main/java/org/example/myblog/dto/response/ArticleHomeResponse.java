@@ -16,5 +16,7 @@ public record ArticleHomeResponse(
         LocalDateTime updateTime,
         Long usersId,
         Long commentLength,
-        String summarize) implements Serializable {
+        String summarize,
+        String authorName
+) implements Serializable {
 }

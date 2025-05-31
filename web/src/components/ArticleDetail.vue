@@ -119,18 +119,21 @@
 
 </script>
 <style scoped>
+
+:deep(.md-editor-preview) {
+  font-size: 20px !important; /* 使用px单位更精确 */
+  line-height: 1.8 !important;
+
+}
+.md-editor{
+   background-color: #FFFBFE;
+}
 .md-editor-dark{
   background-color: #212121;
 }
-/* 添加过渡动画 */
-/* .v-fab-transition-enter-active,
-.v-fab-transition-leave-active {
-  transition: all 0.4s ease;
+/* 单独调整代码块字体 */
+:deep(.md-editor-code-block ) {
+  font-size: 20px !important;
 }
 
-.v-fab-transition-enter-from,
-.v-fab-transition-leave-to {
-  opacity: 0;
-  transform: translateY(100px);
-} */
 </style>

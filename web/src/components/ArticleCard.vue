@@ -19,7 +19,7 @@
         prepend-icon="mdi-account"
         size="small"
       >
-        {{ props.article.usersId }}
+        {{ props.article.authorName }}
       </v-chip>
       <template #placeholder>
         <div class="d-flex align-center justify-center fill-height">
@@ -42,16 +42,27 @@
         {{ article.summarize }}
       </v-card-subtitle>
     </v-card-item>
+    <div>
 
-    <v-btn
-      append-icon="mdi-arrow-right"
-      class="my-2 mx-6"
-      color="secondary"
-      :to="`/article/${props.id}`"
-      variant="flat"
-    >
-      阅读更多
-    </v-btn>
+      <v-btn
+        append-icon="mdi-arrow-right"
+        class="my-2 mx-6"
+        color="secondary"
+        :to="`/article/${props.id}`"
+        variant="flat"
+      >
+        阅读更多
+      </v-btn>
+
+      <v-btn
+        v-if="store.useId === props.article.usersId"
+        append-icon="mdi-delete"
+        color="error"
+        @click="deletArticle"
+      >
+        删除
+      </v-btn>
+    </div>
 
 
     <div class="d-flex align-center justify-start text-medium-emphasis text-caption px-6 py-4">
@@ -68,15 +79,24 @@
 </template>
 
 <script lang="ts" setup>
-
-
-  // import { mdiAccount, mdiArrowRight, mdiCalendar, mdiComment, mdiEye } from '@mdi/js';
+  import { useAppStore } from '@/stores/app';
+  import { articleApi } from '@/api/article'
+  const emit = defineEmits(['delete-article'])
 
   const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
+  console.log(props.article)
   const hover = ref(false);
-
+  const store = useAppStore()
   console.log(props.article.cover_url)
 
+  const deletArticle = async ()=>{
+    try{
+      await articleApi.deleteArticle(props.id)
+      emit('delete-article')
+    }catch (e){
+      console.log(e)
+    }
+  }
 </script>
 
 <style scoped>

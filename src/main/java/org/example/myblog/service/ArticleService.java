@@ -12,6 +12,7 @@ import org.example.myblog.exception.errors.ArticleError;
 import org.example.myblog.exception.errors.UserError;
 import org.example.myblog.mapper.ArticleMapper;
 import org.example.myblog.model.Article;
+import org.example.myblog.model.Comment;
 import org.example.myblog.model.Users;
 import org.example.myblog.repository.ArticleRepository;
 import org.example.myblog.repository.UserRepository;
@@ -93,7 +94,12 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
 
         // 删除文章所属的评论
-        article.getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
+        List<Long> commentIds = article.getComments().
+                stream().
+                map(Comment::getId).
+                toList();
+        commentIds.forEach(commentService::deleteComment);
+//        article.getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
 
         // 移除和 user 的双向关系
         article.getUsers().removeArticle(article);

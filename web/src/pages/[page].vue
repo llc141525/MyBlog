@@ -14,7 +14,12 @@
               lg="4"
               md="6"
             >
-              <ArticleCard :id="article.id" :article="article" :cnt="article.id" />
+              <ArticleCard
+                :id="article.id"
+                :article="article"
+                :cnt="article.id"
+                @delete-article="getArticleHome"
+              />
             </v-col>
           </v-row>
         </div>
@@ -93,6 +98,8 @@
 
     isUpdating = false;
   }, { immediate: true })
+
+
 </script>
 <style scoped>
 .pagination-container {

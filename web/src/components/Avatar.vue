@@ -86,13 +86,14 @@
   const fav = ref(false);
   const message = ref(true);
   const hints = ref(false);
-
+  const router = useRouter()
   const logout = async ()=>{
     try {
       await usersApi.logout();
       menu.value = false;
       store.userId = 0
       store.isLogin = false
+      router.push('/auth/login')
     }catch(err){
       console.warn(err)
     }

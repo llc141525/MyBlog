@@ -22,8 +22,9 @@
         </div>
 
         <!-- 评论内容 -->
-        <div class="text-body-1 mb-2">
+        <div class="text-body-1 mb-2 ml-4 py-4 font-weight-bold d-flex">
           {{ props.comment.content }}
+          <VIcon class="ml-auto mr-3" icon="mdi-dots-vertical" />
         </div>
 
         <!-- 操作按钮 -->
@@ -87,7 +88,7 @@
       <div v-if="showChild && childLength > 0" class="child-comments">
         <VDivider class="mx-4" />
 
-        <div v-for="childComment in props.comment.childComment" :key="childComment.id" class="py-3 px-6">
+        <div v-for="childComment in props.comment.childComment" :key="childComment.id" class="py-3 px-6 ml-10">
           <VRow align="start" no-gutters>
             <!-- 子评论头像 -->
             <VCol class="mr-3" cols="auto">
@@ -99,18 +100,19 @@
             <!-- 子评论内容 -->
             <VCol>
               <div class="d-flex align-center mb-1">
-                <span class="font-weight-bold text-body-2">{{ childComment.username }}</span>
+                <span class="font-weight-bold text-subtitle-2">{{ childComment.username }}</span>
                 <VChip v-if="isAuthor" class="ml-2" color="primary" x-small>作者</VChip>
                 <span class="ml-auto text-caption text-medium-emphasis">
                   {{ formatTime(childComment.createTime) }}
                 </span>
               </div>
 
-              <div class="text-body-2">
+              <div class="text-body-1 ml-10 mt-6 mb-3 ">
                 {{ childComment.content }}
               </div>
             </VCol>
           </VRow>
+          <VDivider />
         </div>
       </div>
     </VExpandTransition>

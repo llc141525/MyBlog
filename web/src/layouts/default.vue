@@ -15,17 +15,24 @@
           variant="outlined"
         />
 
-        <VSpacer />
+        <VSpacer class="ml-10" />
         <VBtn
           :disabled="!store.isLogin"
           prepend-icon="mdi-pencil"
           text="新建文章"
           @click="goWrite"
         />
-        <VBtn icon="mdi-theme-light-dark" @click="toggleTheme" />
-        <VBtn icon="mdi-cog-outline" />
+        <VBtn
+          class="mr-2"
+          icon="mdi-theme-light-dark"
+          @click="toggleTheme"
+        />
+        <VBtn class="mr-2" icon="mdi-cog-outline" />
         <VDivider class="mx-2" vertical />
-        <Avatar v-if="store.isLogin" />
+        <Avatar
+          v-if="store.isLogin"
+          class="ma-3"
+        />
         <VBtn
           v-else
           text="登录/注册"

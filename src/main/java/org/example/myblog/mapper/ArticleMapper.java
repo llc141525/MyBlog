@@ -18,6 +18,7 @@ public interface ArticleMapper {
     @Mapping(target = "usersId", source = "users.id")
     @Mapping(target = "commentLength", source = "comments")
     @Mapping(target = "summarize", expression = "java(mapSummarize(article))")
+    @Mapping(target = "authorName", expression = "java(article.getUsers().getUsername())")
     ArticleHomeResponse articleToArticleHomeResponse(Article article);
 
     //    @Named("mapSummarize")
