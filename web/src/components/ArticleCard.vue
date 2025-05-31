@@ -84,10 +84,10 @@
   const emit = defineEmits(['delete-article'])
 
   const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
-  console.log(props.article)
+  // console.log(props.article)
   const hover = ref(false);
   const store = useAppStore()
-  console.log(props.article.cover_url)
+  // console.log(props.article.cover_url)
 
   const deletArticle = async ()=>{
     try{

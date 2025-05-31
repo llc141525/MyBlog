@@ -25,6 +25,9 @@ export const useAppStore = defineStore('app',{
     troggleDarkMode (){
       this.isDarkMode = !this.isDarkMode
     },
+    changeAvatar (avatarUrl:string){
+      this.avatarUrl = avatarUrl
+    },
   },
   persist:{
     key: 'app-store', // 存储键名

@@ -76,11 +76,11 @@
       const id = (route.params as { id: number }).id
       const res = await commentApi.getComment(id)
       comments.value = res
-      console.log(comments.value)
-      console.log(`comments: ${comments.value}`)
+      // console.log(comments.value)
+      // console.log(`comments: ${comments.value}`)
       loading.value = false
     }catch(err){
-      console.log(err)
+      console.warn(err)
     }
   }
   const cnacel = ()=>{
@@ -90,16 +90,17 @@
     try{
       loading.value = true
       const id = (route.params as { id: number }).id
-      const res = await commentApi.createComment({
+      await commentApi.createComment({
         content: commentContent.value,
         articleId: id,
+        
       })
-      console.log(res)
+      // console.log(res)
       commentContent.value = ''
       getComment()
       loading.value = false
     }catch(err){
-      console.log(err)
+      console.warn(err)
     }
   }
 

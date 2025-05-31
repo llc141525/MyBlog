@@ -6,7 +6,7 @@
       <!-- 头像区域 -->
       <VCol class="mr-3" cols="auto">
         <VAvatar color="primary" size="48">
-          <VImg alt="用户头像" src="https://cdn.vuetifyjs.com/images/john.jpg" />
+          <VImg alt="用户头像" :src="props.comment.usersAvatarUrl || 'https://cdn.vuetifyjs.com/images/john.jpg'" />
         </VAvatar>
       </VCol>
 
@@ -93,7 +93,10 @@
             <!-- 子评论头像 -->
             <VCol class="mr-3" cols="auto">
               <VAvatar color="primary" size="36">
-                <VImg alt="用户头像" src="https://cdn.vuetifyjs.com/images/john.jpg" />
+                <VImg
+                  alt="用户头像"
+                  :src="childComment.avatar || 'https://cdn.vuetifyjs.com/images/john.jpg'"
+                />
               </VAvatar>
             </VCol>
 
@@ -129,15 +132,15 @@
   const store = useAppStore();
   const route = useRoute();
   const props = defineProps<{ comment: CommentResponse }>();
-
+  console.log(props.comment.childComment)
   const childLength = computed(() => props.comment.childComment?.length || 0);
   const isAuthor = computed(() => store.useId === props.comment.usersId);
   const toReply = ref(false);
   const commentContent = ref('');
   const showChild = ref(false);
-  watch(commentContent, ()=>{
-    console.log('评论内容是' , commentContent.value)
-  })
+  // watch(commentContent, ()=>{
+  //   console.log('评论内容是' , commentContent.value)
+  // })
   // 时间格式化函数
   const formatTime = (time: string | Date) => {
     const date = new Date(time);

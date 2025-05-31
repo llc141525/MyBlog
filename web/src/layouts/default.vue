@@ -27,7 +27,7 @@
           icon="mdi-theme-light-dark"
           @click="toggleTheme"
         />
-        <VBtn class="mr-2" icon="mdi-cog-outline" />
+        <VBtn class="mr-2" icon="mdi-cog-outline" @click="goSettings" />
         <VDivider class="mx-2" vertical />
         <Avatar
           v-if="store.isLogin"
@@ -55,12 +55,15 @@
 <script lang="ts" setup>
   const router = useRouter();
   const route = useRoute()
-  console.log(route.fullPath)
+  // console.log(route.fullPath)
   const goHome = ()=>{
     router.push('/1')
   }
   const goWrite = ()=>{
     router.push('/article/Create')
+  }
+  const goSettings = ()=>{
+    router.push('/settings')
   }
   import { useAppStore } from '@/stores/app';
   import { useTheme } from 'vuetify'

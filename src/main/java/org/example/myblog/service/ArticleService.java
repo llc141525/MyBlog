@@ -12,7 +12,6 @@ import org.example.myblog.exception.errors.ArticleError;
 import org.example.myblog.exception.errors.UserError;
 import org.example.myblog.mapper.ArticleMapper;
 import org.example.myblog.model.Article;
-import org.example.myblog.model.Comment;
 import org.example.myblog.model.Users;
 import org.example.myblog.repository.ArticleRepository;
 import org.example.myblog.repository.CommentRepository;
@@ -96,14 +95,7 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
 
         // 删除文章所属的评论
-        List<Long> commentIds = article.getComments().
-                stream().
-                map(Comment::getId).
-                toList();
-        //            commentService.deleteComment(commentId);
-        commentIds.forEach(commentRepository::deleteById);
-
-//        article.getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
+        article.getComments().clear();
 
         // 移除和 user 的双向关系
         article.getUsers().removeArticle(article);
@@ -123,7 +115,6 @@ public class ArticleService {
                 .map(articleMapper::articleToArticleDetailResponse)
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
     }
-
 
 }
 

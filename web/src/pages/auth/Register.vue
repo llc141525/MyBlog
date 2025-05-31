@@ -138,7 +138,7 @@
       registerSuccess.value = true
       router.push('/auth/Login')
     }catch(e){
-      console.log(e)
+      console.warn(e)
       errorMessage.value = (e as Error).message
       formHasError.value = true
       loading.value = false

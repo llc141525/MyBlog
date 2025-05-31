@@ -65,7 +65,6 @@ public class CommentService {
                 () -> {
                     throw new BusinessException(UserError.USER_NOT_FOUND);
                 });
-
         commentRepository.save(comment);
     }
 
@@ -99,6 +98,7 @@ public class CommentService {
                     .usersUsername(comment.getUsers().getUsername())
                     .childComment(childComment)
                     .username(comment.getUsers().getUsername())
+                    .usersAvatarUrl(comment.getUsers().getAvatarUrl())
                     .build());
         });
         return responses;

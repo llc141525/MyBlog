@@ -69,7 +69,7 @@ interface ChildComment {
   content: string,
   createTime: string,
   username: string,
-  usersAvatarUrl: string,
+  avatar: string,
 }
 
 

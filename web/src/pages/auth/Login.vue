@@ -110,9 +110,10 @@
     try{
       user.value = await usersApi.login(userVar.value)
       store.login(user.value.id, user.value.username, user.value.avatarUrl)
+      console.log(store.avatarUrl)
       router.push('/1')
     }catch(e){
-      console.log(e)
+      console.warn(e)
       errorMessage.value = (e as Error).message
       formHasError.value = true
       loading.value = false
