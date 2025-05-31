@@ -3,6 +3,7 @@ package org.example.myblog.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -24,6 +25,7 @@ public record CreateArticleRequest(
 
         @Schema(example = "false")
         @NotNull(message = "缺少发布状态, 草稿或者已发布")
-        Boolean status
+        Boolean status,
+        MultipartFile cover
 ) implements Serializable {
 }

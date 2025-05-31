@@ -93,7 +93,7 @@
       await commentApi.createComment({
         content: commentContent.value,
         articleId: id,
-        
+
       })
       // console.log(res)
       commentContent.value = ''

@@ -7,7 +7,14 @@
       :theme="store.isDarkMode ? 'dark' : 'light'"
     />
     <v-text-field v-model="title" placeholder="文章标题" />
+    <VFileInput
+      v-model="cover"
+      accept="image/*"
+      label="上传封面"
+      :show-size="true"
+    />
     <v-btn text="提交文章" @click="createArticle" />
+
     <VSnackbar
       v-model="snackBar"
       text="文章创建成功"
@@ -33,11 +40,14 @@
   const snackBar = ref(false)
   const createArticleRequest = ref<CreateArticleRequest>(defaultFactory.defaultCreateArticle())
   const text = ref('');
+  const cover = ref(File);
+
   const createArticle = async () =>{
     try{
       createArticleRequest.value.content = text.value
       createArticleRequest.value.title = title.value
       createArticleRequest.value.status = status.value
+      createArticleRequest.value.cover = cover.value
       await articleApi.createArticle({
         ...createArticleRequest.value,
       })
@@ -49,6 +59,8 @@
       console.error(err)
     }
   }
+
+
 </script>
 
 <style scoped>

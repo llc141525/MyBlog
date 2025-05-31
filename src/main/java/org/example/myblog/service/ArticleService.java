@@ -25,6 +25,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class ArticleService {
     private final CommentService commentService;
     private final RedisCacheManager cacheManager;
     private final CommentRepository commentRepository;
+    private final UserService userService;
 
     // Service层改造
     @Transactional(readOnly = true)
@@ -62,8 +64,15 @@ public class ArticleService {
 
     @Transactional
     public Long createArticle(CreateArticleRequest request, Long userId) {
-        Users users = userRepository.findById(userId).orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
         Article article = articleMapper.createArticleRequestToArticle(request);
+        try {
+            String path = userService.downloadFile(request.cover());
+            article.setCover_url(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         users.addArticle(article);
         Article save = articleRepository.save(article);
         return save.getId();
@@ -115,6 +124,7 @@ public class ArticleService {
                 .map(articleMapper::articleToArticleDetailResponse)
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
     }
+
 
 }
 
