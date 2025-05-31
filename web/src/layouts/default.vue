@@ -16,7 +16,12 @@
         />
 
         <VSpacer />
-        <VBtn prepend-icon="mdi-pencil" text="新建文章" @click="goWrite" />
+        <VBtn
+          :disabled="!store.isLogin"
+          prepend-icon="mdi-pencil"
+          text="新建文章"
+          @click="goWrite"
+        />
         <VBtn icon="mdi-theme-light-dark" @click="toggleTheme" />
         <VBtn icon="mdi-cog-outline" />
         <VDivider class="mx-2" vertical />

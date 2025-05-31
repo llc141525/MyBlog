@@ -138,7 +138,7 @@
     const date = new Date(time);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   };
- const emit = defineEmits(['replied'])
+  const emit = defineEmits(['replied'])
   const reply = async () => {
     try {
       const articleId = (route.params as { id: number }).id;
