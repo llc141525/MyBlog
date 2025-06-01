@@ -7,9 +7,24 @@
         </template>
       </v-breadcrumbs>
     </v-row>
+
+
     <v-row justify="center">
-      <v-col cols="12" md="10">
-        <v-card class="mt-4 pa-4 rounded-lg px-10">
+      <v-col cols="11">
+        <v-card class="mt-4 pa-10 rounded-lg ">
+          <VParallax
+            class="rounded-lg"
+            height="700"
+            :src="articleDetail.cover_url"
+          >
+            <template #placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                  color="grey-lighten-4"
+                  indeterminate
+                />
+              </div>
+            </template></VParallax>
           <v-card-title
             class="text-h3  font-weight-bold "
             style="text-align: center; font-weight: bold;"
@@ -53,7 +68,6 @@
   import { defaultFactory } from '@/types/factory';
   const route = useRoute();
   const store = useAppStore()
-  const articleDetail = ref(defaultFactory.defaultArticleDetailResponse());
 
   const showFab = ref(false);
   let lastScrollPosition = 0;
@@ -96,9 +110,11 @@
     window.removeEventListener('scroll', handleScroll);
   });
   // 统一获取文章方法
+  const articleDetail = ref(defaultFactory.defaultArticleDetailResponse());
   const fetchArticle = async (id: number) => {
     try {
       const res = await articleApi.getArticleDetail(id) as ArticleDetailResponse;
+      console.log(res)
       articleDetail.value = res;
     } catch(err) {
       console.error('文章加载失败', err);

@@ -65,6 +65,10 @@
           >
             关闭
           </v-btn>
+          <VBtn
+            text="注册"
+            @click="register"
+          />
           <v-btn
             color="primary"
             variant="text"
@@ -81,6 +85,7 @@
 <script setup lang="ts">
   import { usersApi } from '@/api/users';
   import { useAppStore } from '@/stores/app';
+  import { VBtn } from 'vuetify/components';
   const menu = ref(false);
   const store = useAppStore()
   const fav = ref(false);
@@ -98,5 +103,10 @@
     }catch(err){
       console.warn(err)
     }
+  }
+
+  const register = ()=>{
+    router.push('/auth/register')
+    menu.value = false;
   }
 </script>

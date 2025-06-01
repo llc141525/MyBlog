@@ -1,8 +1,10 @@
 package org.example.myblog.mapper;
 
 import org.example.myblog.dto.request.CreateArticleRequest;
+import org.example.myblog.dto.response.AllArticleResponse;
 import org.example.myblog.dto.response.ArticleDetailResponse;
 import org.example.myblog.dto.response.ArticleHomeResponse;
+import org.example.myblog.dto.response.OwnerArticleResponse;
 import org.example.myblog.model.Article;
 import org.example.myblog.model.Comment;
 import org.mapstruct.Mapper;
@@ -21,7 +23,6 @@ public interface ArticleMapper {
     @Mapping(target = "authorName", expression = "java(article.getUsers().getUsername())")
     ArticleHomeResponse articleToArticleHomeResponse(Article article);
 
-    //    @Named("mapSummarize")
     default String mapSummarize(Article article) {
         if (article.getSummarize() != null && !article.getSummarize().isEmpty()) {
             return article.getSummarize();
@@ -43,7 +44,21 @@ public interface ArticleMapper {
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "users", ignore = true)
     @Mapping(target = "comments", ignore = true)
+    @Mapping(target = "cover_url", ignore = true)
+//    @Mapping(target = "summarize", ignore = true)
+    @Mapping(target = "summarize", expression = "java(truncateSummary(createArticleRequest))")
     Article createArticleRequestToArticle(CreateArticleRequest createArticleRequest);
+
+    default String truncateSummary(CreateArticleRequest request) {
+        if (request.summarize() == null || request.summarize().isEmpty()) {
+            return request.content().substring(0, 100);
+        } else {
+            String summ = request.summarize()
+                    .replaceAll("[ -~]", "");
+            if (summ.length() > 100) return summ.substring(0, 100);
+            else return summ;
+        }
+    }
 
     @Mapping(target = "commentIds", source = "comments")
     @Mapping(target = "usersAvatarUrl", source = "users.avatarUrl")
@@ -55,11 +70,10 @@ public interface ArticleMapper {
                 .stream().map(Comment::getId).collect(Collectors.toList());
     }
 
-//    default Long userToId(Users user) {
-//        return (user != null) ? user.getId() : null;
-//    }
-//
-//    default String userToAvatarUrl(Users user) {
-//        return (user != null) ? user.getAvatarUrl() : null;
-//    }
+    @Mapping(target = "articleId", expression = "java(article.getId())")
+    @Mapping(target = "status", expression = "java(article.getStatus())")
+    OwnerArticleResponse articleToOwnerArticleResponse(Article article);
+
+    @Mapping(target = "articleId", expression = "java(article.getId())")
+    AllArticleResponse articleToAllArticleResponse(Article article);
 }

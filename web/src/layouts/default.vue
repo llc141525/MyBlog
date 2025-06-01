@@ -1,70 +1,110 @@
 <template>
   <VApp>
     <v-layout>
-      <VAppBar app color="primary" fixed style="position: fixed;">
-        <VToolbarTitle>
-          <VBtn class="text-h5" variant="text" @click="goHome">
+      <VAppBar
+        app
+        color="primary"
+        elevation="2"
+        fixed
+        height="64"
+        style="position: fixed;"
+      >
+        <div class="d-flex align-center">
+          <VBtn
+            class="text-h5 mr-4 font-weight-bold"
+            prepend-icon="mdi-home"
+            to="/1"
+            variant="text"
+          >
             我的博客
           </VBtn>
-        </VToolbarTitle>
-        <VTextField
-          class="mt-5 ml-1"
-          max-width="200"
-          placeholder="搜索文章"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-        />
 
-        <VSpacer class="ml-10" />
-        <VBtn
-          :disabled="!store.isLogin"
-          prepend-icon="mdi-pencil"
-          text="新建文章"
-          @click="goWrite"
-        />
-        <VBtn
-          class="mr-2"
-          icon="mdi-theme-light-dark"
-          @click="toggleTheme"
-        />
-        <VBtn class="mr-2" icon="mdi-cog-outline" @click="goSettings" />
-        <VDivider class="mx-2" vertical />
-        <Avatar
-          v-if="store.isLogin"
-          class="ma-3"
-        />
-        <VBtn
-          v-else
-          text="登录/注册"
-          variant="text"
-          @click="router.push('/auth/Login')"
-        />
+          <VBtn
+            class="ml-4"
+            prepend-icon="mdi-magnify"
+            variant="tonal"
+            @click="dialog=true"
+          >
+            搜索
+            <template #append>
+              <VChip
+                class="shortcut-chip"
+                color="primary"
+                variant="outlined"
+              >
+                ctrl + k
+              </VChip>
+            </template>
+          </VBtn>
+        </div>
+
+        <VSpacer />
+
+        <div class="d-flex align-center">
+          <VBtn
+            v-if="store.isLogin"
+            class="mr-2"
+            color="secondary"
+            prepend-icon="mdi-pencil"
+            to="/article/Create"
+            variant="flat"
+          >
+            新建文章
+          </VBtn>
+
+          <!-- 工具功能区 -->
+          <VBtn
+            class="mr-1"
+            icon="mdi-theme-light-dark"
+            variant="text"
+            @click="toggleTheme"
+          />
+          <VBtn
+            class="mr-3"
+            icon="mdi-cog-outline"
+            to="/settings"
+            variant="text"
+          />
+
+          <!-- 用户功能区 -->
+          <VDivider class="mx-2" inset vertical />
+          <Avatar
+            v-if="store.isLogin"
+            class="mr-2"
+            size="36"
+          />
+          <VBtn
+            v-else
+            density="comfortable"
+            text="登录"
+            variant="text"
+            @click="router.push('/auth/Login')"
+          />
+        </div>
       </VAppBar>
 
       <v-main>
-        <v-container fluid>
-          <VSlideXTransition mode="out-in">
-            <router-view :key="route.path" />
-          </VSlideXTransition>
+        <v-container class="mt-12" fluid>
+          <router-view v-slot="{ Component }">
+            <VSlideXTransition mode="out-in">
+              <component :is="Component" :key="route.path" />
+            </VSlideXTransition>
+          </router-view>
         </v-container>
       </v-main>
     </v-layout>
+
+    <VDialog v-model="dialog">
+      <SearchCard @close-dialog="dialog = false" />
+    </VDialog>
   </VApp>
 </template>
 
 <script lang="ts" setup>
   const router = useRouter();
   const route = useRoute()
-  // console.log(route.fullPath)
-  const goHome = ()=>{
-    router.push('/1')
-  }
-  const goWrite = ()=>{
-    router.push('/article/Create')
-  }
-  const goSettings = ()=>{
-    router.push('/settings')
-  }
+
+
   import { useAppStore } from '@/stores/app';
   import { useTheme } from 'vuetify'
   const theme = useTheme()
@@ -80,5 +120,27 @@
       theme.global.name.value = store.isDarkMode ? 'dark' : 'light'
     }
   })
+  const dialog = ref(false)
 
 </script>
+
+<style scoped>
+/* 优化按钮悬停效果 */
+.v-btn:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* 快捷键标签样式 */
+.shortcut-chip {
+  font-size: 0.65rem;
+  padding: 0 6px;
+  height: 20px;
+  margin-left: 8px;
+}
+
+/* 导航栏高度适配 */
+.v-toolbar {
+  padding: 0 16px;
+}
+</style>

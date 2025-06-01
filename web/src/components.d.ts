@@ -12,8 +12,10 @@ declare module 'vue' {
     ArticleDetail: typeof import('./components/ArticleDetail.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
     Comment: typeof import('./components/Comment.vue')['default']
+    Editor: typeof import('./components/Editor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchCard: typeof import('./components/SearchCard.vue')['default']
     Tests: typeof import('./components/Tests.vue')['default']
   }
 }

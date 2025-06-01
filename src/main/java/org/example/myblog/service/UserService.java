@@ -80,9 +80,8 @@ public class UserService {
         Optional.ofNullable(updateUserRequest.password())
                 .map(bCryptPasswordEncoder::encode)
                 .ifPresent(password -> {
-                    if (!password.isBlank()) {
-                        users.setPassword(password);
-                    }
+                    if (password.isBlank()) return;
+                    users.setPassword(password);
                 });
 
         // 修改用户名

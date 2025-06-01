@@ -45,6 +45,7 @@ export interface ArticleDetailResponse {
   usersId: number,
   usersAvatarUrl: string,
   commentIds: number[],
+  summarize: string
 }
 
 export interface UsersResponse {
@@ -80,7 +81,8 @@ export interface CreateArticleRequest {
   content: string,
   cover_url: string,
   status: boolean,
-  cover: File | null
+  cover: File | null,
+  summarize?: string
 }
 
 export interface CreateCommentRequest {
@@ -95,6 +97,7 @@ export interface UpdateArticleRequest {
   content?: string,
   cover_url?: string,
   status?: boolean,
+  summarize?: string
 }
 
 export interface UsersRequest {

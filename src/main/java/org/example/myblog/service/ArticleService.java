@@ -4,9 +4,7 @@ package org.example.myblog.service;
 import lombok.RequiredArgsConstructor;
 import org.example.myblog.dto.request.CreateArticleRequest;
 import org.example.myblog.dto.request.UpdateArticleRequest;
-import org.example.myblog.dto.response.ArticleDetailResponse;
-import org.example.myblog.dto.response.ArticleHomeResponse;
-import org.example.myblog.dto.response.PageResponse;
+import org.example.myblog.dto.response.*;
 import org.example.myblog.exception.BusinessException;
 import org.example.myblog.exception.errors.ArticleError;
 import org.example.myblog.exception.errors.UserError;
@@ -29,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +66,7 @@ public class ArticleService {
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
         Article article = articleMapper.createArticleRequestToArticle(request);
-        if(request.cover() != null){
+        if (request.cover() != null && !request.cover().isEmpty()) {
             try {
                 String path = userService.downloadFile(request.cover());
                 article.setCover_url(path);
@@ -97,6 +96,9 @@ public class ArticleService {
         Optional.ofNullable(request.cover_url()).ifPresent(article::setCover_url);
         Optional.ofNullable(request.content()).ifPresent(article::setContent);
         Optional.ofNullable(request.status()).ifPresent(article::setStatus);
+        Optional.ofNullable(request.summarize())
+                .map(s -> s.length() > 100 ? s.substring(0, 100) : s)
+                .ifPresent(article::setSummarize);
     }
 
     @Transactional
@@ -127,6 +129,19 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
     }
 
+    public List<OwnerArticleResponse> getOwnerArticle(Long userId) {
+        List<Article> byUsersId = articleRepository.findByUsers_Id(userId);
+        return byUsersId
+                .stream()
+                .map(articleMapper::articleToOwnerArticleResponse)
+                .collect(Collectors.toList());
+    }
 
+    public List<AllArticleResponse> getArticleToSearch() {
+        return articleRepository.findAll()
+                .stream()
+                .map(articleMapper::articleToAllArticleResponse)
+                .toList();
+    }
 }
 

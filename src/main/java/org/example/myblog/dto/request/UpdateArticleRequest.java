@@ -23,6 +23,8 @@ public record UpdateArticleRequest(
         String cover_url,
 
         @Schema(example = "false")
-        Boolean status
+        Boolean status,
+
+        String summarize
 ) implements Serializable {
 }
