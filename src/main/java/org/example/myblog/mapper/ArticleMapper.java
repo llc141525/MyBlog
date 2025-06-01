@@ -1,8 +1,10 @@
 package org.example.myblog.mapper;
 
 import org.example.myblog.dto.request.CreateArticleRequest;
+import org.example.myblog.dto.response.AllArticleResponse;
 import org.example.myblog.dto.response.ArticleDetailResponse;
 import org.example.myblog.dto.response.ArticleHomeResponse;
+import org.example.myblog.dto.response.OwnerArticleResponse;
 import org.example.myblog.model.Article;
 import org.example.myblog.model.Comment;
 import org.mapstruct.Mapper;
@@ -43,14 +45,20 @@ public interface ArticleMapper {
     @Mapping(target = "users", ignore = true)
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "cover_url", ignore = true)
-    @Mapping(target = "summarize", ignore = true)
-//    @Mapping(target = "summarize", expression = "java((createArticleRequest.summarize().substring(0,100)))")
+//    @Mapping(target = "summarize", ignore = true)
+    @Mapping(target = "summarize", expression = "java(truncateSummary(createArticleRequest))")
     Article createArticleRequestToArticle(CreateArticleRequest createArticleRequest);
 
-//    default String truncateSummary(String summary) {
-//        if (summary == null) return null;
-//        return summary.length() > 100 ? summary.substring(0, 100) : summary;
-//    }
+    default String truncateSummary(CreateArticleRequest request) {
+        if (request.summarize() == null || request.summarize().isEmpty()) {
+            return request.content().substring(0, 100);
+        } else {
+            String summ = request.summarize()
+                    .replaceAll("[ -~]", "");
+            if (summ.length() > 100) return summ.substring(0, 100);
+            else return summ;
+        }
+    }
 
     @Mapping(target = "commentIds", source = "comments")
     @Mapping(target = "usersAvatarUrl", source = "users.avatarUrl")
@@ -62,4 +70,9 @@ public interface ArticleMapper {
                 .stream().map(Comment::getId).collect(Collectors.toList());
     }
 
+    @Mapping(target = "articleId", expression = "java(article.getId())")
+    OwnerArticleResponse articleToOwnerArticleResponse(Article article);
+
+    @Mapping(target = "articleId", expression = "java(article.getId())")
+    AllArticleResponse articleToAllArticleResponse(Article article);
 }

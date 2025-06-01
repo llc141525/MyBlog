@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-6"> <!-- 增加整体内边距 -->
+  <v-container class="pa-6">
     <v-card class="pa-6 rounded-lg" elevation="2">
       <!-- 编辑器区域 -->
       <div class="mb-6">
@@ -11,7 +11,6 @@
         />
       </div>
 
-      <!-- 表单区域使用网格布局 -->
       <v-row class="mb-4" :gutter="16">
         <v-col cols="12" md="6">
           <v-text-field
@@ -25,13 +24,12 @@
           <v-text-field
             v-model="summarize"
             dense
-            label="文章概述"
+            label="文章概述(中文)"
             outlined
           />
         </v-col>
       </v-row>
 
-      <!-- 文件上传单独成组 -->
       <div class="mb-6">
         <v-file-input
           v-model="cover"
@@ -43,7 +41,6 @@
         />
       </div>
 
-      <!-- 按钮居中并增加间距 -->
       <div class="text-center mt-4">
         <v-btn
           class="px-8"

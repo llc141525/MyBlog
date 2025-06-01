@@ -8,13 +8,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.myblog.dto.request.CreateArticleRequest;
 import org.example.myblog.dto.request.UpdateArticleRequest;
-import org.example.myblog.dto.response.ArticleDetailResponse;
-import org.example.myblog.dto.response.ArticleHomeResponse;
-import org.example.myblog.dto.response.PageResponse;
+import org.example.myblog.dto.response.*;
 import org.example.myblog.service.ArticleService;
 import org.example.myblog.utils.ApiResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/article")
@@ -62,8 +62,17 @@ public class ArticleController {
         return ApiResponse.success(null);
     }
 
-//    @GetMapping("/owner-article")
-//    public ApiResponse<OwnerArticleResponse> getOwnerArticle(@RequestAttribute Long userId) {
-//        articleService.getOwnerArticle(Long userId);
-//    }
+    @Operation(summary = "展示作者作品")
+    @GetMapping("/owner-article")
+    public ApiResponse<List<OwnerArticleResponse>> getOwnerArticle(@RequestAttribute Long userId) {
+        List<OwnerArticleResponse> ownerArticle = articleService.getOwnerArticle(userId);
+        return ApiResponse.success(ownerArticle);
+    }
+
+    @Operation(summary = "用于搜索")
+    @GetMapping("/all-article")
+    public ApiResponse<List<AllArticleResponse>> getAllArticle() {
+        List<AllArticleResponse> articleToSearch = articleService.getArticleToSearch();
+        return ApiResponse.success(articleToSearch);
+    }
 }

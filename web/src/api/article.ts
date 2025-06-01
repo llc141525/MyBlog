@@ -41,4 +41,11 @@ export const articleApi = {
       params: { articleId },
     })
   },
+  async getOwnerArticle (){
+    try{
+      return await request.get('/article/owner-article')
+    }catch(err){
+      throw new Error((err as ErrorResponse).message)
+    }
+  },
 }

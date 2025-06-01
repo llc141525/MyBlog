@@ -1,77 +1,221 @@
 <template>
-  <v-container class="form-container" fluid>
-    <!-- 头像上传区域 -->
-    <v-row align="center" class="mb-4">
-      <v-col cols="12" md="8">
-        <v-file-input
-          v-model="avatar"
-          accept="image/*"
-          density="comfortable"
-          hide-details="auto"
-          label="上传头像"
-          outlined
-          prepend-icon="mdi-camera"
-        />
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-btn
-          block
-          class="mt-md-0 mt-2"
-          color="primary"
-          :disabled="!avatar"
-          @click="updateAvatar"
-        >
-          <v-icon left>mdi-upload</v-icon>
-          更新头像
-        </v-btn>
-      </v-col>
-    </v-row>
+  <div>
 
-    <!-- 分隔线 -->
-    <v-divider class="my-6" />
+    <v-container
+      class="form-container"
+      fluid
+      max-width="1200"
+    >
+      <v-card
+        class="mb-6"
+        elevation="2"
+      >
+        <v-card-title class="text-h6 font-weight-medium pa-6">
+          头像设置
+        </v-card-title>
 
-    <!-- 用户信息表单 -->
-    <v-form @submit.prevent="updateUser">
-      <v-row class="my-10">
-        <v-text-field
-          v-model="username"
-          density="comfortable"
-          hide-details="auto"
-          label="用户名"
-          outlined
-          prepend-icon="mdi-account"
-        />
-      </v-row>
-      <v-row class="mb-3">
-        <v-text-field
-          v-model="password"
-          density="comfortable"
-          hide-details="auto"
-          label="密码"
-          outlined
-          prepend-icon="mdi-lock"
-          type="password"
-        />
-      </v-row>
-      <!-- 提交按钮 -->
-      <v-row class="mt-6">
-        <v-col cols="12">
-          <v-btn
-            block
-            color="primary"
-            size="large"
-            type="submit"
+        <v-divider />
+
+        <v-card-text class="pa-6">
+          <v-row
+            align="center"
+            class="g-4"
           >
-            <v-icon left>mdi-send</v-icon>
-            更新个人信息
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+            <v-col
+              cols="12"
+              md="8"
+            >
+              <v-file-input
+                v-model="avatar"
+                accept="image/*"
+                class="mb-2"
+                clearable
+                density="comfortable"
+                hide-details="auto"
+                label="上传头像"
+                outlined
+                prepend-icon="mdi-camera"
+              />
+            </v-col>
+
+            <v-col
+              class="text-md-right"
+              cols="12"
+              md="4"
+            >
+              <v-btn
+                block
+                class="mt-md-0 mt-2"
+                color="primary"
+                :disabled="!avatar"
+                size="large"
+                @click="updateAvatar"
+              >
+                <v-icon left>mdi-upload</v-icon>
+                更新头像
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+
+      <v-card
+        class="mb-6"
+        elevation="2"
+      >
+        <v-card-title class="text-h6 font-weight-medium pa-6">
+          个人信息
+        </v-card-title>
+
+        <v-divider />
+
+        <v-card-text class="pa-6">
+          <v-form @submit.prevent="updateUser">
+            <v-row class="g-4">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="username"
+                  class="mb-2"
+                  clearable
+                  density="comfortable"
+                  hide-details="auto"
+                  label="用户名"
+                  outlined
+                  prepend-icon="mdi-account"
+                />
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field
+                  v-model="password"
+                  class="mb-4"
+                  clearable
+                  density="comfortable"
+                  hide-details="auto"
+                  label="密码"
+                  outlined
+                  prepend-icon="mdi-lock"
+                  type="password"
+                />
+              </v-col>
+
+              <v-col
+                class="text-right pt-4"
+                cols="12"
+              >
+                <v-btn
+                  class="px-8"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                >
+                  <v-icon left>mdi-send</v-icon>
+                  更新个人信息
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+      </v-card>
+
+      <v-card elevation="2">
+        <v-card-title class="text-h6 font-weight-medium pa-6">
+          我的文章
+        </v-card-title>
+
+        <v-divider />
+
+        <v-card-text class="pa-0">
+          <v-list class="py-0">
+            <template
+              v-for="item in owner"
+              :key="item.articleId"
+            >
+              <v-list-item class="px-6 py-5">
+                <v-row
+                  align="center"
+                  class="g-4"
+                >
+                  <v-col
+                    cols="12"
+                    md="8"
+                  >
+                    <div class="article-info">
+                      <h3 class="text-h6 font-weight-medium mb-2">
+                        {{ item.title }}
+                      </h3>
+                      <p class="text-body-1 text-medium-emphasis mb-0">
+                        {{ item.summarize }}
+                      </p>
+                    </div>
+                  </v-col>
+
+                  <v-col
+                    class="text-md-right"
+                    cols="12"
+                    md="4"
+                  >
+
+                    <v-btn
+                      append-icon="mdi-eye"
+                      class="ma-2"
+                      color="primary"
+                      text="查看"
+                      @click="toRead(item.articleId)"
+                    />
+
+                    <v-btn
+                      append-icon="mdi-pencil"
+                      class="ma-2"
+                      color="secondary"
+                      text="修改"
+                      @click="toChange(item.articleId)"
+                    />
+
+                    <v-btn
+                      append-icon="mdi-delete"
+                      class="ma-2"
+                      color="error"
+                      text="删除"
+                      @click="toDel( item.articleId)"
+                    />
+
+                  </v-col>
+                </v-row>
+              </v-list-item>
+              <v-divider />
+            </template>
+          </v-list>
+        </v-card-text>
+      </v-card>
+    </v-container>
+    <v-dialog
+      v-model="confirmDelete"
+      width="auto"
+    >
+      <v-card
+        max-width="400"
+        prepend-icon="mdi-update"
+        text="你确定删除这篇文章吗, 如果删除将无法找回"
+        title="确认删除文章"
+      >
+        <template #actions>
+          <v-btn
+            class="ms-auto"
+            text="取消"
+            @click="confirmDelete = false"
+          />
+          <v-btn text="确认删除" @click="deletArticle(deleteArticleId)" />
+        </template>
+      </v-card>
+    </v-dialog>
+  </div>
+
 </template>
 
+
   <script setup lang="ts">
+  import { articleApi } from '@/api/article';
   import { usersApi } from '@/api/users';
   import { useAppStore } from '@/stores/app';
   import request from '@/utils/http';
@@ -108,20 +252,59 @@
       console.log(err)
     }
   }
-</script>
 
-<style scoped>
-  .form-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  type ownerType = {
+    articleId: number,
+    title: string ,
+    summarize : string
   }
 
-  @media (max-width: 960px) {
-    .form-container {
-      padding: 16px;
+  const owner = ref<ownerType[]>()
+  const getOwner = async ()=>{
+    try{
+      const res = await articleApi.getOwnerArticle() as ownerType[]
+      owner.value = res
+      console.log(owner.value)
+    }catch(err){
+      console.log(err)
     }
   }
-  </style>
+
+  const router = useRouter()
+  const toRead = (articleId : number)=>{
+    router.push(`article/${articleId}`)
+  }
+  const confirmDelete = ref(false)
+  const deleteArticleId = ref(0)
+  const toDel = (id : number)=>{
+    deleteArticleId.value = id
+    confirmDelete.value = true
+  }
+  const deletArticle = async (articleId : number)=>{
+    try{
+      await articleApi.deleteArticle(articleId)
+      confirmDelete.value = false
+      getOwner()
+    }catch (e){
+      console.log(e)
+    }
+  }
+
+  const toChange = (articleId : number)=>{
+    router.push(`article/change/${articleId}`)
+  }
+  onMounted(()=>{
+    getOwner()
+  })
+</script>
+<style scoped>
+.form-container {
+  padding: 24px;
+}
+
+
+/* 列表项悬停效果 */
+.v-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+</style>

@@ -2,7 +2,7 @@
   <v-card
     class="rounded-lg"
     :elevation="hover ? 8 : 2"
-    height="500"
+    height="520"
     @mouseleave="hover = false"
     @mouseover="hover = true"
   >
@@ -12,15 +12,7 @@
       height="250"
       :src="props.article.cover_url? props.article.cover_url : `https://picsum.photos/500/300?random=${props.cnt}`"
     >
-      <v-chip
-        class="ma-2"
-        color="primaryContainer"
-        label
-        prepend-icon="mdi-account"
-        size="small"
-      >
-        {{ props.article.authorName }}
-      </v-chip>
+
       <template #placeholder>
         <div class="d-flex align-center justify-center fill-height">
           <v-progress-circular
@@ -34,7 +26,17 @@
     <v-card-item class="px-5 mt-3">
       <v-card-title class="text-h6 mb-4" style="word-break: break-word; white-space: pre-wrap">
         {{ props.article.title }}
+        <v-chip
+          class="ma-2"
+          color="primaryContainer"
+          label
+          prepend-icon="mdi-account"
+          size="small"
+        >
+          {{ props.article.authorName }}
+        </v-chip>
       </v-card-title>
+
       <v-card-subtitle
         class="text-medium-emphasis text-body-1"
         style="word-break: break-word; white-space: pre-wrap ; height: 75px;"
@@ -54,14 +56,15 @@
         阅读更多
       </v-btn>
 
-      <v-btn
+      <!-- <v-btn
         v-if="store.useId === props.article.usersId"
         append-icon="mdi-delete"
         color="error"
         @click="deletArticle"
       >
         删除
-      </v-btn>
+      </v-btn> -->
+
     </div>
 
 
@@ -79,24 +82,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useAppStore } from '@/stores/app';
-  import { articleApi } from '@/api/article'
-  const emit = defineEmits(['delete-article'])
-
   const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
   // console.log(props.article)
   const hover = ref(false);
-  const store = useAppStore()
-  // console.log(props.article.cover_url)
 
-  const deletArticle = async ()=>{
-    try{
-      await articleApi.deleteArticle(props.id)
-      emit('delete-article')
-    }catch (e){
-      console.log(e)
-    }
-  }
 </script>
 
 <style scoped>

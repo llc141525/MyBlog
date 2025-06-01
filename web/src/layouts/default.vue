@@ -10,7 +10,12 @@
         style="position: fixed;"
       >
         <div class="d-flex align-center">
-          <VBtn class="text-h5 font-weight-bold" variant="text" @click="goHome">
+          <VBtn
+            class="text-h5 mr-4 font-weight-bold"
+            prepend-icon="mdi-home"
+            to="/1"
+            variant="text"
+          >
             我的博客
           </VBtn>
 
@@ -41,10 +46,10 @@
             class="mr-2"
             color="secondary"
             prepend-icon="mdi-pencil"
+            to="/article/Create"
             variant="flat"
-            @click="goWrite"
           >
-            新建
+            新建文章
           </VBtn>
 
           <!-- 工具功能区 -->
@@ -57,8 +62,8 @@
           <VBtn
             class="mr-3"
             icon="mdi-cog-outline"
+            to="/settings"
             variant="text"
-            @click="goSettings"
           />
 
           <!-- 用户功能区 -->
@@ -80,9 +85,11 @@
 
       <v-main>
         <v-container class="mt-12" fluid>
-          <VSlideXTransition mode="out-in">
-            <router-view :key="route.path" />
-          </VSlideXTransition>
+          <router-view v-slot="{ Component }">
+            <VSlideXTransition mode="out-in">
+              <component :is="Component" :key="route.path" />
+            </VSlideXTransition>
+          </router-view>
         </v-container>
       </v-main>
     </v-layout>
@@ -96,16 +103,8 @@
 <script lang="ts" setup>
   const router = useRouter();
   const route = useRoute()
-  // console.log(route.fullPath)
-  const goHome = ()=>{
-    router.push('/1')
-  }
-  const goWrite = ()=>{
-    router.push('/article/Create')
-  }
-  const goSettings = ()=>{
-    router.push('/settings')
-  }
+
+
   import { useAppStore } from '@/stores/app';
   import { useTheme } from 'vuetify'
   const theme = useTheme()

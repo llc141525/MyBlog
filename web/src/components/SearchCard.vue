@@ -12,6 +12,7 @@
         <VCol cols="12" md="8">
           <VAutocomplete
             v-model="selectedArticle"
+            autofocus
             clearable
             density="comfortable"
             item-title="title"
@@ -29,7 +30,7 @@
             <template #item="{ props, item }">
               <VListItem
                 v-bind="props"
-                :subtitle="`ID: ${item.raw.id}`"
+                :subtitle="`ID: ${item.raw.articleId}`"
                 :title="item.raw.title"
               />
             </template>
@@ -68,7 +69,7 @@
 </template>
 
   <script lang="ts" setup>
-  import { articleApi } from '@/api/article';
+  import request from '@/utils/http';
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
 
@@ -85,36 +86,34 @@
 
   const gotoArticle = () => {
     if (searchQuery.value) {
-      router.push(`/article/${selectedArticle.value?.id}`);
+      router.push(`/article/${selectedArticle.value?.articleId}`);
       emit('close-dialog');
     }
   };
 
-  const route = useRoute()
-  const selectedArticle = ref<{ id: number, title: string }>()
+  const selectedArticle = ref<{ articleId: number, title: string }>()
   type searchParm = {
-    id : number,
+    articleId : number,
     title : string
   }
   const suggestion = ref<searchParm[]>([])
-  const getArticleHome = async () => {
+
+  const getSearch = async ()=>{
     try{
-      const page = (route.params as { page : number }).page
-      const res = await articleApi.getArticleHome(page)
-      res.data.forEach(element => {
+      const res = await request.get('/article/all-article') as searchParm[]
+      res.forEach(element => {
         suggestion.value.push({
-          id : element.id,
+          articleId : element.articleId,
           title : element.title,
         })
       });
-      console.log(suggestion.value)
-    }catch(e){
-      console.log(e)
+    }catch(err){
+      console.warn(err)
     }
-
   }
+
   onMounted(() => {
-    getArticleHome()
+    getSearch()
   })
 
   </script>
