@@ -24,26 +24,9 @@
     </v-img>
 
     <v-card-item class="px-5 mt-3">
-      <v-card-title class="text-h6 mb-4" style="word-break: break-word; white-space: pre-wrap">
+      <v-card-title class="text-h6 mb-4 pr-5 " style="word-break: break-word; ">
         {{ props.article.title }}
-        <v-chip
-          class="ma-2"
-          :color="chipColor()"
-          label
-          prepend-icon="mdi-account"
-          size="small"
-        >
-          {{ props.article.authorName }}
-        </v-chip>
-        <v-chip
-          v-if="props.article.status"
-          class="ma-2"
-          color="secondary"
-          label
-          size="small"
-        >
-          暂存
-        </v-chip>
+
       </v-card-title>
 
       <v-card-subtitle
@@ -64,6 +47,7 @@
       >
         阅读更多
       </v-btn>
+
     </div>
 
 
@@ -76,6 +60,24 @@
 
       <v-icon class="me-1" icon="mdi-eye" size="small" />
       <span>1.2k</span>
+      <v-chip
+          class="ma-2 ml-10"
+          :color="chipColor()"
+          label
+          prepend-icon="mdi-account"
+          size="small"
+      >
+        {{ props.article.authorName }}
+      </v-chip>
+      <v-chip
+          v-if="!props.article.status"
+          class="ma-2"
+          color="secondary"
+          label
+          size="small"
+      >
+        暂存
+      </v-chip>
     </div>
   </v-card>
 </template>

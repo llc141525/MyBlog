@@ -108,7 +108,6 @@
   const createArticle = async () => {
     status.value = true
     await temporarySave()
-    status.value = false
   }
 
 </script>
