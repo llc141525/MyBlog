@@ -74,13 +74,6 @@ public class ArticleService {
                 throw new RuntimeException(e);
             }
         }
-//        if (request.summarize() != null && !request.summarize().isEmpty()) {
-//            article.setSummarize(request.summarize().substring(0, 100));
-//        } else {
-//            String sum = request.content().replaceAll("[ -~]", "");
-//            sum = sum.trim().substring(0, 100);
-//            article.setSummarize(sum);
-//        }
         users.addArticle(article);
         Article save = articleRepository.save(article);
         return save.getId();

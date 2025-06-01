@@ -3,12 +3,15 @@
   <div>
     <v-container class="pa-6">
       <v-card class="pa-6 rounded-lg" elevation="2">
+
+        <!-- <VCardTitle class="text-center text-h3 font-weight-bold my-4">更新文章</VCardTitle> -->
         <!-- 编辑器区域 -->
         <div class="mb-6">
           <MdEditor
             id="md-editor"
             v-model="articleDetail.content"
             class="editor-content"
+            style="height: 100vh"
             :theme="store.isDarkMode ? 'dark' : 'light'"
           />
         </div>

@@ -7,6 +7,7 @@
           id="md-editor"
           v-model="text"
           class="editor-content"
+          style="height: 100vh;"
           :theme="store.isDarkMode ? 'dark' : 'light'"
         />
       </div>
