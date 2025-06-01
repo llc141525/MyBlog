@@ -10,7 +10,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     ArticleCard: typeof import('./components/ArticleCard.vue')['default']
     ArticleDetail: typeof import('./components/ArticleDetail.vue')['default']
-    ArticleHome: typeof import('./components/ArticleHome.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
     Comment: typeof import('./components/Comment.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -67,11 +67,13 @@ public class ArticleService {
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
         Article article = articleMapper.createArticleRequestToArticle(request);
-        try {
-            String path = userService.downloadFile(request.cover());
-            article.setCover_url(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(request.cover() != null){
+            try {
+                String path = userService.downloadFile(request.cover());
+                article.setCover_url(path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         users.addArticle(article);
         Article save = articleRepository.save(article);
