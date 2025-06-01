@@ -61,6 +61,7 @@ export class defaultFactory {
       content: '默认内容',
       cover_url: '',
       status: true,
+      summarize: '',
     }
   }
 

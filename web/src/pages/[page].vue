@@ -1,9 +1,7 @@
 <template>
   <div>
-
     <v-main>
       <div class="content-container ">
-
         <div class="articles-grid">
           <v-row>
             <v-col
@@ -18,6 +16,7 @@
                 :id="article.id"
                 :article="article"
                 :cnt="article.id"
+                :user-id="article.usersId"
                 @delete-article="getArticleHome"
               />
             </v-col>

@@ -20,6 +20,6 @@ public record ArticleDetailResponse(
         LocalDateTime updateTime,
         Long usersId,
         String usersAvatarUrl,
-        List<Long> commentIds
-) implements Serializable {
+        List<Long> commentIds,
+        String summarize) implements Serializable {
 }

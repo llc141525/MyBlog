@@ -143,6 +143,10 @@
                     <div class="article-info">
                       <h3 class="text-h6 font-weight-medium mb-2">
                         {{ item.title }}
+                        <v-chip
+                          v-if="!item.status"
+                        >暂存</v-chip>
+
                       </h3>
                       <p class="text-body-1 text-medium-emphasis mb-0">
                         {{ item.summarize }}
@@ -256,7 +260,8 @@
   type ownerType = {
     articleId: number,
     title: string ,
-    summarize : string
+    summarize : string,
+    status: boolean
   }
 
   const owner = ref<ownerType[]>()

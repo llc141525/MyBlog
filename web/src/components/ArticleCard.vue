@@ -28,12 +28,21 @@
         {{ props.article.title }}
         <v-chip
           class="ma-2"
-          color="primaryContainer"
+          :color="chipColor()"
           label
           prepend-icon="mdi-account"
           size="small"
         >
           {{ props.article.authorName }}
+        </v-chip>
+        <v-chip
+          v-if="props.article.status"
+          class="ma-2"
+          color="secondary"
+          label
+          size="small"
+        >
+          暂存
         </v-chip>
       </v-card-title>
 
@@ -55,16 +64,6 @@
       >
         阅读更多
       </v-btn>
-
-      <!-- <v-btn
-        v-if="store.useId === props.article.usersId"
-        append-icon="mdi-delete"
-        color="error"
-        @click="deletArticle"
-      >
-        删除
-      </v-btn> -->
-
     </div>
 
 
@@ -82,10 +81,21 @@
 </template>
 
 <script lang="ts" setup>
-  const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number }>();
+  import { useAppStore } from '@/stores/app';
+
+  const props = defineProps<{ cnt: number, article:ArticleHomeRes, id:number, userId:number }>();
   // console.log(props.article)
   const hover = ref(false);
-
+  const store = useAppStore()
+  function chipColor (){
+    console.log(props.userId, store.useId)
+    if(props.userId === store.useId){
+      return 'primary'
+    }else{
+      return 'primaryContainer'
+    }
+  }
+  console.log(chipColor())
 </script>
 
 <style scoped>

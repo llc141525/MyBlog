@@ -43,11 +43,19 @@
 
       <div class="text-center mt-4">
         <v-btn
-          class="px-8"
+          class="px-8 mx-6"
           color="primary"
           @click="createArticle"
         >
-          提交文章
+          发表文章
+        </v-btn>
+
+        <v-btn
+          class="px-8 mx-6"
+          color="secondary"
+          @click="temporarySave"
+        >
+          暂存文章
         </v-btn>
       </div>
     </v-card>
@@ -62,8 +70,6 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  // 引用screenfull
-  // import screenfull from 'screenfull';
   import { MdEditor } from 'md-editor-v3';
   import 'md-editor-v3/lib/style.css';
   import { articleApi } from '@/api/article';
@@ -78,7 +84,7 @@
   const text = ref('');
   const cover = ref<File | null>(null);
 
-  const createArticle = async () =>{
+  const temporarySave = async () =>{
     try{
       createArticleRequest.value.content = text.value
       createArticleRequest.value.title = title.value
@@ -97,6 +103,12 @@
     }
   }
   const summarize = ref('')
+
+  const createArticle = async () => {
+    status.value = true
+    await temporarySave()
+    status.value = false
+  }
 
 </script>
 

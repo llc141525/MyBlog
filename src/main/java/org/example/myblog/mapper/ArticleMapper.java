@@ -71,6 +71,7 @@ public interface ArticleMapper {
     }
 
     @Mapping(target = "articleId", expression = "java(article.getId())")
+    @Mapping(target = "status", expression = "java(article.getStatus())")
     OwnerArticleResponse articleToOwnerArticleResponse(Article article);
 
     @Mapping(target = "articleId", expression = "java(article.getId())")

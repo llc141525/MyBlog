@@ -103,6 +103,9 @@ public class ArticleService {
         Optional.ofNullable(request.cover_url()).ifPresent(article::setCover_url);
         Optional.ofNullable(request.content()).ifPresent(article::setContent);
         Optional.ofNullable(request.status()).ifPresent(article::setStatus);
+        Optional.ofNullable(request.summarize())
+                .map(s -> s.length() > 100 ? s.substring(0, 100) : s)
+                .ifPresent(article::setSummarize);
     }
 
     @Transactional

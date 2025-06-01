@@ -68,7 +68,6 @@
   import { defaultFactory } from '@/types/factory';
   const route = useRoute();
   const store = useAppStore()
-  const articleDetail = ref(defaultFactory.defaultArticleDetailResponse());
 
   const showFab = ref(false);
   let lastScrollPosition = 0;
@@ -111,6 +110,7 @@
     window.removeEventListener('scroll', handleScroll);
   });
   // 统一获取文章方法
+  const articleDetail = ref(defaultFactory.defaultArticleDetailResponse());
   const fetchArticle = async (id: number) => {
     try {
       const res = await articleApi.getArticleDetail(id) as ArticleDetailResponse;

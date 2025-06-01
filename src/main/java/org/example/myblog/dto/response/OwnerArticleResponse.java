@@ -8,6 +8,6 @@ import java.io.Serializable;
 public record OwnerArticleResponse(
         Long articleId,
         String title,
-        String summarize
-) implements Serializable {
+        String summarize,
+        Boolean status) implements Serializable {
 }
