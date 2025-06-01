@@ -134,6 +134,15 @@ public class ArticleService {
                 .orElseThrow(() -> new BusinessException(ArticleError.ARTICLE_NOT_FOUND));
     }
 
-
+//    public List<OwnerArticleResponse> getOwnerArticle(Long userId) {
+//        List<Article> byUsersId = articleRepository.findByUsers_Id(userId);
+//        List<OwnerArticleResponse> res =  new ArrayList<>();
+//        byUsersId.forEach(article -> {
+//
+//            OwnerArticleResponse.builder()
+//                    .title(article.getTitle())
+//                    .articleId(article.getId())
+//        })
+//    }
 }
 

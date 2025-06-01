@@ -62,4 +62,8 @@ public class ArticleController {
         return ApiResponse.success(null);
     }
 
+//    @GetMapping("/owner-article")
+//    public ApiResponse<OwnerArticleResponse> getOwnerArticle(@RequestAttribute Long userId) {
+//        articleService.getOwnerArticle(Long userId);
+//    }
 }

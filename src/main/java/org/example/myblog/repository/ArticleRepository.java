@@ -20,4 +20,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findAllByPage(Pageable pageable);
 
     long countById(Long id);
+
+    List<Article> findByUsers_Id(Long id);
 }
