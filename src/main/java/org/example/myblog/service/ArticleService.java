@@ -67,13 +67,20 @@ public class ArticleService {
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(UserError.USER_NOT_FOUND));
         Article article = articleMapper.createArticleRequestToArticle(request);
-        if(request.cover() != null){
+        if (request.cover() != null && !request.cover().isEmpty()) {
             try {
                 String path = userService.downloadFile(request.cover());
                 article.setCover_url(path);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (request.summarize() != null && !request.summarize().isEmpty()) {
+            article.setSummarize(request.summarize().substring(0, 100));
+        } else {
+            String sum = request.content().replaceAll("[ -~]", "");
+            sum = sum.trim().substring(0, 100);
+            article.setSummarize(sum);
         }
         users.addArticle(article);
         Article save = articleRepository.save(article);

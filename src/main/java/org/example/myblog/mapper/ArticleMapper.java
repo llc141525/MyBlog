@@ -21,7 +21,6 @@ public interface ArticleMapper {
     @Mapping(target = "authorName", expression = "java(article.getUsers().getUsername())")
     ArticleHomeResponse articleToArticleHomeResponse(Article article);
 
-    //    @Named("mapSummarize")
     default String mapSummarize(Article article) {
         if (article.getSummarize() != null && !article.getSummarize().isEmpty()) {
             return article.getSummarize();
@@ -43,7 +42,15 @@ public interface ArticleMapper {
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "users", ignore = true)
     @Mapping(target = "comments", ignore = true)
+    @Mapping(target = "cover_url", ignore = true)
+    @Mapping(target = "summarize", ignore = true)
+//    @Mapping(target = "summarize", expression = "java((createArticleRequest.summarize().substring(0,100)))")
     Article createArticleRequestToArticle(CreateArticleRequest createArticleRequest);
+
+//    default String truncateSummary(String summary) {
+//        if (summary == null) return null;
+//        return summary.length() > 100 ? summary.substring(0, 100) : summary;
+//    }
 
     @Mapping(target = "commentIds", source = "comments")
     @Mapping(target = "usersAvatarUrl", source = "users.avatarUrl")
@@ -55,11 +62,4 @@ public interface ArticleMapper {
                 .stream().map(Comment::getId).collect(Collectors.toList());
     }
 
-//    default Long userToId(Users user) {
-//        return (user != null) ? user.getId() : null;
-//    }
-//
-//    default String userToAvatarUrl(Users user) {
-//        return (user != null) ? user.getAvatarUrl() : null;
-//    }
 }

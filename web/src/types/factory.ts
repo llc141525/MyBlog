@@ -86,12 +86,12 @@ export class defaultFactory {
       id: 1,
       title: '默认标题',
       content: '默认内容',
-      cover_url: 'https://picsum.photos/200/300',
+      cover_url: '',
       status: true,
       createTime: '2021-01-01 00:00:00',
       updateTime: '2021-01-01 00:00:5.00E01',
       usersId: 1,
-      usersAvatarUrl: 'https://picsum.photos/200/300',
+      usersAvatarUrl: '',
       commentIds: [1, 2, 3],
 
     }

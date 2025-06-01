@@ -3,6 +3,7 @@ import type {
   ArticleHomeResponse,
   BaseResponse,
   CreateArticleRequest,
+  ErrorResponse,
   Pageable,
   UpdateArticleRequest,
 } from '@/types'
@@ -19,12 +20,17 @@ export const articleApi = {
       params: { articleId },
     })
   },
-  createArticle (data: CreateArticleRequest) {
-    return request.post<ArticleDetailResponse>('/article/create', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+  async createArticle (data: CreateArticleRequest) {
+    try{
+      return request.post<ArticleDetailResponse>('/article/create', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    }catch(err){
+      console.log('文章创建失败')
+      throw new Error((err as ErrorResponse).message)
+    }
   },
 
   updateArticle (data: UpdateArticleRequest) {

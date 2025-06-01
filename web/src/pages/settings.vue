@@ -32,31 +32,27 @@
 
     <!-- 用户信息表单 -->
     <v-form @submit.prevent="updateUser">
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-text-field
-            v-model="username"
-            density="comfortable"
-            hide-details="auto"
-            label="用户名"
-            outlined
-            prepend-icon="mdi-account"
-          />
-        </v-col>
-
-        <v-col cols="12" md="6">
-          <v-text-field
-            v-model="password"
-            density="comfortable"
-            hide-details="auto"
-            label="密码"
-            outlined
-            prepend-icon="mdi-lock"
-            type="password"
-          />
-        </v-col>
+      <v-row class="my-10">
+        <v-text-field
+          v-model="username"
+          density="comfortable"
+          hide-details="auto"
+          label="用户名"
+          outlined
+          prepend-icon="mdi-account"
+        />
       </v-row>
-
+      <v-row class="mb-3">
+        <v-text-field
+          v-model="password"
+          density="comfortable"
+          hide-details="auto"
+          label="密码"
+          outlined
+          prepend-icon="mdi-lock"
+          type="password"
+        />
+      </v-row>
       <!-- 提交按钮 -->
       <v-row class="mt-6">
         <v-col cols="12">
@@ -119,7 +115,6 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 24px;
-    background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }

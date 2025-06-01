@@ -14,6 +14,7 @@ declare module 'vue' {
     Comment: typeof import('./components/Comment.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchCard: typeof import('./components/SearchCard.vue')['default']
     Tests: typeof import('./components/Tests.vue')['default']
   }
 }

@@ -10,7 +10,6 @@ import java.io.Serializable;
 /**
  * DTO for {@link org.example.myblog.model.Article}
  */
-
 public record CreateArticleRequest(
         @NotEmpty(message = "标题不能为空")
         @Schema(example = "测试文章标题")
@@ -26,6 +25,9 @@ public record CreateArticleRequest(
         @Schema(example = "false")
         @NotNull(message = "缺少发布状态, 草稿或者已发布")
         Boolean status,
-        MultipartFile cover
+
+        MultipartFile cover,
+
+        String summarize
 ) implements Serializable {
 }

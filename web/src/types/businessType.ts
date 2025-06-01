@@ -80,7 +80,8 @@ export interface CreateArticleRequest {
   content: string,
   cover_url: string,
   status: boolean,
-  cover: File | null
+  cover: File | null,
+  summarize?: string
 }
 
 export interface CreateCommentRequest {

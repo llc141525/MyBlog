@@ -2,6 +2,7 @@
   <div>
     <v-app id="app">
       <v-layout>
+        <!-- 这是左侧的目录 -->
         <v-navigation-drawer
           class="pa-0"
           permanent
@@ -10,14 +11,17 @@
         >
           <v-list-item class="py-4" subtitle="Vuetify" title="文章目录" />
           <v-divider />
-          <MdCatalog class="pt-2" :editor-id="id" :scroll-element="scrollElement" />
+
+          <MdCatalog class="pt-5" :editor-id="id" :scroll-element="scrollElement" />
         </v-navigation-drawer>
         <v-main>
+          <!-- 主要的文章阅读的部分 -->
           <ArticleDetail />
+          <!-- 下面是评论区 -->
           <v-container class="pt-0" fluid>
             <v-row justify="center">
-              <v-col cols="12" md="10">
-                <v-card class="mt-4 pa-4 rounded-lg px-10">
+              <v-col cols="11">
+                <v-card class="mt-4 pa-10 rounded-lg ">
                   <VCardTitle class="mb-3">
                     <VIcon icon="mdi-comment-text-outline" />
                     评论

@@ -1,5 +1,5 @@
 <template>
-  <VCard class="mb-4 rounded-lg" elevation="1">
+  <VCard class="mb-4 rounded-lg pa-6" elevation="1">
     <!-- 主评论区域 -->
 
     <VRow align="start" class="pa-4" no-gutters>
@@ -22,9 +22,14 @@
         </div>
 
         <!-- 评论内容 -->
-        <div class="text-body-1 mb-2 ml-4 py-4 font-weight-bold d-flex">
+        <div class="text-h6 mb-2 ml-4 py-4 font-weight-bold d-flex">
           {{ props.comment.content }}
-          <VIcon class="ml-auto mr-3" icon="mdi-dots-vertical" />
+          <VIcon
+
+            v-if="isAuthor"
+            class="ml-auto mr-3"
+            icon="mdi-dots-vertical"
+          />
         </div>
 
         <!-- 操作按钮 -->
@@ -110,7 +115,7 @@
                 </span>
               </div>
 
-              <div class="text-body-1 ml-10 mt-6 mb-3 ">
+              <div class="text-h6 mb-2 ml-4 py-4 font-weight-bold d-flex">
                 {{ childComment.content }}
               </div>
             </VCol>
@@ -161,6 +166,8 @@
       // 重置状态
       commentContent.value = '';
       toReply.value = false;
+      showChild.value = true;
+
     } catch (err) {
       console.warn('回复失败:', err);
     }
