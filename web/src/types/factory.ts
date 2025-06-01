@@ -24,8 +24,9 @@ export class defaultFactory {
     return {
       title: '默认标题',
       content: '默认内容',
-      cover_url: 'https://picsum.photos/200/300',
+      cover_url: '',
       status: true,
+      cover: null,
     }
   }
 
@@ -58,7 +59,7 @@ export class defaultFactory {
       articleId: 1,
       title: '默认标题',
       content: '默认内容',
-      cover_url: 'https://picsum.photos/200/300',
+      cover_url: '',
       status: true,
     }
   }
@@ -68,13 +69,14 @@ export class defaultFactory {
     return {
       id: 1,
       title: '默认标题',
-      cover_url: 'https://picsum.photos/200/300',
+      cover_url: '',
       status: true,
       createTime: '2021-01-01 00:00:00',
       updateTime: '2021-01-01 00:00:00',
       usersId: 1,
       commentLength:0,
       summarize: '默认内容',
+      authorName: '',
     }
   }
 
