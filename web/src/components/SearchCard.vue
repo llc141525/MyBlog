@@ -11,18 +11,27 @@
       <VRow align="center">
         <VCol cols="12" md="8">
           <VAutocomplete
-            v-model="searchQuery"
-            class="search-input"
+            v-model="selectedArticle"
             clearable
             density="comfortable"
-            hide-details
-            :items="suggestions"
+            item-title="title"
+            item-value="id"
+            :items="suggestion"
             placeholder="输入文章标题或关键词..."
-            variant="outlined"
-            @update:search="fetchSuggestions"
+            return-object
+            @update:model-value="searchQuery = $event?.title || ''"
           >
             <template #prepend-inner>
               <VIcon icon="mdi-text-box-search-outline" size="24" />
+            </template>
+
+            <!-- 自定义选项显示 -->
+            <template #item="{ props, item }">
+              <VListItem
+                v-bind="props"
+                :subtitle="`ID: ${item.raw.id}`"
+                :title="item.raw.title"
+              />
             </template>
           </VAutocomplete>
         </VCol>
@@ -49,7 +58,6 @@
           :key="index"
           class="mr-3 mb-3 cursor-pointer px-4 py-2"
           size="medium"
-          variant="outlined"
           @click="applySearch(tag)"
         >
           {{ tag }}
@@ -60,6 +68,7 @@
 </template>
 
   <script lang="ts" setup>
+  import { articleApi } from '@/api/article';
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
 
@@ -67,19 +76,8 @@
   const emit = defineEmits(['close-dialog']);
 
   const searchQuery = ref('');
-  const suggestions = ref<string[]>([]);
   const hotSearches = ref(['Vue3', 'Vuetify', '前端优化', '响应式设计']);
 
-  const fetchSuggestions = (query: string) => {
-    if (query.length > 1) {
-      suggestions.value = [
-        `${query}教程`,
-        `${query}最佳实践`,
-        `${query}高级技巧`,
-        `${query}常见问题`,
-      ];
-    }
-  };
 
   const applySearch = (tag: string) => {
     searchQuery.value = tag;
@@ -87,10 +85,38 @@
 
   const gotoArticle = () => {
     if (searchQuery.value) {
-      router.push('/article/10026');
+      router.push(`/article/${selectedArticle.value?.id}`);
       emit('close-dialog');
     }
   };
+
+  const route = useRoute()
+  const selectedArticle = ref<{ id: number, title: string }>()
+  type searchParm = {
+    id : number,
+    title : string
+  }
+  const suggestion = ref<searchParm[]>([])
+  const getArticleHome = async () => {
+    try{
+      const page = (route.params as { page : number }).page
+      const res = await articleApi.getArticleHome(page)
+      res.data.forEach(element => {
+        suggestion.value.push({
+          id : element.id,
+          title : element.title,
+        })
+      });
+      console.log(suggestion.value)
+    }catch(e){
+      console.log(e)
+    }
+
+  }
+  onMounted(() => {
+    getArticleHome()
+  })
+
   </script>
 
   <style scoped>
